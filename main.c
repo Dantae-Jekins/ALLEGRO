@@ -4,21 +4,27 @@
 //#include <allegro5/allegro_image.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 #define height 720
 #define width 1080
 
 // Estruturas do jogo
-#define txtboxes 8 
-struct textbox
-{	
-	bool existe;
-	float pos[2];
-	float siz[2];
-	short type;
+#define caixas 8 
+struct caixa
+{
+	bool existe; //caixa existe?
+	bool texto;  //possui texto?
+	
+	// variáveis para a caixa
+	int pos[2];
+	int siz[2];
+	int type;
+
+	// variáveis para o texto
 	char *text;
 	ALLEGRO_FONT *font;
-} blocos[txtboxes];
+} box[caixas];
+
 
 bool setup(void)
 {
@@ -26,9 +32,10 @@ bool setup(void)
 	// ou false se ocorreu algum erro.
 	
 	// Inicializa as estruturas
-	for (size_t i = 0; i < txtboxes; i++)
+	for (size_t i = 0; i < caixas; i++)
 	{
-		blocos[i].existe = false;
+		box[i].existe = false;
+		box[i].texto = false;
 	}
 
 	// Inicializa o ALLEGRO
@@ -59,75 +66,68 @@ bool setup(void)
 	// uma vez, sem parar no primeiro.
 }
 
-int genTextbox(int pos[2], int siz[2], int type)
+
+int genBox()
 {
 	// prepara uma estrutura "box" de posições, tamanhos definidos
 	// e que deve ser renderizada por outra função.
 	int ID = -1;
 	printf("\nBUSCANDO BLOCO LIVRE");
-	for (size_t i = 0; i < txtboxes; i++)
+	for (size_t i = 0; i < caixas; i++)
 	{
-		// loop entre os blocos para ver qual está disponível
-		if (!blocos[i].existe)
-		{			
+		// loop entre os blocos para ver qual está dispodinível
+		if (!box[i].existe)
+		{
 			// achou um bloco disponível
-
 			ID = i;
-			blocos[ID].existe = true;			
+			box[ID].existe = true;
 			printf("\nBLOCO LIVRE ID.%d",ID);
 			break;
-
 		}
 	}
 	if (ID < 0)
 	{
 		printf("\nNÃO EXISTEM BLOCOS DISPONÍVEIS");
-		return ID;
-	}
-
-	// altera o bloco com o ID.
-	switch(type)
-	{
-		case 0:
-			// uma caixa para mensagens?
-			break;
-
-		case 1:
-			// uma caixa para comentários?
-			break;
-
-		default:
-			//caixa comum
-			printf("\nbox.case %d não codado",type);
-			break;
+		return -1;
 	}
 	// a função retorna o ID da textbox.
 	return ID;
 }
+
 
 int genChat(int pos[2], int siz[2], char *text, ALLEGRO_FONT *font, int ID)
 {
 	// a função ou recebe ou desenha uma caixa no display
 	// esta caixa deve ser to tipo textbox
 	// se a caixa existir deve-se apenas dar um update no texto.
-
-	// -1 para inexistência
-	if (ID == -1)
+	// negativo para inexistência
+	if (ID < 0)
 	{
-		ID = genTextbox(pos, siz, 1);
-
-		if( ID == -1)
-			return -1;
-	
+		ID = genBox();
+		if( ID < 0)
+			return -1; // não achou blocos livres
 	}
+	else if (!box[ID].existe)
+	{
+		printf("\nALTERANDO VALORES DE UMA CAIXA INEXISTENTE");
+	}
+	// se achou deve alterar os conteúdos.
+	memcpy(box[ID].pos, pos, 2);
+	memcpy(box[ID].siz, siz, 2);
+	box[ID].type = 1;
 
-	blocos[ID].font = font;
-	blocos[ID].text = text;
+	// e gerar um texto para o interior.
+	box[ID].texto = true;
+	box[ID].text = text;
+	box[ID].font = font;
+
+	printf("\nCAIXA DE ID.%d SETTADA", ID);
 	return ID;
 	// a função retorna o ID da textbox gerada
 }
 
-int main(int argc, char **argv)
+
+int main(void)
 {
 	// !!!______SETUP______!!!
 	// Inicialização e análise de erro 
@@ -181,20 +181,28 @@ int main(int argc, char **argv)
 		{
 			rodando = false;
 		}
-		else if (pausado)
+		else
 		{
+			//renderiza a tela aqui
 
-		}
-		else 
-		{
-			// módulo de exemplo
-			if(chatexample)
+			 if (pausado) //PAUSADO
 			{
-				int pos[] = {width/2, height/2};
-				int siz[] = {300, 400};			
-				genChat(pos, siz, "TEST", SANS18, -1);
+				// analisa o pause
 			}
+			else //NORMAL
+			{
+				// o jogo roda normalmente
+				// módulo de exemplo
+				if(chatexample)
+				{
+				//TESTE!!!!
+				int pos[] = {width/2, height/2};
+				int siz[] = {300, 400};
+				if (genChat(pos, siz,"TEST", SANS18, -1) < 0)
+					chatexample = false;
+				}
 				//inicia uma caixa de comentários de ID 1.
+			}
 		}
 		al_flip_display();
 	}
@@ -204,4 +212,4 @@ int main(int argc, char **argv)
 	al_destroy_timer(timer);
 	al_uninstall_keyboard();
 	printf("\n");
-	}
+}
