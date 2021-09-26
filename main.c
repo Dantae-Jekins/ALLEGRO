@@ -159,11 +159,9 @@ int main(void)
 	al_register_event_source(queue, al_get_timer_event_source(timer));
 	al_register_event_source(queue, al_get_keyboard_event_source());
 	}
-
-	// Inicialização do jogo
-	bool chatexample = true; // experimental
-
-	bool pausado = false; // deve ser int para indicar para o quê está pausado
+	
+  // Inicialização do jogo
+	bool pausado = false;
 	bool rodando = true;
 
 	al_start_timer(timer);
@@ -183,26 +181,8 @@ int main(void)
 		}
 		else
 		{
-			//renderiza a tela aqui
-
-			 if (pausado) //PAUSADO
-			{
-				// analisa o pause
-			}
-			else //NORMAL
-			{
-				// o jogo roda normalmente
-				// módulo de exemplo
-				if(chatexample)
-				{
-				//TESTE!!!!
-				int pos[] = {width/2, height/2};
-				int siz[] = {300, 400};
-				if (genChat(pos, siz,"TEST", SANS18, -1) < 0)
-					chatexample = false;
-				}
-				//inicia uma caixa de comentários de ID 1.
-			}
+			//renderiza a tela aqui e 
+			//responde à outros eventos aqui
 		}
 		al_flip_display();
 	}
