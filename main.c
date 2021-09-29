@@ -1,42 +1,47 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
-//#include <allegro5/allegro_image.h>
+#include <allegro5/allegro_primitives.h>
+
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+
 #define height 720
 #define width 1080
 
-// Estruturas do jogo
-#define caixas 8 
+//Estruturas do jogo
+#define txt_boxes 4
+struct textos
+{
+	bool existe; 
+	int type;
+	char *text;
+	
+} txtbox[txt_boxes];
+
+#define caixas 64
 struct caixa
 {
-	bool existe; //caixa existe?
-	bool texto;  //possui texto?
-	
-	// variáveis para a caixa
-	int pos[2];
-	int siz[2];
-	int type;
+  bool existe;
+  int posx;
+  int posy;
+  int type;
 
-	// variáveis para o texto
-	char *text;
-	ALLEGRO_FONT *font;
 } box[caixas];
 
 
+//FUNÇÕES
 bool setup(void)
 {
 	// Retorna true se concluído com sucesso
 	// ou false se ocorreu algum erro.
 	
 	// Inicializa as estruturas
+	for (size_t i = 0; i < txt_boxes; i++)
+		txtbox[i].existe = false;
+
 	for (size_t i = 0; i < caixas; i++)
-	{
 		box[i].existe = false;
-		box[i].texto = false;
-	}
 
 	// Inicializa o ALLEGRO
 	bool checkup = true;
@@ -60,12 +65,22 @@ bool setup(void)
 		printf("\nal_init_ttf_addon não inicializado");
 		checkup = false;
 	}
+  if (!al_init_primitives_addon())
+  {
+    printf("\al_init_primitives_addon não inicializado");
+    checkup = false;
+  }
 
 	return checkup;
 	// permite que a função analise vários de
 	// uma vez, sem parar no primeiro.
 }
 
+void genQuadrado
+(int posx1, int posy1, int posx2, int posy2, ALLEGRO_COLOR cor)
+{
+	al_draw_filled_rectangle(posx1, posy1, posx2, posy2, cor);
+}
 
 int genBox()
 {
@@ -95,35 +110,39 @@ int genBox()
 }
 
 
-int genChat(int pos[2], int siz[2], char *text, ALLEGRO_FONT *font, int ID)
+int genChat(char *text, int type, int ID)
 {
-	// a função ou recebe ou desenha uma caixa no display
-	// esta caixa deve ser to tipo textbox
-	// se a caixa existir deve-se apenas dar um update no texto.
+	// a função ou recebe ou desenha uma txtbox 
+  // e então altera seus valores.
+	
 	// negativo para inexistência
 	if (ID < 0)
 	{
-		ID = genBox();
-		if( ID < 0)
-			return -1; // não achou blocos livres
-	}
-	else if (!box[ID].existe)
-	{
-		printf("\nALTERANDO VALORES DE UMA CAIXA INEXISTENTE");
+	  printf("\nBUSCANDO BLOCO DE TEXTO LIVRE");
+	  for (size_t i = 0; i < txt_boxes; i++)
+	  {
+		  // loop entre os blocos para ver qual está dispodinível
+		  if (!txtbox[i].existe)
+		  {
+			  // achou um bloco disponível
+			  ID = i;
+			  txtbox[ID].existe = true;
+			  printf("\nBLOCO DE TEXTO LIVRE ID.%d",ID);
+			  break;
+		  }
+	  }
+	  if (ID < 0)
+	  {
+	  	printf("\nNÃO EXISTEM BLOCOS DE TEXTO DISPONÍVEIS");
+	  	return -1;
+	  }
 	}
 	// se achou deve alterar os conteúdos.
-	memcpy(box[ID].pos, pos, 2);
-	memcpy(box[ID].siz, siz, 2);
-	box[ID].type = 1;
-
-	// e gerar um texto para o interior.
-	box[ID].texto = true;
-	box[ID].text = text;
-	box[ID].font = font;
+  txtbox[ID].text = text;
+  txtbox[ID].type = type;
 
 	printf("\nCAIXA DE ID.%d SETTADA", ID);
 	return ID;
-	// a função retorna o ID da textbox gerada
 }
 
 
@@ -139,33 +158,31 @@ int main(void)
 	}
 	
 	// Inicialização das estruturas ALLEGRO
-	ALLEGRO_DISPLAY   *display = al_create_display(width, height);
-	ALLEGRO_TIMER       *timer = al_create_timer(1.0 / 30.0);
-	ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue();
-
-	// Adição de fontes
+  ALLEGRO_DISPLAY   *display = al_create_display(width, height);
+  ALLEGRO_TIMER       *timer = al_create_timer(1.0 / 30.0);
+  ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue();
 	ALLEGRO_FONT *SANS18 = 
 	al_load_font("fonts/OpenSans-Bold.ttf", 18, 0);
-	
+  
 	if(!display || !timer || !queue)
 	{
-		printf("\n Estruturas ALLEGRO não inicializadas");
-		return -1;
-	}
+	  printf("\n Estruturas ALLEGRO não inicializadas");
+	  return -1;
+  }
 
 	// Registro dos eventos ALLEGRO
-	{
 	al_register_event_source(queue, al_get_display_event_source(display));
 	al_register_event_source(queue, al_get_timer_event_source(timer));
 	al_register_event_source(queue, al_get_keyboard_event_source());
-	}
+	
 	
   // Inicialização do jogo
 	bool pausado = false;
 	bool rodando = true;
 
 	al_start_timer(timer);
-	while (rodando)
+	
+  while (rodando)
 	{
 		//limpa a tela
 		al_clear_to_color(al_map_rgb(200,200,200));
@@ -186,7 +203,8 @@ int main(void)
 		}
 		al_flip_display();
 	}
-
+  
+  // Destruição das estruturas ALLEGRO
 	al_destroy_event_queue(queue);
 	al_destroy_display(display);
 	al_destroy_timer(timer);
