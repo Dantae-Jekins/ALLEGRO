@@ -1,4 +1,0 @@
-﻿  Origem.cpp
-Origem.obj : error LNK2019: símbolo externo não resolvido, __imp__al_init_image_addon, referenciado na função _main
-Origem.obj : error LNK2019: símbolo externo não resolvido, __imp__al_show_native_message_box, referenciado na função _main
-D:\Documents\Repositórios\ALLEGRO\Teclado\Teclado\Debug\Teclado.exe : fatal error LNK1120: 2 externo não resolvidos
