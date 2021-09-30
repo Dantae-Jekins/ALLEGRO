@@ -2,12 +2,28 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_primitives.h>
-
+#include <allegro5/allegro_image.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #define height 720
 #define width 1080
+
+//Mapa
+int mapColu = 10;	//quantidade de colunas
+int mapSize = 100;		//tamanho total do mapa
+int tileSiz = 50;		//pixel por tile
+
+int map[] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+			        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+			        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+			        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+			        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+			        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+			        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+			        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+			        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			        0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 //Estruturas do jogo
 #define txt_boxes 4
@@ -19,7 +35,8 @@ struct textos
   
 } txtbox[txt_boxes];
 
-#define caixas 64
+//interagiveis
+#define caixas 10
 struct caixa
 {
   bool existe;
@@ -29,8 +46,18 @@ struct caixa
 
 } box[caixas];
 
+//jogador
+struct jogador
+{
+  int estado;
+  int oxygen;
+  int posx;
+  int posy;
 
-//FUN√á√ïES
+} player;
+
+
+//FUN«’ES
 bool setup(void)
 {
   // Retorna true se conclu√≠do com sucesso
@@ -47,27 +74,32 @@ bool setup(void)
   bool checkup = true;
   if (!al_init())
   {
-    printf("\nal_init n√£o inicializado");
+    printf("\nal_init n√o inicializado");
     checkup = false;
   }
   if (!al_install_keyboard())
   {
-    printf("\nal_install_keyboard n√£o inicializado");
+    printf("\nal_install_keyboard n√o inicializado");
     checkup = false;
   }
   if (!al_init_font_addon())
   {
-    printf("\nal_init_font_addon n√£o inicializado");
+    printf("\nal_init_font_addon n√o inicializado");
     checkup = false;
   }
   if (!al_init_ttf_addon())
   {
-    printf("\nal_init_ttf_addon n√£o inicializado");
+    printf("\nal_init_ttf_addon n√o inicializado");
     checkup = false;
   }
   if (!al_init_primitives_addon())
   {
-    printf("\al_init_primitives_addon n√£o inicializado");
+    printf("\nal_init_primitives_addon n√o inicializado");
+    checkup = false;
+  }
+  if (!al_init_image_addon())
+  {
+    printf("\nal_init_image_addon n„o inicializado");
     checkup = false;
   }
 
@@ -102,9 +134,10 @@ int genBox()
   }
   if (ID < 0)
   {
-    printf("\nN√ÉO EXISTEM BLOCOS DISPON√çVEIS");
+    printf("\nN√O EXISTEM BLOCOS DISPONÕVEIS");
     return -1;
   }
+
   // a fun√ß√£o retorna o ID da textbox.
   return ID;
 }
@@ -133,7 +166,7 @@ int genChat(char *text, int type, int ID)
     }
     if (ID < 0)
     {
-      printf("\nN√ÉO EXISTEM BLOCOS DE TEXTO DISPON√çVEIS");
+      printf("\nN√O EXISTEM BLOCOS DE TEXTO DISPONÕVEIS");
       return -1;
     }
   }
@@ -211,3 +244,4 @@ int main(void)
   al_uninstall_keyboard();
   printf("\n");
 }
+
