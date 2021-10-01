@@ -3,16 +3,16 @@
 
 int main()
 {
-	ALLEGRO_DISPLAY *display = NULL;
-	if(!al_init())
+	ALLEGRO_DISPLAY* display = NULL;
+	if (!al_init())
 	{
 		return -1;
 	}
 
-	display =	al_create_display(720, 480);
+	display = al_create_display(720, 480);
 	getchar();
 
-	return 0;	
+	return 0;
 }
 
 //
