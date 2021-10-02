@@ -8,11 +8,13 @@
 
 #define height 720
 #define width 1080
+#define charSiz 20
+#define tileSiz 50
+
 
 //Mapa
 int mapColu = 10;	//quantidade de colunas
 int mapSize = 100;		//tamanho total do mapa
-int tileSiz = 50;		//pixel por tile
 
 int map[] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -64,6 +66,7 @@ bool setup(void)
   // ou false se ocorreu algum erro.
   
   // Inicializa as estruturas
+  printf("\nsettando estruturas");
   for (size_t i = 0; i < txt_boxes; i++)
     txtbox[i].existe = false;
 
@@ -71,6 +74,7 @@ bool setup(void)
     box[i].existe = false;
 
   // Inicializa o ALLEGRO
+  printf("\nsettando allegro");
   bool checkup = true;
   if (!al_init())
   {
@@ -108,10 +112,65 @@ bool setup(void)
   // uma vez, sem parar no primeiro.
 }
 
-void genQuadrado
-(int posx1, int posy1, int posx2, int posy2, ALLEGRO_COLOR cor)
+void setPlayer(int px, int py)
 {
-  al_draw_filled_rectangle(posx1, posy1, posx2, posy2, cor);
+
+  printf("\nsettando player");
+  player.estado= 0;
+  player.oxygen= 0;
+  player.posx  =px;
+  player.posy  =py;
+}
+
+bool render()
+{
+    
+  ALLEGRO_COLOR cor;
+  bool set = true;
+  int px;
+  int py;
+  
+  //mapa
+  for (int i = 0; i < mapSize; i++)
+  {
+    px = tileSiz*(i%mapColu);
+    py = tileSiz*(i/mapColu);
+    
+    if (map[i] == 0)
+      cor = al_map_rgb(30, 10, 30);
+    else if (map[i] == 1) 
+      cor = al_map_rgb(120,30,100);
+    else
+    { 
+      printf("reder() map[%d] contém tipo não registrado", i);
+      set = false;
+    }
+    al_draw_filled_rectangle(px, py, px+tileSiz, py+tileSiz, cor);  
+  }
+  
+  //personagem
+  px = player.posx;
+  py = player.posy;
+  switch(player.estado)
+  {
+    case 0: // vivo
+      
+      cor = al_map_rgb(60,60,140);
+      int tam = charSiz+charSiz;
+      al_draw_filled_rectangle(px, py, px+tam, py+tam, cor);
+      
+      break;
+
+    case 1:
+      printf("\nrender() player.estado = 1 não implementado"); 
+      break;
+
+    default:
+      printf("\nrender() player.estado em valores não aceitáveis");
+      set = false;
+      break;
+  }
+  return set;
 }
 
 int genBox()
@@ -212,16 +271,20 @@ int main(void)
   // InicializaÃ§Ã£o do jogo
   bool pausado = false;
   bool rodando = true;
-
   al_start_timer(timer);
   
   while (rodando)
   {
     //limpa a tela
     al_clear_to_color(al_map_rgb(200,200,200));
+    
+    //redesenha a tela
+    render();
+    
+    al_flip_display();
+    
+    //Espera um evento
     ALLEGRO_EVENT evento;
-
-    //espera um evento
     al_wait_for_event(queue, &evento);
 
     //encerraÃ§Ã£o do programa
@@ -230,11 +293,9 @@ int main(void)
       rodando = false;
     }
     else
-    {
-      //renderiza a tela aqui e 
-      //responde Ã  outros eventos aqui
+    { 
+      
     }
-    al_flip_display();
   }
   
   // DestruiÃ§Ã£o das estruturas ALLEGRO
