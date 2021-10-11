@@ -142,7 +142,7 @@ bool render()
       cor = al_map_rgb(120,30,100);
     else
     { 
-      printf("reder() map[%d] contém tipo não registrado", i);
+      printf("render() map[%d] contém tipo não registrado", i);
       set = false;
     }
     al_draw_filled_rectangle(px, py, px+tileSiz, py+tileSiz, cor);  
@@ -153,16 +153,14 @@ bool render()
   py = player.posy;
   switch(player.estado)
   {
-    case 0: // vivo
-      
+    case 1: // vivo
       cor = al_map_rgb(60,60,140);
       int tam = charSiz+charSiz;
       al_draw_filled_rectangle(px, py, px+tam, py+tam, cor);
-      
       break;
 
-    case 1:
-      printf("\nrender() player.estado = 1 não implementado"); 
+    case 0:
+      printf("\nrender() player.estado = 0 não implementado"); 
       break;
 
     default:
@@ -249,10 +247,10 @@ int main(void)
     return -1;
   }
   
-  // InicializaÃ§Ã£o das estruturas ALLEGRO
-  ALLEGRO_DISPLAY   *display = al_create_display(width, height);
-  ALLEGRO_TIMER       *timer = al_create_timer(1.0 / 30.0);
-  ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue();
+  // InicializaÃ§Ã£o das estruturas ALLEGRO                      
+  ALLEGRO_DISPLAY   *display = al_create_display(width, height); 
+  ALLEGRO_TIMER       *timer = al_create_timer(1.0 / 30.0);     
+  ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue();         
   ALLEGRO_FONT *SANS18 = 
   al_load_font("fonts/OpenSans-Bold.ttf", 18, 0);
   
