@@ -3,21 +3,7 @@
 
 int main()
 {
-<<<<<<< HEAD
-	ALLEGRO_DISPLAY* display = NULL;
-	if (!al_init())
-	{
-		return -1;
-	}
 
-	display = al_create_display(720, 480);
-	getchar();
-
-	return 0;
-}
-
-//
-=======
     al_init();
     al_install_keyboard();
       
@@ -74,4 +60,4 @@ int main()
     al_destroy_event_queue(EventQueue);
     return 0;
 }
->>>>>>> Arrumando
+
