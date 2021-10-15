@@ -51,11 +51,12 @@ struct jogador
 {
   int estado;
   int oxygen;
+  int tamx;
+  int tamy;
   int posx;
   int posy;
 
 } player;
-
 
 //FUN«’ES
 bool setup(void)
@@ -106,6 +107,14 @@ bool setup(void)
   return checkup;
   // permite que a fun√ß√£o analise v√°rios de
   // uma vez, sem parar no primeiro.
+}
+
+void setupPlayer()
+{
+  player.estado = 1;
+  player.oxygen = 20;
+  player.tamx   = 25;
+  player.tamy   = 50;
 }
 
 void genQuadrado
@@ -215,6 +224,13 @@ int main(void)
 
   al_start_timer(timer);
   
+  //EXPERIMENTAL v !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  
+  int inix = 10;
+  int iniy = 10;  
+
+  //EXPERIMENTAL ^ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
   while (rodando)
   {
     //limpa a tela
@@ -231,12 +247,70 @@ int main(void)
     }
     else
     {
-      //renderiza a tela aqui e 
-      //responde √† outros eventos aqui
+      //renderiza a tela aqui  
+      //responde ‡ colisıes aqui
+      for (int id = 0; id < caixas; id++)       
+      {
+          if (box[id].existe) 
+          {
+              int tamx;
+              int tamy;
+              bool colisao;
+              printf("\nAchamos a caixa %d!", id);
+
+              //define o tamanho para cada caixa
+              if (box[id].type == 1)               
+              {
+                  tamx = 50;
+                  tamy = 50;
+              }
+              else if (box[id].type == 2)
+              {
+                  tamx = 30;
+                  tamy = 60;
+              }
+
+              //vÍ se existe colis„o
+              for (int x = 0; x <= player.tamx; x++)               
+              {
+                  for (int y = 0; y <= player.tamy; y++)
+                  {
+                      int cdx = player.posx + x; 
+                      int cdy = player.posy + y; 
+
+                      if ((cdx >= box[id].posx) && (cdx <= box[id].posx + tamx)     
+                          && (cdy >= box[id].posy) && (cdy <= box[id].posy + tamy)) 
+                      {
+                        // analisa colisıes
+                        if(box[id].type == 2) // obst·culo
+                        { 
+                          player.posx = inix;
+                          player.posy = iniy;
+                          player.oxygen -= 2;
+                          printf("\nOcorreu a colis„o no bloco tipo 2: %d", id);
+                          colisao = true;
+                          break;
+                        }
+                        else if(box[id].type == 1) // cilindro
+                        {
+                          player.oxygen += 5; 
+                          box[id].existe = false;
+                          printf("\nOcorreu a colis„o no bloco tipo 1: %d", id);
+                          colisao = true;
+                          break;
+                        }
+                      }
+                  }
+                  if (colisao)
+                      break;
+              }
+          }
+      }
     }
+
     al_flip_display();
   }
-  
+    
   // Destrui√ß√£o das estruturas ALLEGRO
   al_destroy_event_queue(queue);
   al_destroy_display(display);
