@@ -6,13 +6,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// variÃ¡veis gerais
 #define height 720
 #define width 1080
+#define tileSiz 50
+
+// tamanhos dos tipos
+#define typ1x 40
+#define typ1y 80
+#define typ2x 50
+#define typ2y 50
+
+// tamanho do jogador
+#define ply_x 30
+#define ply_y 50
 
 //Mapa
 int mapColu = 10;	//quantidade de colunas
 int mapSize = 100;		//tamanho total do mapa
-int tileSiz = 50;		//pixel por tile
 
 int map[] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -51,76 +62,152 @@ struct jogador
 {
   int estado;
   int oxygen;
-  int tamx;
-  int tamy;
   int posx;
   int posy;
 
 } player;
 
-//FUNÇÕES
+//FUNï¿½ï¿½ES
 bool setup(void)
 {
   // Retorna true se concluÃ­do com sucesso
   // ou false se ocorreu algum erro.
   
   // Inicializa as estruturas
+  printf("\nsettando estruturas");
   for (size_t i = 0; i < txt_boxes; i++)
     txtbox[i].existe = false;
 
   for (size_t i = 0; i < caixas; i++)
     box[i].existe = false;
+  
+  player.estado = 1;
+  player.oxygen = 10;
 
   // Inicializa o ALLEGRO
+  printf("\nsettando allegro");
   bool checkup = true;
   if (!al_init())
   {
-    printf("\nal_init nÃo inicializado");
+    printf("\nal_init nï¿½o inicializado");
     checkup = false;
   }
   if (!al_install_keyboard())
   {
-    printf("\nal_install_keyboard nÃo inicializado");
+    printf("\nal_install_keyboard nï¿½o inicializado");
     checkup = false;
   }
   if (!al_init_font_addon())
   {
-    printf("\nal_init_font_addon nÃo inicializado");
+    printf("\nal_init_font_addon nï¿½o inicializado");
     checkup = false;
   }
   if (!al_init_ttf_addon())
   {
-    printf("\nal_init_ttf_addon nÃo inicializado");
+    printf("\nal_init_ttf_addon nï¿½o inicializado");
     checkup = false;
   }
   if (!al_init_primitives_addon())
   {
-    printf("\nal_init_primitives_addon nÃo inicializado");
+    printf("\nal_init_primitives_addon nï¿½o inicializado");
     checkup = false;
   }
   if (!al_init_image_addon())
   {
-    printf("\nal_init_image_addon não inicializado");
+    printf("\nal_init_image_addon nï¿½o inicializado");
     checkup = false;
   }
-
+  
   return checkup;
   // permite que a funÃ§Ã£o analise vÃ¡rios de
   // uma vez, sem parar no primeiro.
 }
 
-void setupPlayer()
-{
-  player.estado = 1;
-  player.oxygen = 20;
-  player.tamx   = 25;
-  player.tamy   = 50;
-}
+bool render()
+{    
+  ALLEGRO_COLOR cor;
+  bool set = true;
+  int px;
+  int py;
+  
+  //mapa
+  for (int i = 0; i < mapSize; i++)
+  {
+    px = tileSiz*(i%mapColu);
+    py = tileSiz*(i/mapColu);
+    
+    if (map[i] == 0)
+      cor = al_map_rgb(30, 10, 30);
+    else if (map[i] == 1) 
+      cor = al_map_rgb(120,30,100);
+    else
+    { 
+      printf("render() map[%d] contï¿½m tipo nï¿½o registrado", i);
+      set = false;
+    }
+    al_draw_filled_rectangle(px, py, px+tileSiz, py+tileSiz, cor);  
+  }
+  
+  //personagem
+  px = player.posx;
+  py = player.posy;
+  switch(player.estado)
+  {
+    case 1: // vivo
+      cor = al_map_rgb(60,60,140);
+      int tamx = ply_x;
+      int tamy = ply_y;
+      al_draw_filled_rectangle(px, py, px+tamx, py+tamy, cor);
+      break;
 
-void genQuadrado
-(int posx1, int posy1, int posx2, int posy2, ALLEGRO_COLOR cor)
-{
-  al_draw_filled_rectangle(posx1, posy1, posx2, posy2, cor);
+    case 0:
+      printf("\nrender() player.estado = 0 nï¿½o implementado"); 
+      break;
+
+    default:
+      printf("\nrender() player.estado em valores nï¿½o aceitï¿½veis");
+      set = false;
+      break;
+  }
+
+  //caixas
+  for(int id = 0; id < caixas; id++)
+  {
+    if (box[id].existe)
+    {
+      int tamx;
+      int tamy;
+      ALLEGRO_COLOR cor;
+      if (box[id].type == 0)
+      {
+        printf("men.?");
+        tamx = 5;
+        tamy = 5;
+        cor = al_map_rgb(0, 0, 0);
+      }
+      else if (box[id].type == 1)
+      {
+        tamx = typ1x;
+        tamy = typ1y;
+        cor = al_map_rgb(50, 50, 200);
+      }
+      else if (box[id].type == 2)
+      {
+        tamx = typ2x;
+        tamy = typ2y;
+        cor = al_map_rgb(200, 50, 50);
+      }
+      al_draw_filled_rectangle(
+      box[id].posx,
+      box[id].posy,
+      tamx,
+      tamy,
+      cor
+      );  
+    }
+  }
+
+  return set;
 }
 
 int genBox()
@@ -143,7 +230,7 @@ int genBox()
   }
   if (ID < 0)
   {
-    printf("\nNÃO EXISTEM BLOCOS DISPONÍVEIS");
+    printf("\nNï¿½O EXISTEM BLOCOS DISPONï¿½VEIS");
     return -1;
   }
 
@@ -175,7 +262,7 @@ int genChat(char *text, int type, int ID)
     }
     if (ID < 0)
     {
-      printf("\nNÃO EXISTEM BLOCOS DE TEXTO DISPONÍVEIS");
+      printf("\nNï¿½O EXISTEM BLOCOS DE TEXTO DISPONï¿½VEIS");
       return -1;
     }
   }
@@ -198,11 +285,11 @@ int main(void)
     printf("\nAbortando execuÃ§Ã£o");
     return -1;
   }
-  
-  // InicializaÃ§Ã£o das estruturas ALLEGRO
-  ALLEGRO_DISPLAY   *display = al_create_display(width, height);
-  ALLEGRO_TIMER       *timer = al_create_timer(1.0 / 30.0);
-  ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue();
+
+  // InicializaÃ§Ã£o das estruturas ALLEGRO                      
+  ALLEGRO_DISPLAY   *display = al_create_display(width, height); 
+  ALLEGRO_TIMER       *timer = al_create_timer(1.0 / 30.0);     
+  ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue();         
   ALLEGRO_FONT *SANS18 = 
   al_load_font("fonts/OpenSans-Bold.ttf", 18, 0);
   
@@ -221,7 +308,6 @@ int main(void)
   // InicializaÃ§Ã£o do jogo
   bool pausado = false;
   bool rodando = true;
-
   al_start_timer(timer);
   
   //EXPERIMENTAL v !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -235,9 +321,14 @@ int main(void)
   {
     //limpa a tela
     al_clear_to_color(al_map_rgb(200,200,200));
+    
+    //redesenha a tela
+    render();
+    
+    al_flip_display();
+    
+    //Espera um evento
     ALLEGRO_EVENT evento;
-
-    //espera um evento
     al_wait_for_event(queue, &evento);
 
     //encerraÃ§Ã£o do programa
@@ -248,7 +339,7 @@ int main(void)
     else
     {
       //renderiza a tela aqui  
-      //responde à colisões aqui
+      //responde ï¿½ colisï¿½es aqui
       for (int id = 0; id < caixas; id++)       
       {
           if (box[id].existe) 
@@ -261,19 +352,19 @@ int main(void)
               //define o tamanho para cada caixa
               if (box[id].type == 1)               
               {
-                  tamx = 50;
-                  tamy = 50;
+                  tamx = typ1x;
+                  tamy = typ1y;
               }
               else if (box[id].type == 2)
               {
-                  tamx = 30;
-                  tamy = 60;
+                  tamx = typ2x;
+                  tamy = typ2y;
               }
 
-              //vê se existe colisão
-              for (int x = 0; x <= player.tamx; x++)               
+              //vï¿½ se existe colisï¿½o
+              for (int x = 0; x <= ply_x; x++)               
               {
-                  for (int y = 0; y <= player.tamy; y++)
+                  for (int y = 0; y <= ply_y; y++)
                   {
                       int cdx = player.posx + x; 
                       int cdy = player.posy + y; 
@@ -281,13 +372,13 @@ int main(void)
                       if ((cdx >= box[id].posx) && (cdx <= box[id].posx + tamx)     
                           && (cdy >= box[id].posy) && (cdy <= box[id].posy + tamy)) 
                       {
-                        // analisa colisões
-                        if(box[id].type == 2) // obstáculo
+                        // analisa colisï¿½es
+                        if(box[id].type == 2) // obstï¿½culo
                         { 
                           player.posx = inix;
                           player.posy = iniy;
                           player.oxygen -= 2;
-                          printf("\nOcorreu a colisão no bloco tipo 2: %d", id);
+                          printf("\nOcorreu a colisï¿½o no bloco tipo 2: %d", id);
                           colisao = true;
                           break;
                         }
@@ -295,7 +386,7 @@ int main(void)
                         {
                           player.oxygen += 5; 
                           box[id].existe = false;
-                          printf("\nOcorreu a colisão no bloco tipo 1: %d", id);
+                          printf("\nOcorreu a colisï¿½o no bloco tipo 1: %d", id);
                           colisao = true;
                           break;
                         }
