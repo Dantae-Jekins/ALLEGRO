@@ -17,39 +17,60 @@ int map[] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			        0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
+int jatoi(char *vec)
+{
+  int i = 0, j = 1;
+  int retorno = 0;
+  while (vec[i] != '\0')
+    i++;
+
+  while ( i >= 0)
+  {
+    retorno += (vec[i] - 48)*j;
+    i--;    
+    j *= 10;
+  }
+
+  return retorno;
+}
+
 int carregarMatrix (int nivel) { 
-	char str[3];
-	int i = 0, j = 0, ch;
+	char str[2];
+	int i = 0, ch = 0;
 	char nome_arquivo[25];
 	if (nivel == 0)
-		strcpy(nome_arquivo, "../nome/diretorio0.txt"); //fase 0
+		strcpy(nome_arquivo, "./fases/fase1"); //fase 0
 	else
-		strcpy(nome_arquivo, "../nome/diretorio1.txt");	//fase 1
+		strcpy(nome_arquivo, "./fases/fase2");	//fase 1
 
 	FILE *fase = fopen(nome_arquivo,"r"); //Abre o arquivo 
 
   /////teste de leitura/////
 	if(fase == NULL)
 	{ 
-		printf("Não abriu o %c", nome_arquivo);
+		printf("Não abriu o %s", nome_arquivo);
 		return 1;
 	}
-	while((ch = getc(fase)) != EOF) 
-	{ 
-		if(ch != 44) //Não encontrar virgula
-		{ 
-      if (ch == 10)//10 = /n
-      {
-        i++; //proxima linha
-        j = 0;
-      }
-			else
-				sprintf (str, "%c", ch);
+
+	while ((i < mapSize) && ((ch = getc(fase)) != EOF)) 
+	{
+    if (!(ch == 44) && !(ch == 10))
+    {
+      map[i++] = (ch - 48);
     }
-    else 
-			map [i] = atoi(str);
-			
-		j++; // proxima coluna
-	}
+  }
+
 	fclose(fase);
+  return 0;
+}
+
+int main()
+{
+
+  carregarMatrix(0);
+  
+  for (int i = 0; i < mapSize; i++)
+    printf("%d", map[i]);
+
+  return 0;
 }
