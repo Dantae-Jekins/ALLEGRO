@@ -13,8 +13,13 @@ struct jogador
 
 } player;
 
-int main()
-{
+int main(){
+
+    int MaxJump = 1.5;
+    float Gravity = 1.05;
+    bool Jumping = false;
+    bool Falling = false;
+    bool JumpOK = true;
     int velocidade = 0;
 
     player.posx = 0;
@@ -30,7 +35,6 @@ int main()
     al_register_event_source(EventQueue, al_get_timer_event_source(timer));
 
     bool Exit = false;
-    bool lendo_teclado = false;
     
     while (!Exit){
 
@@ -43,22 +47,45 @@ int main()
 
         if (Event.type == ALLEGRO_EVENT_TIMER) {
 
-            if (Event.type == ALLEGRO_EVENT_KEY_DOWN) {
-                lendo_teclado = true;
-            }
-            else if (Event.type == ALLEGRO_EVENT_KEY_UP) {
-                lendo_teclado = false;
-            }
+            //Movimentação X
 
-            if (al_key_down(&keystate, ALLEGRO_KEY_RIGHT))
+            if (al_key_down(&keystate, ALLEGRO_KEY_RIGHT)) {
                 player.posx += 5;
+            }
 
-            if (al_key_down(&keystate, ALLEGRO_KEY_LEFT))
+            if (al_key_down(&keystate, ALLEGRO_KEY_LEFT)) {
                 player.posx += -5;
+            }
 
-              printf("posx %d\n", player.posx);
-              printf("posy %d\n", player.posy);
-      }
+            //Movimentação Y
+
+            if (al_key_down(&keystate, ALLEGRO_KEY_UP) || !Jumping || !Falling || JumpOK){
+                Jumping = true;
+                JumpOK = false;
+
+                if (Jumping) {
+                    MaxJump /= Gravity;
+                    player.posy += MaxJump;
+                }
+
+                if (MaxJump <= 0) {
+                    Falling = true;
+                    Jumping = false;
+                }
+
+                if (Falling) {
+                    MaxJump *= Gravity;
+                    player.posy -= MaxJump;
+                }
+
+                if (Falling && MaxJump > 3) {
+                    MaxJump = 4;
+                }
+
+                printf("posx %d\n", player.posx);
+                printf("posy %d\n", player.posy);
+            }
+        }
     
     }
     system("pause");
