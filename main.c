@@ -43,8 +43,7 @@ struct textos
 {
   bool existe; 
   int type;
-  char *text;
-  
+  char *text;  
 } txtbox[txt_boxes];
 
 //interagiveis
@@ -55,7 +54,6 @@ struct caixa
   int posx;
   int posy;
   int type;
-
 } box[caixas];
 
 //jogador
@@ -65,7 +63,6 @@ struct jogador
   int oxygen;
   int posx;
   int posy;
-
 } player;
 
 //FUN��ES
@@ -123,6 +120,56 @@ bool setup(void)
   // permite que a função analise vários de
   // uma vez, sem parar no primeiro.
 }
+
+
+int jatoi(char *vec)
+{
+  int i = 0, j = 1;
+  int retorno = 0;
+  while (vec[i] != '\0')
+    i++;
+
+  while ( i >= 0)
+  {
+    retorno += (vec[i] - 48)*j;
+    i--;    
+    j *= 10;
+  }
+
+  return retorno;
+}
+
+
+int carregarMatrix (int nivel) { 
+	char str[2];
+	int i = 0, ch = 0;
+	char nome_arquivo[25];
+	if (nivel == 0)
+		strcpy(nome_arquivo, "./fases/fase1"); //fase 0
+	else
+		strcpy(nome_arquivo, "./fases/fase2");	//fase 1
+
+	FILE *fase = fopen(nome_arquivo,"r"); //Abre o arquivo 
+
+  /////teste de leitura/////
+	if(fase == NULL)
+	{ 
+		printf("Não abriu o %s", nome_arquivo);
+		return 1;
+	}
+
+	while ((i < mapSize) && ((ch = getc(fase)) != EOF)) 
+	{
+    if (!(ch == 44) && !(ch == 10))
+    {
+      map[i++] = (ch - 48);
+    }
+  }
+
+	fclose(fase);
+  return 0;
+}
+
 
 bool render_and_collide()
 {    
@@ -307,9 +354,7 @@ int main(void)
   
   
   // Inicialização do jogo
-  bool pausado = false;
   bool rodando = true;
-  bool lendo_teclado = false;
   
   //EXPERIMENTAL v !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   
@@ -342,27 +387,20 @@ int main(void)
         
         if (evento.type == ALLEGRO_EVENT_TIMER) 
         {
-            if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
-                lendo_teclado = true;
-            }
-            else if (evento.type == ALLEGRO_EVENT_KEY_UP) {
-                lendo_teclado = false;
-            }
+          // checa o teclado
+          if (al_key_down(&keystate, ALLEGRO_KEY_RIGHT))
+            player.posx += 5;
 
-            if (al_key_down(&keystate, ALLEGRO_KEY_RIGHT))
-                player.posx += 5;
+          if (al_key_down(&keystate, ALLEGRO_KEY_LEFT))
+            player.posx += -5;
 
-            if (al_key_down(&keystate, ALLEGRO_KEY_LEFT))
-                player.posx += -5;
+          if (al_key_down(&keystate, ALLEGRO_KEY_UP))
+            player.posy += -5;
 
-            if (al_key_down(&keystate, ALLEGRO_KEY_UP))
-                player.posy += -5;
-
-            if (al_key_down(&keystate, ALLEGRO_KEY_DOWN))
-                player.posy += 5;
-              
-            printf("posx %d\n", player.posx);
-            printf("posy %d\n", player.posy);
+          if (al_key_down(&keystate, ALLEGRO_KEY_DOWN))
+            player.posy += 5;
+          printf("posx %d\n", player.posx);
+          printf("posy %d\n", player.posy);
         }
         //responde � colis�es aqui
         for (int id = 0; id < caixas; id++)       
@@ -424,8 +462,6 @@ int main(void)
         }
       }
     }
-
-    al_flip_display();
   }
     
   // Destruição das estruturas ALLEGRO
