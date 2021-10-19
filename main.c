@@ -10,6 +10,7 @@
 #define height 720
 #define width 1080
 #define tileSiz 50
+#define fps 60.0
 
 // tamanhos dos tipos
 #define typ1x 40
@@ -123,7 +124,7 @@ bool setup(void)
   // uma vez, sem parar no primeiro.
 }
 
-bool render()
+bool render_and_collide()
 {    
   ALLEGRO_COLOR cor;
   bool set = true;
@@ -288,7 +289,7 @@ int main(void)
 
   // Inicialização das estruturas ALLEGRO                      
   ALLEGRO_DISPLAY   *display = al_create_display(width, height); 
-  ALLEGRO_TIMER       *timer = al_create_timer(1.0 / 30.0);     
+  ALLEGRO_TIMER       *timer = al_create_timer(1.0 / fps);     
   ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue();         
   ALLEGRO_FONT *SANS18 = 
   al_load_font("fonts/OpenSans-Bold.ttf", 18, 0);
@@ -308,7 +309,7 @@ int main(void)
   // Inicialização do jogo
   bool pausado = false;
   bool rodando = true;
-  al_start_timer(timer);
+  bool lendo_teclado = false;
   
   //EXPERIMENTAL v !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   
@@ -319,83 +320,108 @@ int main(void)
 
   while (rodando)
   {
-    //limpa a tela
-    al_clear_to_color(al_map_rgb(200,200,200));
-    
-    //redesenha a tela
-    render();
-    
-    al_flip_display();
-    
     //Espera um evento
     ALLEGRO_EVENT evento;
+    ALLEGRO_KEYBOARD_STATE keystate;
+    al_start_timer(timer);
+    al_get_keyboard_state(&keystate);
     al_wait_for_event(queue, &evento);
-
-    //encerração do programa
-    if (evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+    
+    if (evento.type == ALLEGRO_EVENT_TIMER)
     {
-      rodando = false;
-    }
-    else
-    {
-      //renderiza a tela aqui  
-      //responde � colis�es aqui
-      for (int id = 0; id < caixas; id++)       
+      if (evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
       {
-          if (box[id].existe) 
-          {
-              int tamx;
-              int tamy;
-              bool colisao;
-              printf("\nAchamos a caixa %d!", id);
+        rodando = false;
+      }
+      else
+      {
+        //renderiza a tela aqui 
+        al_clear_to_color(al_map_rgb(0,0,0));
+        render_and_collide(); 
+        al_flip_display();
+        
+        if (evento.type == ALLEGRO_EVENT_TIMER) 
+        {
+            if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
+                lendo_teclado = true;
+            }
+            else if (evento.type == ALLEGRO_EVENT_KEY_UP) {
+                lendo_teclado = false;
+            }
 
-              //define o tamanho para cada caixa
-              if (box[id].type == 1)               
-              {
-                  tamx = typ1x;
-                  tamy = typ1y;
-              }
-              else if (box[id].type == 2)
-              {
-                  tamx = typ2x;
-                  tamy = typ2y;
-              }
+            if (al_key_down(&keystate, ALLEGRO_KEY_RIGHT))
+                player.posx += 5;
 
-              //v� se existe colis�o
-              for (int x = 0; x <= ply_x; x++)               
-              {
-                  for (int y = 0; y <= ply_y; y++)
-                  {
-                      int cdx = player.posx + x; 
-                      int cdy = player.posy + y; 
+            if (al_key_down(&keystate, ALLEGRO_KEY_LEFT))
+                player.posx += -5;
 
-                      if ((cdx >= box[id].posx) && (cdx <= box[id].posx + tamx)     
-                          && (cdy >= box[id].posy) && (cdy <= box[id].posy + tamy)) 
-                      {
-                        // analisa colis�es
-                        if(box[id].type == 2) // obst�culo
-                        { 
-                          player.posx = inix;
-                          player.posy = iniy;
-                          player.oxygen -= 2;
-                          printf("\nOcorreu a colis�o no bloco tipo 2: %d", id);
-                          colisao = true;
-                          break;
-                        }
-                        else if(box[id].type == 1) // cilindro
+            if (al_key_down(&keystate, ALLEGRO_KEY_UP))
+                player.posy += -5;
+
+            if (al_key_down(&keystate, ALLEGRO_KEY_DOWN))
+                player.posy += 5;
+              
+            printf("posx %d\n", player.posx);
+            printf("posy %d\n", player.posy);
+        }
+        //responde � colis�es aqui
+        for (int id = 0; id < caixas; id++)       
+        {
+            if (box[id].existe) 
+            {
+                int tamx;
+                int tamy;
+                bool colisao;
+                printf("\nAchamos a caixa %d!", id);
+
+                //define o tamanho para cada caixa
+                if (box[id].type == 1)               
+                {
+                    tamx = typ1x;
+                    tamy = typ1y;
+                }
+                else if (box[id].type == 2)
+                {
+                    tamx = typ2x;
+                    tamy = typ2y;
+                }
+
+                //v� se existe colis�o
+                for (int x = 0; x <= ply_x; x++)               
+                {
+                    for (int y = 0; y <= ply_y; y++)
+                    {
+                        int cdx = player.posx + x; 
+                        int cdy = player.posy + y; 
+
+                        if ((cdx >= box[id].posx) && (cdx <= box[id].posx + tamx)     
+                            && (cdy >= box[id].posy) && (cdy <= box[id].posy + tamy)) 
                         {
-                          player.oxygen += 5; 
-                          box[id].existe = false;
-                          printf("\nOcorreu a colis�o no bloco tipo 1: %d", id);
-                          colisao = true;
-                          break;
+                          // analisa colis�es
+                          if(box[id].type == 2) // obst�culo
+                          { 
+                            player.posx = inix;
+                            player.posy = iniy;
+                            player.oxygen -= 2;
+                            printf("\nOcorreu a colis�o no bloco tipo 2: %d", id);
+                            colisao = true;
+                            break;
+                          }
+                          else if(box[id].type == 1) // cilindro
+                          {
+                            player.oxygen += 5; 
+                            box[id].existe = false;
+                            printf("\nOcorreu a colis�o no bloco tipo 1: %d", id);
+                            colisao = true;
+                            break;
+                          }
                         }
-                      }
-                  }
-                  if (colisao)
-                      break;
-              }
-          }
+                    }
+                    if (colisao)
+                        break;
+                }
+            }
+        }
       }
     }
 
@@ -409,4 +435,3 @@ int main(void)
   al_uninstall_keyboard();
   printf("\n");
 }
-
