@@ -14,7 +14,7 @@
 #include "setup.h"
 #include "mapper.h"
 #include "render.h"
-#include "mapper.h"
+#include "movement.h"
 
 int main(void)
 {
@@ -84,19 +84,8 @@ int main(void)
 
       if (evento.type == ALLEGRO_EVENT_TIMER)
       {
-        // checa o teclado
-        if (al_key_down(&keystate, ALLEGRO_KEY_RIGHT))
-          player.posx += speed;
-
-        if (al_key_down(&keystate, ALLEGRO_KEY_LEFT))
-          player.posx += -speed;
-
-        if (al_key_down(&keystate, ALLEGRO_KEY_UP))
-          player.posy += -speed;
-
-        if (al_key_down(&keystate, ALLEGRO_KEY_DOWN))
-          player.posy += speed;
-
+        checkInput(keystate);
+        
         if (timezin == 30)
         {
           player.oxygen -= 1;
