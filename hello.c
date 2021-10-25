@@ -1,5 +1,7 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_image.h>
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -42,14 +44,14 @@ int main(void)
     al_init_image_addon();
     al_init_primitives_addon(); // Módulo que possibilita adição de primitivos
 
-    image[0] = al_load_bitmap("marte.jpg");
-    image[1] = al_load_bitmap("marte.jpg");
-    image[2] = al_load_bitmap("marte.jpg");
-    image[3] = al_load_bitmap("marte.jpg");
-    image[4] = al_load_bitmap("marte.jpg");
-    image[5] = al_load_bitmap("marte.jpg");
-    image[6] = al_load_bitmap("marte.jpg");
-    image[7] = al_load_bitmap("marte.jpg");
+    image[0] = al_load_bitmap("imagens/marte.jpg");
+    image[1] = al_load_bitmap("imagens/marte.jpg");
+    image[2] = al_load_bitmap("imagens/marte.jpg");
+    image[3] = al_load_bitmap("imagens/marte.jpg");
+    image[4] = al_load_bitmap("imagens/marte.jpg");
+    image[5] = al_load_bitmap("imagens/marte.jpg");
+    image[6] = al_load_bitmap("imagens/marte.jpg");
+    image[7] = al_load_bitmap("imagens/marte.jpg");
 
     // Registro dos eventos ALLEGRO
     event_queue = al_create_event_queue();
