@@ -6,13 +6,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// vari√°veis gerais
 #define height 720
 #define width 1080
+#define tileSiz 50
+
+// tamanhos dos tipos
+#define typ1x 40
+#define typ1y 80
+#define typ2x 50
+#define typ2y 50
+#define typ3x 20
+#define typ3y 40
+
+
+// tamanho do jogador
+#define ply_x 30
+#define ply_y 50
 
 //Mapa
 int mapColu = 10;	//quantidade de colunas
 int mapSize = 100;		//tamanho total do mapa
-int tileSiz = 50;		//pixel por tile
 
 int map[] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -56,62 +70,176 @@ struct jogador
 
 } player;
 
-
-//FUN«’ES
+//FUNÔøΩÔøΩES
 bool setup(void)
 {
   // Retorna true se conclu√≠do com sucesso
   // ou false se ocorreu algum erro.
   
   // Inicializa as estruturas
+  printf("\nsettando estruturas");
   for (size_t i = 0; i < txt_boxes; i++)
     txtbox[i].existe = false;
 
   for (size_t i = 0; i < caixas; i++)
     box[i].existe = false;
+  
+  player.estado = 1;
+  player.oxygen = 10;
 
   // Inicializa o ALLEGRO
+  printf("\nsettando allegro");
   bool checkup = true;
   if (!al_init())
   {
-    printf("\nal_init n√o inicializado");
+    printf("\nal_init nÔøΩo inicializado");
     checkup = false;
   }
   if (!al_install_keyboard())
   {
-    printf("\nal_install_keyboard n√o inicializado");
+    printf("\nal_install_keyboard nÔøΩo inicializado");
     checkup = false;
   }
   if (!al_init_font_addon())
   {
-    printf("\nal_init_font_addon n√o inicializado");
+    printf("\nal_init_font_addon nÔøΩo inicializado");
     checkup = false;
   }
   if (!al_init_ttf_addon())
   {
-    printf("\nal_init_ttf_addon n√o inicializado");
+    printf("\nal_init_ttf_addon nÔøΩo inicializado");
     checkup = false;
   }
   if (!al_init_primitives_addon())
   {
-    printf("\nal_init_primitives_addon n√o inicializado");
+    printf("\nal_init_primitives_addon nÔøΩo inicializado");
     checkup = false;
   }
   if (!al_init_image_addon())
   {
-    printf("\nal_init_image_addon n„o inicializado");
+    printf("\nal_init_image_addon nÔøΩo inicializado");
     checkup = false;
   }
-
+  
   return checkup;
   // permite que a fun√ß√£o analise v√°rios de
   // uma vez, sem parar no primeiro.
 }
 
-void genQuadrado
-(int posx1, int posy1, int posx2, int posy2, ALLEGRO_COLOR cor)
-{
-  al_draw_filled_rectangle(posx1, posy1, posx2, posy2, cor);
+bool render()
+{    
+  ALLEGRO_COLOR cor;
+  bool set = true;
+  int px;
+  int py;
+  
+  //mapa
+  for (int i = 0; i < mapSize; i++)
+  {
+    px = tileSiz*(i%mapColu);
+    py = tileSiz*(i/mapColu);
+    
+    if (map[i] == 0)
+      cor = al_map_rgb(30, 10, 30);
+    else if (map[i] == 1) 
+      cor = al_map_rgb(120,30,100);
+    else
+    { 
+      printf("render() map[%d] contÔøΩm tipo nÔøΩo registrado", i);
+      set = false;
+    }
+    al_draw_filled_rectangle(px, py, px+tileSiz, py+tileSiz, cor);  
+  }
+  
+  //personagem
+  px = player.posx;
+  py = player.posy;
+  switch(player.estado)
+  {
+    case 1: // vivo
+      cor = al_map_rgb(60,60,140);
+      int tamx = ply_x;
+      int tamy = ply_y;
+      al_draw_filled_rectangle(px, py, px+tamx, py+tamy, cor);
+      break;
+
+    case 0:
+      printf("\nrender() player.estado = 0 nÔøΩo implementado"); 
+      break;
+
+    default:
+      printf("\nrender() player.estado em valores nÔøΩo aceitÔøΩveis");
+      set = false;
+      break;
+  }
+
+  //caixas
+  for(int id = 0; id < caixas; id++)
+  {
+    if (box[id].existe)
+    {
+      int tamx;
+      int tamy;
+      ALLEGRO_COLOR cor;
+      if (box[id].type == 0)
+      {
+        printf("men.?");
+        tamx = 5;
+        tamy = 5;
+        cor = al_map_rgb(0, 0, 0);
+      }
+      else if (box[id].type == 1)
+      {
+        tamx = typ1x;
+        tamy = typ1y;
+        cor = al_map_rgb(50, 50, 200);
+      }
+      else if (box[id].type == 2)
+      {
+        tamx = typ2x;
+        tamy = typ2y;
+        cor = al_map_rgb(200, 50, 50);
+      }
+      else if (box[id].type == 3) // MEIO CILINDRO 
+      {
+        tamx = typ3x;
+        tamy = typ3y;
+        cor = al_map_rgb(50, 170, 200);
+      }
+      else if (box[id].type == 4) // INIMIGO 
+      {
+        tamx = typ2x;
+        tamy = typ2y;
+        cor = al_map_rgb(180, 20, 240);
+
+        if (box[4].posx < box[4].posx + 5) /*---------N√£o sei onde colocar----------*/
+        {
+          box[4].posx += 2;
+        if (box[4].posx >= box[4].posx + 5)
+        {
+          box[4].posx -= 2;
+        }
+        }
+        
+      }
+      else if (box[id].type == 5) // TIRA OXIGENIO =
+      {
+        tamx = typ3x;
+        tamy = typ3y;
+        cor = al_map_rgb(140, 120, 50);
+      }
+      // PARTE DO JO√ÉO
+      al_draw_filled_rectangle(
+      box[id].posx,
+      box[id].posy,
+      tamx,
+      tamy,
+      cor
+      );  
+    }
+  }
+
+  return set;
 }
 
 int genBox()
@@ -134,7 +262,7 @@ int genBox()
   }
   if (ID < 0)
   {
-    printf("\nN√O EXISTEM BLOCOS DISPONÕVEIS");
+    printf("\nNÔøΩO EXISTEM BLOCOS DISPONÔøΩVEIS");
     return -1;
   }
 
@@ -166,7 +294,7 @@ int genChat(char *text, int type, int ID)
     }
     if (ID < 0)
     {
-      printf("\nN√O EXISTEM BLOCOS DE TEXTO DISPONÕVEIS");
+      printf("\nNÔøΩO EXISTEM BLOCOS DE TEXTO DISPONÔøΩVEIS");
       return -1;
     }
   }
@@ -189,11 +317,11 @@ int main(void)
     printf("\nAbortando execu√ß√£o");
     return -1;
   }
-  
-  // Inicializa√ß√£o das estruturas ALLEGRO
-  ALLEGRO_DISPLAY   *display = al_create_display(width, height);
-  ALLEGRO_TIMER       *timer = al_create_timer(1.0 / 30.0);
-  ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue();
+
+  // Inicializa√ß√£o das estruturas ALLEGRO                      
+  ALLEGRO_DISPLAY   *display = al_create_display(width, height); 
+  ALLEGRO_TIMER       *timer = al_create_timer(1.0 / 30.0);     
+  ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue();         
   ALLEGRO_FONT *SANS18 = 
   al_load_font("fonts/OpenSans-Bold.ttf", 18, 0);
   
@@ -212,16 +340,27 @@ int main(void)
   // Inicializa√ß√£o do jogo
   bool pausado = false;
   bool rodando = true;
-
   al_start_timer(timer);
   
+  //EXPERIMENTAL v !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  
+  int inix = 10;
+  int iniy = 10;  
+
+  //EXPERIMENTAL ^ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
   while (rodando)
   {
     //limpa a tela
     al_clear_to_color(al_map_rgb(200,200,200));
+    
+    //redesenha a tela
+    render();
+    
+    al_flip_display();
+    
+    //Espera um evento
     ALLEGRO_EVENT evento;
-
-    //espera um evento
     al_wait_for_event(queue, &evento);
 
     //encerra√ß√£o do programa
@@ -231,12 +370,115 @@ int main(void)
     }
     else
     {
-      //renderiza a tela aqui e 
-      //responde √† outros eventos aqui
+      //renderiza a tela aqui  
+      //responde ÔøΩ colisÔøΩes aqui
+      for (int id = 0; id < caixas; id++)       
+      {
+          if (box[id].existe) 
+          {
+              int tamx;
+              int tamy;
+              bool colisao;
+              printf("\nAchamos a caixa %d!", id);
+
+              //define o tamanho para cada caixa
+              if (box[id].type == 1)               
+              {
+                  tamx = typ1x;
+                  tamy = typ1y;
+              }
+              else if (box[id].type == 2)
+              {
+                  tamx = typ2x;
+                  tamy = typ2y;
+              }
+              else if (box[id].type == 3)
+              {
+                  tamx = typ3x;
+                  tamy = typ3y;
+              }
+              else if (box[id].type == 4)
+              {
+                  tamx = typ2x;
+                  tamy = typ2y;
+              }
+              else if (box[id].type == 4)
+              {
+                  tamx = typ3x;
+                  tamy = typ3y;
+              }
+
+              //vÔøΩ se existe colisÔøΩo
+              for (int x = 0; x <= ply_x; x++)               
+              {
+                  for (int y = 0; y <= ply_y; y++)
+                  {
+                      int cdx = player.posx + x; 
+                      int cdy = player.posy + y; 
+
+                      if ((cdx >= box[id].posx) && (cdx <= box[id].posx + tamx)     
+                          && (cdy >= box[id].posy) && (cdy <= box[id].posy + tamy)) 
+                      {
+                        // analisa colisÔøΩes
+                        if(box[id].type == 2) // obstÔøΩculo
+                        { 
+                          player.posx = inix;
+                          player.posy = iniy;
+                          player.oxygen -= 2;
+                          printf("\nOcorreu a colisÔøΩo no bloco tipo 2: %d", id);
+                          colisao = true;
+                          break;
+                        }
+                        else if(box[id].type == 1) // cilindro
+                        {
+                          player.oxygen += 5; 
+                          box[id].existe = false;
+                          printf("\nOcorreu a colisÔøΩo no bloco tipo 1: %d", id);
+                          colisao = true;
+                          break;
+                        }
+                        else if(box[id].type == 3) // MEIO CILINDRO
+                        {
+                          player.oxygen += 2; 
+                          box[id].existe = false;
+                          printf("\nOcorreu a colisÔøΩo no bloco tipo 3: %d", id);
+                          colisao = true;
+                          break;
+                        }
+                        else if(box[id].type == 4) // INIMIGO
+                        {
+                          player.posx = inix;
+                          player.posy = iniy;
+                          box[id].existe = false;
+                          printf("\nOcorreu a colisÔøΩo no bloco tipo 4: %d", id);
+                          colisao = true;
+                          break;
+                        }
+                        else if(box[id].type == 5) // PERDE OXIGENIO GRADATIVAMENTE
+                        {
+                          player.oxygen -= 1;
+                          box[id].existe = false;
+                          printf("\nOcorreu a colisÔøΩo no bloco tipo 4: %d", id);
+                        }
+                        else if(box[id].type == 6) // ESPINHOS
+                        {
+                          player.posx = inix;
+                          player.posy = iniy;
+                          box[id].existe = false;
+                          printf("\nOcorreu a colisÔøΩo no bloco tipo 6: %d", id);
+                        }
+                      }
+                  }
+                  if (colisao)
+                      break;
+              }
+          }
+      }
     }
+
     al_flip_display();
   }
-  
+    
   // Destrui√ß√£o das estruturas ALLEGRO
   al_destroy_event_queue(queue);
   al_destroy_display(display);
@@ -244,4 +486,3 @@ int main(void)
   al_uninstall_keyboard();
   printf("\n");
 }
-
