@@ -15,14 +15,8 @@ struct jogador
 
 int main(){
 
-    int MaxJump = 1.5;
-    float Gravity = 1.05;
-    bool Jumping = false;
-    bool Falling = false;
-    bool JumpOK = true;
-    int velocidade = 0;
-
     player.posx = 0;
+    player.posy = 0;
 
     al_init();
     al_install_keyboard();
@@ -59,32 +53,19 @@ int main(){
 
             //Movimentação Y
 
-            if (al_key_down(&keystate, ALLEGRO_KEY_UP) || !Jumping || !Falling || JumpOK){
-                Jumping = true;
-                JumpOK = false;
-
-                if (Jumping) {
-                    MaxJump /= Gravity;
-                    player.posy += MaxJump;
+            if (al_key_down(&keystate, ALLEGRO_KEY_UP)){
+                player.posy += 5;
+                if (player.posy>=100 && player.posy!=0){
+                    while (player.posy != 0) {
+                        player.posy -= 1;
+                        printf("queda chamada\n");
+                        printf("posx %d\n", player.posx);
+                        printf("posy %d\n", player.posy);
+                    }
                 }
-
-                if (MaxJump <= 0) {
-                    Falling = true;
-                    Jumping = false;
-                }
-
-                if (Falling) {
-                    MaxJump *= Gravity;
-                    player.posy -= MaxJump;
-                }
-
-                if (Falling && MaxJump > 3) {
-                    MaxJump = 4;
-                }
-
-                printf("posx %d\n", player.posx);
-                printf("posy %d\n", player.posy);
             }
+            printf("posx %d\n", player.posx);
+            printf("posy %d\n", player.posy);
         }
     
     }
