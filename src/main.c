@@ -13,6 +13,7 @@
 #include "objects.h"
 #include "setup.h"
 #include "mapper.h"
+#include "texter.h"
 #include "render.h"
 #include "movement.h"
 
