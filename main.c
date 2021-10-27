@@ -15,6 +15,8 @@ struct jogador
 
 int main(){
 
+    int pulando = false;
+
     player.posx = 0;
     player.posy = 0;
 
@@ -53,21 +55,24 @@ int main(){
 
             //Movimentação Y
 
-            if (al_key_down(&keystate, ALLEGRO_KEY_UP)){
+            if (al_key_down(&keystate, ALLEGRO_KEY_UP)) {
                 player.posy += 5;
-                if (player.posy>=100 && player.posy!=0){
-                    while (player.posy != 0) {
-                        player.posy -= 1;
-                        printf("queda chamada\n");
-                        printf("posx %d\n", player.posx);
-                        printf("posy %d\n", player.posy);
-                    }
+                pulando = true;
+            }
+            else {
+                pulando = false;
+            }
+            if (pulando == false || player.posy == 60) {
+                while (player.posy != 0) {
+                    player.posy -= 1;
+                    printf("queda chamada\n");
+                    printf("posx %d\n", player.posx);
+                    printf("posy %d\n", player.posy);
                 }
             }
             printf("posx %d\n", player.posx);
             printf("posy %d\n", player.posy);
         }
-    
     }
     system("pause");
     al_destroy_display(display);
@@ -76,3 +81,4 @@ int main(){
     al_destroy_timer(timer);
     return 0;
 }
+   
