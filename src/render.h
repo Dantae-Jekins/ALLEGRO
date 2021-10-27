@@ -1,48 +1,9 @@
-bool render_and_collide()
+bool renderBoxes ()
 {
   ALLEGRO_COLOR cor;
   bool set = true;
   int px;
   int py;
-  //mapa
-  for (int i = 0; i < mapSize; i++)
-  {
-    px = tileSiz * (i % mapColu);
-    py = tileSiz * (i / mapColu);
-
-    if (map[i] == 0)
-      cor = al_map_rgb(30, 10, 30);
-    else if (map[i] == 1)
-      cor = al_map_rgb(120, 30, 100);
-    else
-    {
-      printf("render() map[%d] contem tipo nao registrado", i);
-      set = false;
-    }
-    al_draw_filled_rectangle(px, py, px + tileSiz, py + tileSiz, cor);
-  }
-
-  //personagem
-  px = player.posx;
-  py = player.posy;
-  switch (player.estado)
-  {
-  case 1: // vivo
-    cor = al_map_rgb(60, 60, 140);
-    int tamx = ply_x;
-    int tamy = ply_y;
-    al_draw_filled_rectangle(px, py, px + tamx, py + tamy, cor);
-    break;
-
-  case 0:
-    printf("\nrender() player.estado = 0 n�o implementado");
-    break;
-
-  default:
-    printf("\nrender() player.estado em valores n�o aceit�veis");
-    set = false;
-    break;
-  }
 
   //caixas
   for (int id = 0; id < caixas; id++)
@@ -117,3 +78,65 @@ bool render_and_collide()
 
   return set;
 }
+
+bool renderMap ()
+{
+  //mapa
+  ALLEGRO_COLOR cor;
+  bool set = true;
+  int px;
+  int py;
+
+  for (int i = 0; i < mapSize; i++)
+  {
+    px = tileSiz * (i % mapColu);
+    py = tileSiz * (i / mapColu);
+
+    if (map[i] == 0)
+      cor = al_map_rgb(30, 10, 30);
+    else if (map[i] == 1)
+      cor = al_map_rgb(120, 30, 100);
+    else
+    {
+      printf("render() map[%d] contem tipo nao registrado", i);
+      set = false;
+    }
+    al_draw_filled_rectangle(px, py, px + tileSiz, py + tileSiz, cor);
+  }
+
+  return set;
+}
+
+bool renderPlayer ()
+{
+  //personagem
+  ALLEGRO_COLOR cor;
+  bool set;
+  int px;
+  int py;
+
+  px = player.posx;
+  py = player.posy;
+  switch (player.estado)
+  {
+  case 1: // vivo
+    cor = al_map_rgb(60, 60, 140);
+    int tamx = ply_x;
+    int tamy = ply_y;
+    al_draw_filled_rectangle(px, py, px + tamx, py + tamy, cor);
+    break;
+
+  case 0:
+    printf("\nrender() player.estado = 0 n�o implementado");
+    break;
+
+  default:
+    printf("\nrender() player.estado em valores n�o aceit�veis");
+    set = false;
+    break;
+  }
+
+  return set;
+}
+
+

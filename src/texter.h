@@ -20,3 +20,8 @@ fn inicia texto pausado
 	}	
 fin
 */
+
+void chat_stream()
+{
+
+}

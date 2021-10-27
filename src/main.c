@@ -80,7 +80,14 @@ int main(void)
     {
       //renderiza a tela aqui
       al_clear_to_color(al_map_rgb(0, 0, 0));
-      render_and_collide();
+      
+      renderMap();
+      
+      renderPlayer();
+      
+      renderBoxes();
+      // renderBoxes também colide as caixas com o jogador.
+
       al_flip_display();
 
       if (evento.type == ALLEGRO_EVENT_TIMER)
