@@ -2,8 +2,6 @@ bool renderBoxes (bool colide)
 {
   ALLEGRO_COLOR cor;
   bool set = true;
-  int px;
-  int py;
 
   //caixas
   for (int id = 0; id < caixas; id++)
@@ -33,13 +31,19 @@ bool renderBoxes (bool colide)
         tamy = typ2y;
         cor = al_map_rgb(200, 50, 50);
       }
+      else 
+      {
+        tamx = 0;
+        tamy = 0;
+        cor = al_map_rgb(0,0,0);
+      }
       al_draw_filled_rectangle(
           box[id].posx,
           box[id].posy,
           box[id].posx+tamx,
           box[id].posy+tamy,
           cor);
-          
+      
       // verifica colisões com a caixa
       if (colide)
       {     
@@ -83,8 +87,6 @@ bool renderBoxes (bool colide)
 bool renderText (int ID, ALLEGRO_FONT *fonte)
 {
   bool set = true;
-  int px;
-  int py;
 
   switch (txtbox[ID].type)
   {
@@ -116,6 +118,7 @@ bool renderText (int ID, ALLEGRO_FONT *fonte)
   default:
     break;
   }
+  return set;
 }
 
 bool renderMap ()
@@ -150,7 +153,7 @@ bool renderPlayer ()
 {
   //personagem
   ALLEGRO_COLOR cor;
-  bool set;
+  bool set = true;
   int px;
   int py;
 

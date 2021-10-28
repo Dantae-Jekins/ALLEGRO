@@ -1,4 +1,4 @@
-int checkInput(ALLEGRO_KEYBOARD_STATE keystate)
+void checkInput(ALLEGRO_KEYBOARD_STATE keystate)
 {
   // checa o teclado
   if (al_key_down(&keystate, ALLEGRO_KEY_RIGHT))

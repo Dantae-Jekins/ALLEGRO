@@ -13,10 +13,9 @@
 #include "objects.h"
 #include "setup.h"
 #include "mapper.h"
-#include "texter.h"
 #include "render.h"
+#include "texter.h"
 #include "movement.h"
-#include "rcollide.h"
 
 int main(void)
 {
@@ -33,8 +32,6 @@ int main(void)
   ALLEGRO_DISPLAY *display = al_create_display(width, height);
   ALLEGRO_TIMER *timer = al_create_timer(1.0 / fps);
   ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue();
-  ALLEGRO_FONT *SANS18 =
-      al_load_font("fonts/OpenSans-Bold.ttf", 18, 0);
 
   if (!display || !timer || !queue)
   {
@@ -82,12 +79,12 @@ int main(void)
       //renderiza a tela aqui
       al_clear_to_color(al_map_rgb(0, 0, 0));
       
-      renderMap();
-      
-      renderPlayer();
-      
-      renderBoxes(true);
-
+      bool checkout = true;
+      checkout = renderMap();
+      checkout = renderPlayer();
+      checkout = renderBoxes(true);
+      if (!checkout)
+        rodando=0;
       al_flip_display();
 
       if (evento.type == ALLEGRO_EVENT_TIMER)
@@ -105,20 +102,6 @@ int main(void)
         } timezin++;
         
         // se o jogador morrer seu pc se fode
-        if (player.oxygen <= 0)
-        {
-          player.estado = 0;
-          int j = 2;
-          int *ptr;
-          for (int i = 0; i < j; i++)
-          {
-            for (int z = 0; z < 100; z++)
-            {
-              int *ptr = malloc(sizeof(int)*j);  
-            }
-            j+=1;
-          }
-        }
       }
     }
   }

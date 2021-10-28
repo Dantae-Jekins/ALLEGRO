@@ -26,14 +26,12 @@ void chat_stream(ALLEGRO_DISPLAY *display, bool running, int code)
 	if(running) // jogo está rodando
 	{
 		// salva o display
-		ALLEGRO_BITMAP *backup;
+		ALLEGRO_BITMAP *backup = al_create_bitmap(width,height);
 		al_set_target_bitmap(backup);
 		al_clear_to_color(al_map_rgb(0, 0, 0));
 		renderMap();
 		renderPlayer();
-		renderBoxes(false); 
-		
-		al_set_target_bitmap(display);
+		renderBoxes(false); 		
 
 		// inicia nova seção de eventos
 		ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue(); 
@@ -45,20 +43,18 @@ void chat_stream(ALLEGRO_DISPLAY *display, bool running, int code)
 		bool paused;
 		switch (code)
 		{
-		case 0: // caixa de texto teste
-			char *string = "Testando1; Testando2; Testando3;";
-			char *aux    = malloc(sizeof(char)*6);				
-			int id = 0, i = 0, pg = 0, size = 6;
-			id = genChat(string, -1, -1); 
+			case 0: // caixa de texto teste
+			{
+				char *string = "Testando1; Testando2; Testando3;";
+				char *aux    = malloc(sizeof(char)*6);				
+				int id = 0, i = 0, pg = 0;
+				id = genChat(string, -1, -1); 
 			
-			while (paused)
-			{	
-				switch (box[id].type)
-				{
-				case 0:
+				while (paused)
+				{	
 					// formata o texto que vai aparecer na caixa:
 					// depende de PG que é short para página
-					int j = 0, i = 0;
+					int j = 0; i = 0;
 					while(j != pg)
 					{
 						if(string[i++] == ';') // conta quantos chars
@@ -68,14 +64,14 @@ void chat_stream(ALLEGRO_DISPLAY *display, bool running, int code)
 					// i vai representar qual é o ponto inicial.	
 					// for mata o texto que vai aparecer na caixa:
 					// j vai começar no 0
-					int j = 0, size = 6;
+					int size = 4; j = 0;
 					while(string[i]!=';')
 					{
 						aux[j] = string[i++];
 						
 						if( size == (j+1))
 						{
-							size+=6; //alocamos + 6 de espaço a cada vez
+							size+=4; //alocamos + 4 de espaço a cada vez
 											//para economizar processo.
 							aux = realloc(aux, sizeof(char)*size);
 						} 
@@ -83,17 +79,17 @@ void chat_stream(ALLEGRO_DISPLAY *display, bool running, int code)
 					aux = realloc(aux, sizeof(char)*(j+1));
 					aux[j] = '\0'; 
 						
-						paused = renderText(id, BOLD);
-						al_wait_for_event(queue, &evento);
-						if (evento.type == ALLEGRO_EVENT_KEY_DOWN)
-							pg ++;
+					paused = renderText(id, BOLD);
+					al_wait_for_event(queue, &evento);
+					if (evento.type == ALLEGRO_EVENT_KEY_DOWN)
+						pg ++;
 					
-					break;
-			
-				default:
-					break;
 				}
 			}
 		}
+		al_destroy_event_queue(queue);
+		al_destroy_bitmap(backup);
+		al_destroy_font(FONT);
+		al_destroy_font(BOLD);
 	}
 }
