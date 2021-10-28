@@ -16,6 +16,7 @@
 #include "texter.h"
 #include "render.h"
 #include "movement.h"
+#include "rcollide.h"
 
 int main(void)
 {
@@ -85,8 +86,7 @@ int main(void)
       
       renderPlayer();
       
-      renderBoxes();
-      // renderBoxes também colide as caixas com o jogador.
+      renderBoxes(true);
 
       al_flip_display();
 

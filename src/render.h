@@ -1,4 +1,4 @@
-bool renderBoxes ()
+bool renderBoxes (bool colide)
 {
   ALLEGRO_COLOR cor;
   bool set = true;
@@ -41,42 +41,81 @@ bool renderBoxes ()
           cor);
           
       // verifica colisões com a caixa
-     
-      for (int x = 0; x <= ply_x; x++)
-      {
-        for (int y = 0; y <= ply_y; y++)
+      if (colide)
+      {     
+        for (int x = 0; x <= ply_x; x++)
         {
-
-          int cdx = player.posx + x;
-          int cdy = player.posy + y; 
-          if ((cdx >= box[id].posx) && (cdx <= (box[id].posx + tamx)) 
-            && (cdy >= box[id].posy) && (cdy <= (box[id].posy + tamy)))
+          for (int y = 0; y <= ply_y; y++)
           {
-            // analisa colis�es
-            if (box[id].type == 2) // obst�culo
+            int cdx = player.posx + x;
+            int cdy = player.posy + y; 
+            if ((cdx >= box[id].posx) && (cdx <= (box[id].posx + tamx)) 
+              && (cdy >= box[id].posy) && (cdy <= (box[id].posy + tamy)))
             {
-              player.posx = initx;
-              player.posy = inity;
-              player.oxygen -= 40;
-              colisao = true;
-              break;
-            }
-            else if (box[id].type == 1) // cilindro
-            {
-              player.oxygen += 40;
-              box[id].existe = false;
-              colisao = true;
-              break;
+              // analisa colis�es
+              if (box[id].type == 2) // obst�culo
+              {
+                player.posx = initx;
+                player.posy = inity;
+                player.oxygen -= 40;
+                colisao = true;
+                break;
+              }
+              else if (box[id].type == 1) // cilindro
+              {
+                player.oxygen += 40;
+                box[id].existe = false;
+                colisao = true;
+                break;
+              }
             }
           }
+          if (colisao)
+            break;
         }
-        if (colisao)
-          break;
       }
     }
   }
 
   return set;
+}
+
+bool renderText (int ID, ALLEGRO_FONT *fonte)
+{
+  bool set = true;
+  int px;
+  int py;
+
+  switch (txtbox[ID].type)
+  {
+  case 0: // log de teste 
+    // aparece no meio da tela 
+    // caixote preto com o texto
+
+    al_draw_filled_rectangle( 
+      width-240, height-120,
+      width+240, height+120,
+      al_map_rgba(30,30,40,120));
+    
+    al_draw_filled_rectangle( 
+      width-200, height-100,
+      width+200, height+100,
+      al_map_rgb(15,15,15));
+
+    al_draw_multiline_text(
+      fonte,
+      al_map_rgb(255,255,255),
+      width-180, height-80,
+      width+180, height+80,
+      ALLEGRO_ALIGN_CENTER,
+      txtbox[ID].text
+    );
+
+    break;
+  
+  default:
+    break;
+  }
 }
 
 bool renderMap ()
