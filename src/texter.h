@@ -37,8 +37,8 @@ void chat_stream(ALLEGRO_DISPLAY *display, bool running, int code)
 		
 		// inicia nova seção de eventos
 		ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue(); 
-		ALLEGRO_FONT *FONT =  al_load_font("../fonts/OpenSans-Regular.ttf", 18, 0);
-		ALLEGRO_FONT *BOLD =  al_load_font("../fonts/OpenSans-Bold.ttf",22,0);
+		ALLEGRO_FONT *FONT =  al_load_font("../fonts/OpenSans-Regular.ttf", 12, 0);
+		ALLEGRO_FONT *BOLD =  al_load_font("../fonts/OpenSans-Bold.ttf",18,0);
 		ALLEGRO_EVENT evento;
 		
 		al_register_event_source(queue, al_get_keyboard_event_source());
@@ -47,7 +47,7 @@ void chat_stream(ALLEGRO_DISPLAY *display, bool running, int code)
 		{
 			case 0: // caixa de texto teste
 			{
-				char *str = "Testando1;Testando2;Testando3;";
+				char *str = "Testando1 e quebra de linha.;Testando2;Testando3;";
 				char *aux = malloc(sizeof(char)*4);				
 				int id = 0, i = 0, pg = 0;
 				id = genChat();

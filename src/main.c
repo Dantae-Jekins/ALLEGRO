@@ -61,14 +61,15 @@ int main(void)
 
   //EXPERIMENTAL ^ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   chat_stream(display, true, 0);
-  printf("\nCHAT STREAM COMPLETO");
-  printf("\nSETUP COMPLETO\n");
+  printf("\n\nSETUP COMPLETO\n");
+  al_start_timer(timer);
+  
   while (rodando)
   {
     //Espera um evento
     ALLEGRO_EVENT evento;
     ALLEGRO_KEYBOARD_STATE keystate;
-    al_start_timer(timer);
+    
     al_get_keyboard_state(&keystate);
     al_wait_for_event(queue, &evento);
     if (evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
