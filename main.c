@@ -15,7 +15,8 @@ struct jogador
 
 int main(){
 
-    int pulando = false;
+    bool pulando = false;
+    bool caindo  = false;
 
     player.posx = 0;
     player.posy = 0;
@@ -43,7 +44,7 @@ int main(){
 
         if (Event.type == ALLEGRO_EVENT_TIMER) {
 
-            //Movimentação X
+            //Movimentaï¿½ï¿½o X
 
             if (al_key_down(&keystate, ALLEGRO_KEY_RIGHT)) {
                 player.posx += 5;
@@ -53,23 +54,29 @@ int main(){
                 player.posx += -5;
             }
 
-            //Movimentação Y
+            //Movimentaï¿½ï¿½o Y
 
-            if (al_key_down(&keystate, ALLEGRO_KEY_UP)) {
+            if ((al_key_down(&keystate, ALLEGRO_KEY_UP)) && !(caindo)) {
                 player.posy += 5;
                 pulando = true;
             }
-            else {
+            if (
+                !(al_key_down(&keystate, ALLEGRO_KEY_UP)) && (pulando)
+                ||(player.posy >= 60) 
+                ) {
                 pulando = false;
+                caindo  = true;
+            }  
+
+            if (caindo)
+            {
+                player.posy -= 5;    
             }
-            if (pulando == false || player.posy == 60) {
-                while (player.posy != 0) {
-                    player.posy -= 1;
-                    printf("queda chamada\n");
-                    printf("posx %d\n", player.posx);
-                    printf("posy %d\n", player.posy);
-                }
+            if (player.posy <= 0)
+            {
+                caindo  = false;
             }
+
             printf("posx %d\n", player.posx);
             printf("posy %d\n", player.posy);
         }
@@ -80,5 +87,4 @@ int main(){
     al_destroy_event_queue(EventQueue);
     al_destroy_timer(timer);
     return 0;
-}
-   
+}   
