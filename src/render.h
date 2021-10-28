@@ -106,7 +106,7 @@ bool renderText (int ID, ALLEGRO_FONT *fonte)
         al_map_rgb(255,255,255),
         posx+20, posy+20,
         tamx-35, tamy-35,
-        ALLEGRO_ALIGN_CENTER,
+        ALLEGRO_ALIGN_LEFT,
         txtbox[ID].text
       );
       break;

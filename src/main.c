@@ -61,6 +61,7 @@ int main(void)
 
   //EXPERIMENTAL ^ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   chat_stream(display, true, 0);
+  printf("\nCHAT STREAM COMPLETO");
   printf("\nSETUP COMPLETO\n");
   while (rodando)
   {
