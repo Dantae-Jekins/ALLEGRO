@@ -52,43 +52,48 @@ void chat_stream(ALLEGRO_DISPLAY *display, bool running, int code)
 			id = genChat(string, -1, -1); 
 			
 			while (paused)
-			{
-				// formata o texto que vai aparecer na caixa:
-				// depende de PG que é short para página
-				int j = 0, i = 0;
-				while(j != pg)
+			{	
+				switch (box[id].type)
 				{
-					if(string[i++] == ';') // conta quantos chars
-						j++;								 // se for ; é outra pg
-				}
-					
-				// i vai representar qual é o ponto inicial.	
-				// for mata o texto que vai aparecer na caixa:
-				// j vai começar no 0
-				int j = 0, size = 6;
-				while(string[i]!=';')
-				{
-					aux[j] = string[i++];
-					
-					if( size == (j+1))
+				case 0:
+					// formata o texto que vai aparecer na caixa:
+					// depende de PG que é short para página
+					int j = 0, i = 0;
+					while(j != pg)
 					{
-						size+=6; //alocamos + 6 de espaço a cada vez
-										//para economizar processo.
-						aux = realloc(aux, sizeof(char)*size);
+						if(string[i++] == ';') // conta quantos chars
+							j++;								 // se for ; é outra pg
+					}
+						
+					// i vai representar qual é o ponto inicial.	
+					// for mata o texto que vai aparecer na caixa:
+					// j vai começar no 0
+					int j = 0, size = 6;
+					while(string[i]!=';')
+					{
+						aux[j] = string[i++];
+						
+						if( size == (j+1))
+						{
+							size+=6; //alocamos + 6 de espaço a cada vez
+											//para economizar processo.
+							aux = realloc(aux, sizeof(char)*size);
+						} 
 					} 
-				} 
-				aux = realloc(aux, sizeof(char)*(j+1));
-				aux[j] = '\0'; 
+					aux = realloc(aux, sizeof(char)*(j+1));
+					aux[j] = '\0'; 
+						
+						paused = renderText(id, BOLD);
+						al_wait_for_event(queue, &evento);
+						if (evento.type == ALLEGRO_EVENT_KEY_DOWN)
+							pg ++;
 					
-					paused = renderText(id, BOLD);
-					al_wait_for_event(queue, &evento);
-					if (evento.type == ALLEGRO_EVENT_KEY_DOWN)
-						pg ++;
+					break;
+			
+				default:
+					break;
 				}
-				break;
-		
-		default:
-			break;
+			}
 		}
 	}
 }
