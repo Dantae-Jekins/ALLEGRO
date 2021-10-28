@@ -60,7 +60,7 @@ int main(void)
   box[ID2].type = 2;
 
   //EXPERIMENTAL ^ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  
+  chat_stream(display, true, 0);
   printf("\nSETUP COMPLETO\n");
   while (rodando)
   {
@@ -107,9 +107,11 @@ int main(void)
   }
 
   // Destruição das estruturas ALLEGRO
+  
   al_destroy_event_queue(queue);
   al_destroy_display(display);
   al_destroy_timer(timer);
   al_uninstall_keyboard();
   printf("\n");
 }
+

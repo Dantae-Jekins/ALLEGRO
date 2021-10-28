@@ -31,12 +31,6 @@ bool renderBoxes (bool colide)
         tamy = typ2y;
         cor = al_map_rgb(200, 50, 50);
       }
-      else 
-      {
-        tamx = 0;
-        tamy = 0;
-        cor = al_map_rgb(0,0,0);
-      }
       al_draw_filled_rectangle(
           box[id].posx,
           box[id].posy,
@@ -80,7 +74,6 @@ bool renderBoxes (bool colide)
       }
     }
   }
-
   return set;
 }
 
@@ -90,33 +83,37 @@ bool renderText (int ID, ALLEGRO_FONT *fonte)
 
   switch (txtbox[ID].type)
   {
-  case 0: // log de teste 
-    // aparece no meio da tela 
-    // caixote preto com o texto
+    case 0: // log de teste 
+    {
+      // aparece no meio da tela 
+      // caixote preto com o texto
+      int posx = width/2 - 120;
+      int posy = height/2 - 60;
+      int tamx = 240;
+      int tamy = 120;
+      al_draw_filled_rectangle( 
+        posx, posy,
+        posx+tamx, posy+tamy,
+        al_map_rgba(30,30,40,120));
+      
+      al_draw_filled_rectangle( 
+        posx+15, posy+15,
+        posx+tamx-15, posy+tamy-15,
+        al_map_rgb(15,15,15));
 
-    al_draw_filled_rectangle( 
-      width-240, height-120,
-      width+240, height+120,
-      al_map_rgba(30,30,40,120));
+      al_draw_multiline_text(
+        fonte,
+        al_map_rgb(255,255,255),
+        posx+20, posy+20,
+        tamx-35, tamy-35,
+        ALLEGRO_ALIGN_CENTER,
+        txtbox[ID].text
+      );
+      break;
     
-    al_draw_filled_rectangle( 
-      width-200, height-100,
-      width+200, height+100,
-      al_map_rgb(15,15,15));
-
-    al_draw_multiline_text(
-      fonte,
-      al_map_rgb(255,255,255),
-      width-180, height-80,
-      width+180, height+80,
-      ALLEGRO_ALIGN_CENTER,
-      txtbox[ID].text
-    );
-
-    break;
-  
-  default:
-    break;
+    default:
+      break;
+    }
   }
   return set;
 }

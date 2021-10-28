@@ -89,37 +89,24 @@ int genBox()
   return ID;
 }
 
-int genChat(char *text, int type, int ID)
+int genChat(char *text, int type)
 {
   // a função ou recebe ou desenha uma txtbox
   // e então altera seus valores.
 
-  // negativo para inexistência
-  if (ID < 0)
+  printf("\nBUSCANDO BLOCO DE TEXTO LIVRE");
+  for (size_t i = 0; i < txt_boxes; i++)
   {
-    printf("\nBUSCANDO BLOCO DE TEXTO LIVRE");
-    for (size_t i = 0; i < txt_boxes; i++)
+    // loop entre os blocos para ver qual está dispodinível
+    if (!txtbox[i].existe)
     {
-      // loop entre os blocos para ver qual está dispodinível
-      if (!txtbox[i].existe)
-      {
-        // achou um bloco disponível
-        ID = i;
-        txtbox[ID].existe = true;
-        printf("\nBLOCO DE TEXTO LIVRE ID.%d", ID);
-        break;
-      }
-    }
-    if (ID < 0)
-    {
-      printf("\nN�O EXISTEM BLOCOS DE TEXTO DISPON�VEIS");
-      return -1;
+      // achou um bloco disponível
+      txtbox[i].existe = true;
+      printf("\nBLOCO DE TEXTO LIVRE ID.%ld", i);
+      return i;
     }
   }
+  printf("\nN�O EXISTEM BLOCOS DE TEXTO DISPON�VEIS");
+  return -1;
   // se achou deve alterar os conteúdos.
-  txtbox[ID].text = text;
-  txtbox[ID].type = type;
-
-  printf("\nCAIXA DE ID.%d SETTADA", ID);
-  return ID;
 }
