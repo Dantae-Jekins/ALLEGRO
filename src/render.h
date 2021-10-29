@@ -31,7 +31,7 @@ bool render_and_collide()
     cor = al_map_rgb(60, 60, 140);
     int tamx = ply_x;
     int tamy = ply_y;
-    al_draw_filled_rectangle(px, py, px + tamx, py + tamy, cor);
+    al_draw_bitmap_region(player.bitmap, 0, 0, 61, 128, 100, 100, 5);
     break;
 
   case 0:
@@ -69,21 +69,20 @@ bool render_and_collide()
       al_draw_filled_rectangle(
           box[id].posx,
           box[id].posy,
-          box[id].posx+tamx,
-          box[id].posy+tamy,
+          box[id].posx + tamx,
+          box[id].posy + tamy,
           cor);
-          
+
       // verifica colisões com a caixa
-     
+
       for (int x = 0; x <= ply_x; x++)
       {
         for (int y = 0; y <= ply_y; y++)
         {
 
           int cdx = player.posx + x;
-          int cdy = player.posy + y; 
-          if ((cdx >= box[id].posx) && (cdx <= (box[id].posx + tamx)) 
-            && (cdy >= box[id].posy) && (cdy <= (box[id].posy + tamy)))
+          int cdy = player.posy + y;
+          if ((cdx >= box[id].posx) && (cdx <= (box[id].posx + tamx)) && (cdy >= box[id].posy) && (cdy <= (box[id].posy + tamy)))
           {
             // analisa colis�es
             if (box[id].type == 2) // obst�culo
