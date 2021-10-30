@@ -10,8 +10,8 @@
 #include <stdlib.h>
 
 //LOCAL FILES
-
-#include "variaveis.h"  // VARs GLOBAIS
+#include "logic.h"      // FNS GERAIS
+#include "variaveis.h"  // VARS GLOBAIS
 #include "objects.h"    // STRUCTS  
 #include "setup.h"      // SETUP
 #include "mapper.h"     // MAPA

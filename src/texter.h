@@ -20,6 +20,30 @@ fn inicia texto pausado
 	}	
 fin
 */
+bool render_paused_chat(size_t id, ALLEGRO_BITMAP *background, ALLEGRO_FONT *font)
+{
+	al_clear_to_color(al_map_rgb(0,0,0));
+	al_draw_bitmap(background,0,0,0);
+	bool paused = renderText(id, font);
+	al_flip_display();
+	return paused;
+}
+
+bool count_Words(size_t page, size_t *i, char *str )
+{
+	int j = 0;
+	while (j < page)
+	{	
+		if (str[*i] == ';') 	
+			j++; 
+		
+		*i += 1;
+	}
+	if (str[*i] == '\0')
+		return false; 			// retorna falso se for o último ';'
+	
+	return true;				// retorna verdadeiro se houverem +
+}
 
 void chat_stream(ALLEGRO_DISPLAY *display, bool running, int code)
 {
@@ -47,56 +71,28 @@ void chat_stream(ALLEGRO_DISPLAY *display, bool running, int code)
 		{
 			case 0: // caixa de texto teste
 			{
+				// aloca as strings a serem utilizadas
 				char *str = "Testando1 e quebra de linha.;Testando2;Testando3;";
 				char *aux = malloc(sizeof(char)*4);				
-				int id = 0, i = 0, pg = 0;
+				
+				size_t id = 0;
+				size_t i  = 0;
+				size_t pg = 0;
+
 				id = genChat();
-				txtbox[id].type = 0; 
-			
+				txtbox[id].type = 0; 	
 				while (paused)
 				{	
-					// formata o texto que vai aparecer na caixa:
-					// depende de PG que é short para página
-					int j = 0; i = 0;
-					while(j < pg)
-					{
-						if(str[i++] == ';') // conta quantos chars
-							j++;			// conta j com ';'	
-					}
-					if(str[i] == '\0')		// condição para parar
+					i = 0;
+					if (!count_Words(pg, &i, str))
 					{
 						free(aux);
 						paused = false;
 						break;
 					}
 						
-					// i vai representar qual é o ponto inicial
-					// contado anteriormente
-
-					// formata o texto que vai aparecer na caixa:
-					// j vai começar no 0
-
-					//então de str[i] vai para aux[j].
-					int size = 4; j = 0;
-					while(str[i]!=';')
-					{
-						aux[j++] = str[i++];
-						if( size == j)
-						{
-							size+=4; //alocamos + 4 de espaço a cada vez
-							aux = realloc(aux, sizeof(char)*size);
-						} 
-					} 
-					//realoca o espaço certo
-					aux = realloc(aux, sizeof(char)*(j+1));
-					aux[j] = '\0'; // coloca ponto de parada
-					txtbox[id].text = aux; // atribui
-
-					//renderiza
-					al_clear_to_color(al_map_rgb(0,0,0));
-					al_draw_bitmap(backup,0,0,0);
-					paused = renderText(id, BOLD);
-					al_flip_display();
+					txtbox[id].text = strcrop(i, 0, str, aux);						
+					render_paused_chat(id, backup, BOLD);
 					
 					//espera input
 					al_wait_for_event(queue, &evento);
