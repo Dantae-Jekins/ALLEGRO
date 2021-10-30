@@ -92,7 +92,7 @@ int main(void)
 
       if (evento.type == ALLEGRO_EVENT_TIMER)
       {
-        checkInput(keystate);
+        checkInput(keystate, pulando, caindo);
         
         if (timezin == 30)
         {
