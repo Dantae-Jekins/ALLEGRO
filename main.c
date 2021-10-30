@@ -32,10 +32,9 @@ int main(){
     al_register_event_source(EventQueue, al_get_timer_event_source(timer));
 
     bool Exit = false;
+    al_start_timer(timer);
     
     while (!Exit){
-
-        al_start_timer(timer);
 
         ALLEGRO_EVENT Event;
         al_wait_for_event(EventQueue, &Event);
