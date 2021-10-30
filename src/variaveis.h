@@ -1,14 +1,15 @@
 // variáveis gerais
 #define height 720
 #define width 1080
-#define tileSiz 50
+#define tileSiz 60
 #define fps 60.0
 
 // constantes de posições do chat
-#define cposx0 width/8+80
-#define cposy0 height-240
-#define cposx1 width-width/8+80 
-#define cposy1 height-20
+// útil para pre-processamento
+const int cposx0 = (width/10+120);
+const int cposy0 = (height-180);
+const int cposx1 = (width-cposx0);
+const int cposy1 = (height-60);
 
 // constantes de tamanho das box
 #define typ1x 40
@@ -22,10 +23,10 @@
 #define ply_y 50
 
 
-#define AZULBOLD    al_map_rgb(80, 80, 160);
-#define AZULLITE    al_map_rgba(80, 80, 160, 120)
+#define AZULBOLD    al_map_rgb(80, 80, 160)
+#define AZULLITE    al_map_rgba(80, 80, 160, 80)
 
 #define CIANBOLD    al_map_rgb(120, 200, 240)
-#define CIANLITE    al_map_rgba(120, 200, 240, 120)
+#define CIANLITE    al_map_rgba(120, 200, 240, 80)
 
 #define BRANCO      al_map_rgb(255, 255, 255)

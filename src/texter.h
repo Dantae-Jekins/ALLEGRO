@@ -80,7 +80,7 @@ void chat_stream(ALLEGRO_DISPLAY *display, bool running, int code)
 				size_t pg = 0;
 
 				id = genChat();
-				txtbox[id].type = 0; 	
+				txtbox[id].type = 1; 	
 				while (paused)
 				{	
 					i = 0;
