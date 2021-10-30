@@ -8,7 +8,7 @@
 // útil para pre-processamento
 const int cposx0 = (width/10+120);
 const int cposy0 = (height-180);
-const int cposx1 = (width-cposx0);
+const int cposx1 = (width-(width / 10 + 120));
 const int cposy1 = (height-60);
 
 // constantes de tamanho das box

@@ -182,21 +182,23 @@ bool renderPlayer ()
   py = player.posy;
   switch (player.estado)
   {
-  case 1: // vivo
-    cor = al_map_rgb(60, 60, 140);
-    int tamx = ply_x;
-    int tamy = ply_y;
-    al_draw_filled_rectangle(px, py, px + tamx, py + tamy, cor);
-    break;
-
-  case 0:
-    printf("\nrender() player.estado = 0 n�o implementado");
-    break;
-
-  default:
-    printf("\nrender() player.estado em valores n�o aceit�veis");
-    set = false;
-    break;
+  case 1: { // vivo
+      cor = al_map_rgb(60, 60, 140);
+      int tamx = ply_x;
+      int tamy = ply_y;
+      al_draw_filled_rectangle(px, py, px + tamx, py + tamy, cor);
+      break;
+  }
+  case 0: {
+      printf("\nrender() player.estado = 0 n�o implementado");
+      break;
+  }
+  default: {
+      printf("\nrender() player.estado em valores n�o aceit�veis");
+      set = false;
+      break;
+  }
+  
   }
 
   return set;

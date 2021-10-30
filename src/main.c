@@ -1,4 +1,5 @@
 //ALLEGRO
+
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
@@ -49,6 +50,8 @@ int main(void)
   // Inicialização do jogo
   bool rodando = true;
   int timezin = 0;
+  bool pulando = false;
+  bool caindo = false;
   //EXPERIMENTAL v !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   
   int ID1 = genBox();
@@ -65,7 +68,7 @@ int main(void)
   printf("\n\nSETUP COMPLETO\n");
   al_start_timer(timer);
   
-  while (rodando)
+  while(rodando)
   {
     //Espera um evento
     ALLEGRO_EVENT evento;
@@ -92,7 +95,7 @@ int main(void)
 
       if (evento.type == ALLEGRO_EVENT_TIMER)
       {
-        checkInput(keystate, pulando, caindo);
+        checkInput(keystate, &pulando, &caindo);
         
         if (timezin == 30)
         {

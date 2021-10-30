@@ -73,7 +73,7 @@ void chat_stream(ALLEGRO_DISPLAY *display, bool running, int code)
 			{
 				// aloca as strings a serem utilizadas
 				char *str = "Testando1 e quebra de linha.;Testando2;Testando3;";
-				char *aux = malloc(sizeof(char)*4);				
+				char *aux = (char*)malloc(sizeof(char)*4);				
 				
 				size_t id = 0;
 				size_t i  = 0;
