@@ -23,7 +23,6 @@ bool setup(void)
   setupBoxes();
   setupPlayer();
   
-  // Inicializa o ALLEGRO
   printf("\nsettando allegro");
   bool checkup = true;
   if (!al_init())

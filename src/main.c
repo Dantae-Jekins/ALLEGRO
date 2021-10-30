@@ -10,12 +10,14 @@
 #include <stdlib.h>
 
 //LOCAL FILES
-#include "objects.h"
-#include "setup.h"
-#include "mapper.h"
-#include "render.h"
-#include "texter.h"
-#include "movement.h"
+
+#include "variaveis.h"  // VARs GLOBAIS
+#include "objects.h"    // STRUCTS  
+#include "setup.h"      // SETUP
+#include "mapper.h"     // MAPA
+#include "render.h"     // RENDERIZAÇÃO
+#include "texter.h"     // CHATS
+#include "movement.h"   // MOVIMENTAÇÃO
 
 int main(void)
 {

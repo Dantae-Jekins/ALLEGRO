@@ -105,8 +105,16 @@ void chat_stream(ALLEGRO_DISPLAY *display, bool running, int code)
 					
 				}
 				txtbox[id].existe = false;
+				break;
 			}
-			printf("\nCHAT_STREAM COMPLETO");
+			case 1:
+			{
+				break;
+			}
+			default:
+			{
+				break;
+			}
 		}
 		al_destroy_event_queue(queue);
 		al_destroy_bitmap(backup);

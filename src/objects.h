@@ -1,20 +1,3 @@
-// variáveis gerais
-#define height 720
-#define width 1080
-#define tileSiz 50
-#define fps 60.0
-
-// tamanhos dos tipos
-#define typ1x 40
-#define typ1y 80
-#define typ2x 50
-#define typ2y 50
-#define speed 5
-
-// tamanho do jogador
-#define ply_x 30
-#define ply_y 50
-
 //Mapa
 int mapColu = 10;  //quantidade de colunas
 int mapSize = 100; //tamanho total do mapa
@@ -61,6 +44,7 @@ struct jogador
   int posy;
 } player;
 
+// funções
 int genBox()
 {
   // prepara uma estrutura "box" de posições, tamanhos definidos

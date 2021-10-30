@@ -102,16 +102,41 @@ bool renderText (int ID, ALLEGRO_FONT *fonte)
         al_map_rgb(15,15,15));
 
       al_draw_multiline_text(
-        fonte,
-        al_map_rgb(255,255,255),
+        fonte, BRANCO,
         posx+20, posy+20,
         tamx-30, 30,
         ALLEGRO_ALIGN_LEFT,
         txtbox[ID].text
       );
       break;
-    
+    }
+    /*
+    case 1:
+    {
+      
+      al_draw_filled_rectangle(
+        cposx0, cposy0,
+        cposy1, cposy1,
+        CIANLITE
+      );
+      
+      al_draw_filled_rectangle(
+        cposx0+20, cposy0+20,
+        cposy1-20, cposy1-20,
+        AZULLITE  
+      );
+
+      al_draw_multiline_text(
+        fonte, BRANCO,
+        cposx0+40, cposy0+40,
+        cposx1-40, cposy1-40,
+        ALLEGRO_ALIGN_LEFT,
+        txtbox[ID].text
+      );
+    }
+    */
     default:
+    {
       break;
     }
   }
