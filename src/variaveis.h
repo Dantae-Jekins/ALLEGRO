@@ -18,7 +18,7 @@ const int cposy1 = (height-60);
 #define typ2y 50
 #define speed 5
 
-// variáveis de tamanho
+// variáveis de tamanho do jogador
 #define ply_x 30
 #define ply_y 50
 

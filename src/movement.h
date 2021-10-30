@@ -1,12 +1,56 @@
+void mapColision(bool *direita, bool *esquerda, bool *baixo, bool *cima)
+{
+    for( int i = 0; i < mapSize; i++)
+    {
+        if (map[i] != 1)
+        {
+            int px0 = tileSiz * (i % mapColu);
+            int py0 = tileSiz * (i / mapColu);
+            
+            for (int px1=px0; px1 < (px0+tileSiz); px1++)    
+            {
+                for (int py1=py0; py1 < (py0+tileSiz); py1++) 
+                {   
+                    if ((px1 > player.posx) && (px1 < player.posx + ply_x) && (py1 == player.posy-1))
+                    {
+                        *cima = false;
+                    }   
+                    if ((py1 > player.posy) && (py1 < player.posy + ply_y) && (px1 == player.posx+ply_x+1))
+                    {
+                        *direita = false;
+                    }
+                    if ((px1 > player.posx) && (px1 < player.posx + ply_x) && (py1 == player.posy+ply_y+1))
+                    {
+                        *baixo = false;
+                    }   
+                    if ((py1 > player.posy) && (py1 < player.posy + ply_y) && (px1 == player.posx-1))
+                    {
+                        *esquerda = false;
+                    }
+                    // player.posx < se o ponto x da matriz < player.posx+tamx
+                }
+            }
+        }
+    }
+}
+
+
 void checkInput(ALLEGRO_KEYBOARD_STATE keystate, bool* pulando, bool* caindo)
 {
     //Movimentacao X
+    bool direita    = true;
+    bool esquerda   = true;
+    bool baixo      = true;
+    bool cima       = true;
+    // ANTES SE MOVIMENTAR
 
-    if (al_key_down(&keystate, ALLEGRO_KEY_RIGHT)) {
+    mapColision(&direita, &esquerda, &baixo, &cima);
+
+    if (al_key_down(&keystate, ALLEGRO_KEY_RIGHT) && (direita)) {
         player.posx += 5;
     }
 
-    if (al_key_down(&keystate, ALLEGRO_KEY_LEFT)) {
+    if (al_key_down(&keystate, ALLEGRO_KEY_LEFT)  && (esquerda)) {
         player.posx += -5;
     }
 
@@ -16,10 +60,8 @@ void checkInput(ALLEGRO_KEYBOARD_STATE keystate, bool* pulando, bool* caindo)
         player.posy += 5;
         *pulando = true;
     }
-    if (
-        !(al_key_down(&keystate, ALLEGRO_KEY_UP)) && (*pulando)
-        || (player.posy >= 60)
-        ) {
+    if ((!(al_key_down(&keystate, ALLEGRO_KEY_UP)) || (player.posy>=100))
+        && (*pulando)){
         *pulando = false;
         *caindo = true;
     }
