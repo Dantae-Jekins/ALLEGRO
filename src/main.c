@@ -84,9 +84,9 @@ int main(void)
       al_clear_to_color(al_map_rgb(0, 0, 0));
       
       bool checkout = true;
-      checkout = renderMap();
-      checkout = renderPlayer();
-      checkout = renderBoxes(true);
+      checkout = render_map();
+      checkout = render_player();
+      checkout = render_boxes(true);
       if (!checkout)
         rodando=0;
       al_flip_display();

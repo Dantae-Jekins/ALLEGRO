@@ -6,10 +6,10 @@
 
 // constantes de posições do chat
 // útil para pre-processamento
-const int cposx0 = (width/10+120);
-const int cposy0 = (height-180);
-const int cposx1 = (width-cposx0);
-const int cposy1 = (height-60);
+const int comment_x0 = width/10+120;
+const int comment_y0 = height-180;
+const int comment_x1 = width-(width/10+120);
+const int comment_y1 = height-60;
 
 // constantes de tamanho das box
 #define typ1x 40

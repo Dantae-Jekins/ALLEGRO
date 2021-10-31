@@ -28,11 +28,11 @@ char *strcrop(unsigned int i, unsigned int j, char *vec1, char *vec2)
     if( size == j)
     {
       size+=4; //alocamos + 4 de espaço a cada vez
-      vec2 = realloc(vec2, sizeof(char)*size);
+      vec2 = (char*)realloc(vec2, sizeof(char)*size);
     } 
   } 
   //realoca o espaço certo
-  vec2 = realloc(vec2, sizeof(char)*(j+1));
+  vec2 = (char*)realloc(vec2, sizeof(char)*(j+1));
   vec2[j] = '\0'; // coloca ponto de parada
   return vec2;
 }
