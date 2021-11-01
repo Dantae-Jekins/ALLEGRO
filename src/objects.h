@@ -59,7 +59,6 @@ struct jogador
   int oxygen;
   int posx;
   int posy;
-  ALLEGRO_BITMAP *bitmap;
 } player;
 
 int genBox()

@@ -97,20 +97,7 @@ int main(void)
         } timezin++;
         
         // se o jogador morrer seu pc se fode
-        if (player.oxygen <= 0)
-        {
-          player.estado = 0;
-          int j = 2;
-          int *ptr;
-          for (int i = 0; i < j; i++)
-          {
-            for (int z = 0; z < 100; z++)
-            {
-              int *ptr = malloc(sizeof(int)*j);  
-            }
-            j+=1;
-          }
-        }
+
       }
     }
   }

@@ -13,7 +13,7 @@ bool setup(void)
 
   player.estado = 1;
   player.oxygen = 100;
-  player.bitmap = al_load_bitmap("../imagens/ast0.png");
+
   // Inicializa o ALLEGRO
   printf("\nsettando allegro");
   bool checkup = true;

@@ -28,10 +28,12 @@ bool render_and_collide()
   switch (player.estado)
   {
   case 1: // vivo
-    cor = al_map_rgb(60, 60, 140);
-    int tamx = ply_x;
-    int tamy = ply_y;
-    al_draw_bitmap_region(player.bitmap, 0, 0, 61, 128, 100, 100, 5);
+    {
+      ALLEGRO_BITMAP *bitmap = al_load_bitmap("../imagens/ast0.png");
+      al_draw_bitmap(bitmap, px, py, 0);
+      /* code */
+    }
+    
     break;
 
   case 0:
