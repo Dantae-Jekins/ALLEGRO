@@ -62,7 +62,6 @@ int main(void)
   box[ID2].type = 2;
 
   //EXPERIMENTAL ^ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  chat_stream(display, true, 0);
   printf("\n\nSETUP COMPLETO\n");
   al_start_timer(timer);
   
