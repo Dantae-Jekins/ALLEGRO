@@ -1,19 +1,3 @@
-int jatoi(char *vec)
-{
-  int i = 0, j = 1;
-  int retorno = 0;
-  while (vec[i] != '\0')
-    i++;
-
-  while (i >= 0)
-  {
-    retorno += (vec[i] - 48) * j;
-    i--;
-    j *= 10;
-  }
-
-  return retorno;
-}
 
 int carregarMatrix(int nivel)
 {

@@ -1,20 +1,3 @@
-// variáveis gerais
-#define height 720
-#define width 1080
-#define tileSiz 50
-#define fps 60.0
-
-// tamanhos dos tipos
-#define typ1x 40
-#define typ1y 80
-#define typ2x 50
-#define typ2y 50
-#define speed 5
-
-// tamanho do jogador
-#define ply_x 30
-#define ply_y 50
-
 //Mapa
 int mapColu = 10;  //quantidade de colunas
 int mapSize = 100; //tamanho total do mapa
@@ -61,11 +44,12 @@ struct jogador
   int posy;
 } player;
 
+// funções
 int genBox()
 {
   // prepara uma estrutura "box" de posições, tamanhos definidos
   // e que deve ser renderizada por outra função.
-  int ID = -1;
+  
   printf("\nBUSCANDO BLOCO LIVRE");
   for (size_t i = 0; i < caixas; i++)
   {
@@ -73,53 +57,32 @@ int genBox()
     if (!box[i].existe)
     {
       // achou um bloco disponível
-      ID = i;
-      box[ID].existe = true;
-      printf("\nBLOCO LIVRE ID.%d", ID);
-      break;
+      box[i].existe = true;
+      printf("\nBLOCO LIVRE ID.%ld", i);
+      return i;
     }
   }
-  if (ID < 0)
-  {
-    printf("\nN�O EXISTEM BLOCOS DISPON�VEIS");
-    return -1;
-  }
-
-  // a função retorna o ID da textbox.
-  return ID;
+  printf("\nNÃO EXISTEM BLOCOS LIVRES");
+  return -1;
 }
 
-int genChat(char *text, int type, int ID)
+int genChat()
 {
   // a função ou recebe ou desenha uma txtbox
   // e então altera seus valores.
 
-  // negativo para inexistência
-  if (ID < 0)
+  printf("\nBUSCANDO BLOCO DE TEXTO LIVRE");
+  for (size_t i = 0; i < txt_boxes; i++)
   {
-    printf("\nBUSCANDO BLOCO DE TEXTO LIVRE");
-    for (size_t i = 0; i < txt_boxes; i++)
+    // loop entre os blocos para ver qual está dispodinível
+    if (!txtbox[i].existe)
     {
-      // loop entre os blocos para ver qual está dispodinível
-      if (!txtbox[i].existe)
-      {
-        // achou um bloco disponível
-        ID = i;
-        txtbox[ID].existe = true;
-        printf("\nBLOCO DE TEXTO LIVRE ID.%d", ID);
-        break;
-      }
-    }
-    if (ID < 0)
-    {
-      printf("\nN�O EXISTEM BLOCOS DE TEXTO DISPON�VEIS");
-      return -1;
+      // achou um bloco disponível
+      txtbox[i].existe = true;
+      printf("\nBLOCO DE TEXTO LIVRE ID.%ld", i);
+      return i;
     }
   }
-  // se achou deve alterar os conteúdos.
-  txtbox[ID].text = text;
-  txtbox[ID].type = type;
-
-  printf("\nCAIXA DE ID.%d SETTADA", ID);
-  return ID;
+  printf("\nN�O EXISTEM BLOCOS DE TEXTO DISPON�VEIS");
+  return -1;
 }

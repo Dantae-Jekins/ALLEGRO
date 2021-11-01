@@ -10,11 +10,14 @@
 #include <stdlib.h>
 
 //LOCAL FILES
-#include "objects.h"
-#include "setup.h"
-#include "mapper.h"
-#include "render.h"
-#include "movement.h"
+#include "logic.h"      // FNS GERAIS
+#include "variaveis.h"  // VARS GLOBAIS
+#include "objects.h"    // STRUCTS  
+#include "setup.h"      // SETUP
+#include "mapper.h"     // MAPA
+#include "render.h"     // RENDERIZAÇÃO
+#include "texter.h"     // CHATS
+#include "movement.h"   // MOVIMENTAÇÃO
 
 int main(void)
 {
@@ -31,8 +34,6 @@ int main(void)
   ALLEGRO_DISPLAY *display = al_create_display(width, height);
   ALLEGRO_TIMER *timer = al_create_timer(1.0 / fps);
   ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue();
-  ALLEGRO_FONT *SANS18 =
-      al_load_font("fonts/OpenSans-Bold.ttf", 18, 0);
 
   if (!display || !timer || !queue)
   {
@@ -61,14 +62,16 @@ int main(void)
   box[ID2].type = 2;
 
   //EXPERIMENTAL ^ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  chat_stream(display, true, 0);
+  printf("\n\nSETUP COMPLETO\n");
+  al_start_timer(timer);
   
-  printf("\nSETUP COMPLETO\n");
   while (rodando)
   {
     //Espera um evento
     ALLEGRO_EVENT evento;
     ALLEGRO_KEYBOARD_STATE keystate;
-    al_start_timer(timer);
+    
     al_get_keyboard_state(&keystate);
     al_wait_for_event(queue, &evento);
     if (evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
@@ -79,7 +82,13 @@ int main(void)
     {
       //renderiza a tela aqui
       al_clear_to_color(al_map_rgb(0, 0, 0));
-      render_and_collide();
+      
+      bool checkout = true;
+      checkout = render_map();
+      checkout = render_player();
+      checkout = render_boxes(true);
+      if (!checkout)
+        rodando=0;
       al_flip_display();
 
       if (evento.type == ALLEGRO_EVENT_TIMER)
@@ -97,15 +106,16 @@ int main(void)
         } timezin++;
         
         // se o jogador morrer seu pc se fode
-
       }
     }
   }
 
   // Destruição das estruturas ALLEGRO
+  
   al_destroy_event_queue(queue);
   al_destroy_display(display);
   al_destroy_timer(timer);
   al_uninstall_keyboard();
   printf("\n");
 }
+

@@ -1,3 +1,18 @@
+void setupBoxes(void)
+{
+  for (size_t i = 0; i < txt_boxes; i++)
+    txtbox[i].existe = false;
+
+  for (size_t i = 0; i < caixas; i++)
+    box[i].existe = false;
+}
+
+void setupPlayer(void)
+{
+  player.estado = 1;
+  player.oxygen = 100;
+}
+
 bool setup(void)
 {
   // Retorna true se concluído com sucesso
@@ -5,16 +20,9 @@ bool setup(void)
 
   // Inicializa as estruturas
   printf("\nsettando estruturas");
-  for (size_t i = 0; i < txt_boxes; i++)
-    txtbox[i].existe = false;
-
-  for (size_t i = 0; i < caixas; i++)
-    box[i].existe = false;
-
-  player.estado = 1;
-  player.oxygen = 100;
-
-  // Inicializa o ALLEGRO
+  setupBoxes();
+  setupPlayer();
+  
   printf("\nsettando allegro");
   bool checkup = true;
   if (!al_init())

@@ -1,10 +1,72 @@
-bool render_and_collide()
+// TEXTOS
+void render_txt (int posx0, int posy0, int posx1, int posy1, char *texto, ALLEGRO_FONT *fonte)
 {
+      al_draw_filled_rectangle(
+        posx0, posy0,
+        posx1, posy1,
+        CIANLITE
+      );
+      
+      al_draw_filled_rectangle(
+        posx0+15, posy0+15,
+        posx1-10, posy1-10,
+        AZULBOLD  
+      );
+
+      al_draw_multiline_text(
+        fonte, BRANCO,
+        posx0+20, posy0+20,
+        posx1-10, 15,
+        ALLEGRO_ALIGN_LEFT,
+        texto        
+      );
+}
+
+bool render_txtbox (int ID, ALLEGRO_FONT *fonte)
+{
+  bool set = true;
+
+  switch (txtbox[ID].type)
+  {
+    case 0: // log de teste 
+    {
+      render_txt(
+        width/2-120, height/2-60,
+        width/2+120, height/2+60,
+        "Teste", fonte
+      );
+      break;
+    }
+    
+    case 1:
+    {
+      render_txt(
+        comment_x0, comment_y0,
+        comment_x1, comment_y1,
+        txtbox[ID].text, fonte
+      );
+
+      break;
+    }
+    
+    default:
+    {
+      break;
+    }
+  }
+  return set;
+}
+
+
+// MAPA
+bool render_map ()
+{
+  //mapa
   ALLEGRO_COLOR cor;
   bool set = true;
   int px;
   int py;
-  //mapa
+
   for (int i = 0; i < mapSize; i++)
   {
     px = tileSiz * (i % mapColu);
@@ -22,7 +84,19 @@ bool render_and_collide()
     al_draw_filled_rectangle(px, py, px + tileSiz, py + tileSiz, cor);
   }
 
+  return set;
+}
+
+
+// JOGADOR
+bool render_player ()
+{
   //personagem
+  ALLEGRO_COLOR cor;
+  bool set = true;
+  int px;
+  int py;
+
   px = player.posx;
   py = player.posy;
   switch (player.estado)
@@ -45,6 +119,16 @@ bool render_and_collide()
     set = false;
     break;
   }
+
+  return set;
+}
+
+
+// CAIXAS
+bool render_boxes (bool colide)
+{
+  ALLEGRO_COLOR cor;
+  bool set = true;
 
   //caixas
   for (int id = 0; id < caixas; id++)
@@ -74,41 +158,42 @@ bool render_and_collide()
           box[id].posx + tamx,
           box[id].posy + tamy,
           cor);
-
+      
       // verifica colisões com a caixa
-
-      for (int x = 0; x <= ply_x; x++)
-      {
-        for (int y = 0; y <= ply_y; y++)
+      if (colide)
+      {     
+        for (int x = 0; x <= ply_x; x++)
         {
-
-          int cdx = player.posx + x;
-          int cdy = player.posy + y;
-          if ((cdx >= box[id].posx) && (cdx <= (box[id].posx + tamx)) && (cdy >= box[id].posy) && (cdy <= (box[id].posy + tamy)))
+          for (int y = 0; y <= ply_y; y++)
           {
-            // analisa colis�es
-            if (box[id].type == 2) // obst�culo
+            int cdx = player.posx + x;
+            int cdy = player.posy + y; 
+            if ((cdx >= box[id].posx) && (cdx <= (box[id].posx + tamx)) 
+              && (cdy >= box[id].posy) && (cdy <= (box[id].posy + tamy)))
             {
-              player.posx = initx;
-              player.posy = inity;
-              player.oxygen -= 40;
-              colisao = true;
-              break;
-            }
-            else if (box[id].type == 1) // cilindro
-            {
-              player.oxygen += 40;
-              box[id].existe = false;
-              colisao = true;
-              break;
+              // analisa colis�es
+              if (box[id].type == 2) // obst�culo
+              {
+                player.posx = initx;
+                player.posy = inity;
+                player.oxygen -= 40;
+                colisao = true;
+                break;
+              }
+              else if (box[id].type == 1) // cilindro
+              {
+                player.oxygen += 40;
+                box[id].existe = false;
+                colisao = true;
+                break;
+              }
             }
           }
+          if (colisao)
+            break;
         }
-        if (colisao)
-          break;
       }
     }
   }
-
   return set;
 }
