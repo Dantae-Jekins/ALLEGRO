@@ -1,3 +1,8 @@
+void setupBitmaps(void)
+{
+  bitmap[0] = al_load_bitmap("../imagens/ast0.png");
+}
+
 void setupBoxes(void)
 {
   for (size_t i = 0; i < txt_boxes; i++)
@@ -11,6 +16,7 @@ void setupPlayer(void)
 {
   player.estado = 1;
   player.oxygen = 100;
+  player.bitmap = al_load_bitmap("../imagens/ast0.png");
 }
 
 bool setup(void)
@@ -20,9 +26,7 @@ bool setup(void)
 
   // Inicializa as estruturas
   printf("\nsettando estruturas");
-  setupBoxes();
-  setupPlayer();
-  
+
   printf("\nsettando allegro");
   bool checkup = true;
   if (!al_init())
@@ -55,6 +59,9 @@ bool setup(void)
     printf("\nal_init_image_addon n�o inicializado");
     checkup = false;
   }
+  setupBoxes();
+  setupPlayer();
+  setupBitmaps();
 
   return checkup;
   // permite que a função analise vários de

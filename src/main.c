@@ -10,14 +10,14 @@
 #include <stdlib.h>
 
 //LOCAL FILES
-#include "logic.h"      // FNS GERAIS
-#include "variaveis.h"  // VARS GLOBAIS
-#include "objects.h"    // STRUCTS  
-#include "setup.h"      // SETUP
-#include "mapper.h"     // MAPA
-#include "render.h"     // RENDERIZAÇÃO
-#include "texter.h"     // CHATS
-#include "movement.h"   // MOVIMENTAÇÃO
+#include "logic.h"     // FNS GERAIS
+#include "variaveis.h" // VARS GLOBAIS
+#include "objects.h"   // STRUCTS
+#include "setup.h"     // SETUP
+#include "mapper.h"    // MAPA
+#include "render.h"    // RENDERIZAÇÃO
+#include "texter.h"    // CHATS
+#include "movement.h"  // MOVIMENTAÇÃO
 
 int main(void)
 {
@@ -50,7 +50,7 @@ int main(void)
   bool rodando = true;
   int timezin = 0;
   //EXPERIMENTAL v !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  
+
   int ID1 = genBox();
   box[ID1].posx = 200;
   box[ID1].posy = 280;
@@ -64,13 +64,15 @@ int main(void)
   //EXPERIMENTAL ^ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   printf("\n\nSETUP COMPLETO\n");
   al_start_timer(timer);
-  
+
+  // experimental
+
   while (rodando)
   {
     //Espera um evento
     ALLEGRO_EVENT evento;
     ALLEGRO_KEYBOARD_STATE keystate;
-    
+
     al_get_keyboard_state(&keystate);
     al_wait_for_event(queue, &evento);
     if (evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
@@ -81,19 +83,19 @@ int main(void)
     {
       //renderiza a tela aqui
       al_clear_to_color(al_map_rgb(0, 0, 0));
-      
+
       bool checkout = true;
       checkout = render_map();
       checkout = render_player();
       checkout = render_boxes(true);
       if (!checkout)
-        rodando=0;
+        rodando = 0;
       al_flip_display();
 
       if (evento.type == ALLEGRO_EVENT_TIMER)
       {
         checkInput(keystate);
-        
+
         if (timezin == 30)
         {
           player.oxygen -= 1;
@@ -102,19 +104,19 @@ int main(void)
           printf("\33[2K posx:   %d\n", player.posx);
           printf("\33[2K posy:   %d\n", player.posy);
           printf("\33[3A");
-        } timezin++;
-        
+        }
+        timezin++;
+
         // se o jogador morrer seu pc se fode
       }
     }
   }
 
   // Destruição das estruturas ALLEGRO
-  
+
   al_destroy_event_queue(queue);
   al_destroy_display(display);
   al_destroy_timer(timer);
   al_uninstall_keyboard();
   printf("\n");
 }
-
