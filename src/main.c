@@ -91,7 +91,10 @@ int main(void)
           printf("\33[3A");
         } timezin++;
         
-        // se o jogador morrer seu pc se fode
+        if (player.oxygen <= 0)
+        {
+          rodando = termino();
+        }
       }
     }
   }
