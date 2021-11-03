@@ -1,4 +1,52 @@
-int load_map (int nivel) 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+
+//MAPA
+struct mapp
+{
+  int col;
+  int tam;
+  int inix;
+  int iniy;
+  int *map;
+} mapa;
+
+#define caixas 10
+struct caixa
+{
+  bool existe;
+  int posx;
+  int posy;
+  int type;
+} box[caixas];
+
+struct jogador
+{
+  int estado;
+  int oxygen;
+  int posx;
+  int posy;
+
+} player;
+
+int jatoi (char *vec, int *x)
+{
+  int j = 1;
+  int retorno = 0;
+
+  while(*x > 0)
+  {
+    retorno += (vec[*x-1] - 48) * j;
+    *x -=  1;
+    j  *= 10;
+  }
+
+  return retorno;
+}
+
+int carregarMatrix (int nivel) 
 {	
   int aux           = 0;
   int classe        = 0;
@@ -13,9 +61,9 @@ int load_map (int nivel)
   mapa.tam = 0;
 
 	if (nivel == 0)
-		strcpy(nome_arquivo, "../fases/fase1"); //fase 0
+		strcpy(nome_arquivo, "./fase1"); //fase 0
 	else
-		strcpy(nome_arquivo, "../fases/fase2");	//fase 1
+		strcpy(nome_arquivo, "./fases/fase2");	//fase 1
 
 	FILE *fase = fopen(nome_arquivo,"r");
   /////TESTE DE LEITURA/////
@@ -67,10 +115,9 @@ int load_map (int nivel)
       {
         if( ch == 59) // ;
         {
-            atributo = 0;
-            box[contagem].existe = true;
-            box[contagem].posy = jatoi(aux_ch, &aux); 
             contagem++;
+            atributo = 0;
+            box[contagem].posy = jatoi(aux_ch, &aux);
             printf ("%d\n", box[contagem].posy);
         }
 
@@ -158,5 +205,24 @@ int load_map (int nivel)
 
   }
 	fclose(fase);
+  return 0;
+}
+
+int main()
+{
+  mapa.map = malloc(sizeof(int)*1);
+
+  carregarMatrix(0);
+  int px = 0;
+  int py = 0;
+  for(int i = 0; i < mapa.tam; i++)
+  {
+    //px = i % mapa.col;
+    //py = i / mapa.col;
+    if (i % mapa.col == 0)
+      printf("\n");
+
+    printf("%d,", mapa.map[i]);
+  } 
   return 0;
 }

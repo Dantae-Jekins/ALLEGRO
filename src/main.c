@@ -13,8 +13,8 @@
 #include "logic.h"      // FNS GERAIS
 #include "variaveis.h"  // VARS GLOBAIS
 #include "objects.h"    // STRUCTS  
-#include "setup.h"      // SETUP
 #include "mapper.h"     // MAPA
+#include "setup.h"      // SETUP
 #include "render.h"     // RENDERIZAÇÃO
 #include "texter.h"     // CHATS
 #include "movement.h"   // MOVIMENTAÇÃO
@@ -49,19 +49,6 @@ int main(void)
   // Inicialização do jogo
   bool rodando = true;
   int timezin = 0;
-  //EXPERIMENTAL v !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  
-  int ID1 = genBox();
-  box[ID1].posx = 200;
-  box[ID1].posy = 280;
-  box[ID1].type = 1;
-
-  int ID2 = genBox();
-  box[ID2].posx = 400;
-  box[ID2].posy = 320;
-  box[ID2].type = 2;
-
-  //EXPERIMENTAL ^ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   printf("\n\nSETUP COMPLETO\n");
   al_start_timer(timer);
   

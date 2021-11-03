@@ -1,20 +1,14 @@
 //Mapa
-int mapColu = 10;  //quantidade de colunas
-int mapSize = 100; //tamanho total do mapa
-int initx = 10;
-int inity = 10;
-int endx = 100;
-int endy = 100;
-int map[] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-             1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-             1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-             1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-             1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-             1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-             1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-             1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-             0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-             0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+struct mapp
+{
+  int col;
+  int tam;
+  int code;
+  int inix;
+  int iniy;
+  int *map;
+} mapa;
 
 //Estruturas do jogo
 #define txt_boxes 4

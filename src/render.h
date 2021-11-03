@@ -53,8 +53,8 @@ bool renderBoxes (bool colide)
               // analisa colis�es
               if (box[id].type == 2) // obst�culo
               {
-                player.posx = initx;
-                player.posy = inity;
+                player.posx = mapa.inix;
+                player.posy = mapa.iniy;
                 player.oxygen -= 40;
                 colisao = true;
                 break;
@@ -150,18 +150,18 @@ bool renderMap ()
   int px;
   int py;
 
-  for (int i = 0; i < mapSize; i++)
+  for (int i = 0; i < mapa.tam; i++)
   {
-    px = tileSiz * (i % mapColu);
-    py = tileSiz * (i / mapColu);
+    px = tileSiz * (i % mapa.col);
+    py = tileSiz * (i / mapa.col);
 
-    if (map[i] == 0)
+    if (mapa.map[i] == 0)
       cor = al_map_rgb(30, 10, 30);
-    else if (map[i] == 1)
+    else if (mapa.map[i] == 1)
       cor = al_map_rgb(120, 30, 100);
     else
     {
-      printf("render() map[%d] contem tipo nao registrado", i);
+      printf("render() mapa.map[%d] contem tipo nao registrado", i);
       set = false;
     }
     al_draw_filled_rectangle(px, py, px + tileSiz, py + tileSiz, cor);

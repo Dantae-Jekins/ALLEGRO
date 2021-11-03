@@ -9,6 +9,8 @@ void setupBoxes(void)
 
 void setupPlayer(void)
 {
+  player.posx = mapa.inix;
+  player.posy = mapa.iniy;
   player.estado = 1;
   player.oxygen = 100;
 }
@@ -19,9 +21,13 @@ bool setup(void)
   // ou false se ocorreu algum erro.
 
   // Inicializa as estruturas
-  printf("\nsettando estruturas");
+  printf("\nsettando estruturas\n");
   setupBoxes();
-  setupPlayer();
+  
+  mapa.code = 0;
+  mapa.map = malloc(sizeof(int)*1);
+  load_map(0);
+  setupPlayer(); 
   
   printf("\nsettando allegro");
   bool checkup = true;
