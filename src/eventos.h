@@ -1,30 +1,10 @@
-/*
-fn inicia texto pausado
 
-	grab o display atual
-	para preservar o display
 
-	while (mensagem de texto)
-	{
-		(qual mensagem renderizar?)
-		msg 0
-		{
-			renderiza o display inicial
-			renderiza a mensagem 
-		}
-		msg 1
-		{
-			renderiza o display inicial
-			renderiza a mensagem
-		}
-	}	
-fin
-*/
 bool render_paused_chat(size_t id, ALLEGRO_BITMAP *background, ALLEGRO_FONT *font)
 {
 	al_clear_to_color(al_map_rgb(0,0,0));
 	al_draw_bitmap(background,0,0,0);
-	bool paused = renderText(id, font);
+	bool paused = render_txtbox(id, font);
 	al_flip_display();
 	return paused;
 }
@@ -50,13 +30,13 @@ void chat_stream(ALLEGRO_DISPLAY *display, bool running, int code)
 	if(running) // jogo está rodando
 	{
 		// salva o display
-		printf("\nCHAT_STREAM CODE: %d",code);
+		printf("\nCHAT_STREAM CODE: %d", code);
 		ALLEGRO_BITMAP *backup = al_create_bitmap(width,height);
 		al_set_target_bitmap(backup);
 		al_clear_to_color(al_map_rgb(0, 0, 0));
-		renderMap();
-		renderPlayer();
-		renderBoxes(false); 		
+		render_map();
+		render_player();
+		render_boxes(false); 		
 		al_set_target_backbuffer(display);	
 		
 		// inicia nova seção de eventos
