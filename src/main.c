@@ -52,6 +52,9 @@ int main(void)
   printf("\n\nSETUP COMPLETO\n");
   al_start_timer(timer);
   
+  //test
+  chat_stream(display, false, 1);
+
   while (rodando)
   {
     //Espera um evento
