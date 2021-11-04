@@ -74,6 +74,10 @@ void checkInput(ALLEGRO_KEYBOARD_STATE keystate, bool* pulando, bool* caindo)
     //if (*caindo)
     {
         player.posy -= 5;
+        if (player.posy <= 5)
+        {
+            player.posy = 0;
+        }
     }
     if (player.posy <= 0)
     {
