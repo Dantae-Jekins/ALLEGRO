@@ -1,4 +1,4 @@
-void mapColision(bool *direita, bool *esquerda, bool *baixo, bool *cima, int *ultpos, bool *caindo)
+void mapColision(bool *direita, bool *esquerda, bool *baixo, bool *cima, int *ultpos, bool *colisao)
 {
     for( int i = 0; i < mapSize; i++)
     {
@@ -22,14 +22,13 @@ void mapColision(bool *direita, bool *esquerda, bool *baixo, bool *cima, int *ul
                     if ((px1 > player.posx) && (px1 < player.posx + ply_x) && (py1 == player.posy+ply_y+1))
                     {
                         *baixo = false;
-                        ultpos = player.posy;
-                        *caindo = false;
+                        ultpos = player.posy; //tentando pular de plataforma
+                        *colisao = true;
                     }   
                     if ((py1 > player.posy) && (py1 < player.posy + ply_y) && (px1 == player.posx-1))
                     {
                         *esquerda = false;
                     }
-                    // player.posx < se o ponto x da matriz < player.posx+tamx
                 }
             }
         }
@@ -45,9 +44,12 @@ void checkInput(ALLEGRO_KEYBOARD_STATE keystate, bool* pulando, bool* caindo)
     bool baixo = true;
     bool cima = true;
     int ultpos = 0;
+    int vely = 5;
+    int acely = 5;
+    bool colisao = false;
     // ANTES SE MOVIMENTAR
 
-    mapColision(&direita, &esquerda, &baixo, &cima, &ultpos, &caindo);
+    mapColision(&direita, &esquerda, &baixo, &cima, &ultpos, &colisao);
 
     if (al_key_down(&keystate, ALLEGRO_KEY_RIGHT) && (direita)) {
         player.posx += 5;
@@ -73,13 +75,14 @@ void checkInput(ALLEGRO_KEYBOARD_STATE keystate, bool* pulando, bool* caindo)
     if ((*caindo) && (cima))
     //if (*caindo)
     {
-        player.posy -= 5;
+        player.posy -= vely;
+
         if (player.posy <= 5)
         {
             player.posy = 0;
         }
     }
-    if (player.posy <= 0)
+    if ((player.posy <= 0) || (colisao))
     {
         *caindo = false;
     }
