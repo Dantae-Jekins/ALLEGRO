@@ -1,4 +1,4 @@
-void mapColision(bool *direita, bool *esquerda, bool *baixo, bool *cima, int *ultpos)
+void mapColision(bool *direita, bool *esquerda, bool *baixo, bool *cima, int *ultpos, bool *caindo)
 {
     for( int i = 0; i < mapSize; i++)
     {
@@ -23,6 +23,7 @@ void mapColision(bool *direita, bool *esquerda, bool *baixo, bool *cima, int *ul
                     {
                         *baixo = false;
                         ultpos = player.posy;
+                        *caindo = false;
                     }   
                     if ((py1 > player.posy) && (py1 < player.posy + ply_y) && (px1 == player.posx-1))
                     {
@@ -46,7 +47,7 @@ void checkInput(ALLEGRO_KEYBOARD_STATE keystate, bool* pulando, bool* caindo)
     int ultpos = 0;
     // ANTES SE MOVIMENTAR
 
-    mapColision(&direita, &esquerda, &baixo, &cima, &ultpos);
+    mapColision(&direita, &esquerda, &baixo, &cima, &ultpos, &caindo);
 
     if (al_key_down(&keystate, ALLEGRO_KEY_RIGHT) && (direita)) {
         player.posx += 5;
@@ -58,7 +59,7 @@ void checkInput(ALLEGRO_KEYBOARD_STATE keystate, bool* pulando, bool* caindo)
 
     //Movimentacao Y
 
-    if ((al_key_down(&keystate, ALLEGRO_KEY_UP)) && !(*caindo) && (cima))
+    if ((al_key_down(&keystate, ALLEGRO_KEY_UP)) && !(*caindo) && (baixo))
     {
         player.posy += 5;
         *pulando = true;
@@ -69,7 +70,7 @@ void checkInput(ALLEGRO_KEYBOARD_STATE keystate, bool* pulando, bool* caindo)
         *caindo = true;
     }
 
-    if ((*caindo) && (baixo))
+    if ((*caindo) && (cima))
     //if (*caindo)
     {
         player.posy -= 5;
