@@ -61,9 +61,11 @@ void chat_stream(ALLEGRO_DISPLAY *display, bool run, int code)
 				if (!imagem)
 				// estamos lendo o comentarista?
 				{
-					if (leitor == '\n')	
-						comment[j] = ';'; 
-					
+					if (leitor == '\n')
+					{	
+						comment[j] = ';';//depois de ler uma quebra
+						imagem = true; //prox leitura é o personagem						 
+					}
 					else
 						comment[j] = leitor;
 					
@@ -93,7 +95,7 @@ void chat_stream(ALLEGRO_DISPLAY *display, bool run, int code)
 			// aloca o espaço certinho em comment e imagem
 			// j+1 pois precisa ter espaço para o '\0'
 			comment = (char*)realloc(comment, sizeof(char)*(j+1));
-			image  = (int *)realloc(image,  sizeof(int )*i);
+			image   = (int*) realloc(image,   sizeof(int )*i);
 			comment[j] = '\0'; //finaliza
 			
 			// fecha o arquivo
@@ -123,51 +125,38 @@ void chat_stream(ALLEGRO_DISPLAY *display, bool run, int code)
 		ALLEGRO_EVENT evento;
 		
 		bool paused = true;
-		switch (code)
 		{
-			case 0: // caixa de texto teste
-			{
-				// aloca as strings a serem utilizadas
-				char *str = "Testando1 e quebra de linha.;Testando2;Testando3;";
-				char *aux = malloc(sizeof(char)*4);				
-				
-				size_t id = 0;
-				size_t i  = 0;
-				size_t pg = 0;
+			char *aux = malloc(sizeof(char)*4);				
+			
+			size_t id = 0;
+			size_t i  = 0;
+			size_t pg = 0;
 
-				id = genChat();
-				txtbox[id].type = 1; 	
-				while (paused)
-				{	
-					i = 0;
-					if (!count_Words(pg, &i, str))
-					{
-						free(aux);
-						paused = false;
-						break;
-					}
-						
-					txtbox[id].text = strcrop(i, 0, str, aux);						
-					render_paused_chat(id, backup, BOLD);
-					
-					//espera input
-					al_wait_for_event(queue, &evento);
-					if (evento.type == ALLEGRO_EVENT_KEY_DOWN)
-						pg ++;
-					
+			id = genChat();
+			txtbox[id].type = 1; 	
+			while (paused)
+			{	
+				i = 0;
+				if (!count_Words(pg, &i, comment))
+				{
+					paused = false;
+					break;
 				}
-				txtbox[id].existe = false;
-				break;
+					
+				txtbox[id].text = strcrop(i, 0, comment, aux);						
+				render_paused_chat(id, backup, BOLD);
+				
+				//espera input
+				al_wait_for_event(queue, &evento);
+				if (evento.type == ALLEGRO_EVENT_KEY_DOWN)
+					pg ++;
+				
 			}
-			case 1:
-			{
-				break;
-			}
-			default:
-			{
-				break;
-			}
+			txtbox[id].existe = false;
+			free(aux);	
 		}
+		free(image);
+		free(comment);
 		al_destroy_event_queue(queue);
 		al_destroy_bitmap(backup);
 		al_destroy_font(FONT);
