@@ -1,4 +1,4 @@
-void mapColision(bool *direita, bool *esquerda, bool *baixo, bool *cima)
+void mapColision(bool *direita, bool *esquerda, bool *baixo, bool *cima, int *ultpos)
 {
     for( int i = 0; i < mapSize; i++)
     {
@@ -22,6 +22,7 @@ void mapColision(bool *direita, bool *esquerda, bool *baixo, bool *cima)
                     if ((px1 > player.posx) && (px1 < player.posx + ply_x) && (py1 == player.posy+ply_y+1))
                     {
                         *baixo = false;
+                        ultpos = player.posy;
                     }   
                     if ((py1 > player.posy) && (py1 < player.posy + ply_y) && (px1 == player.posx-1))
                     {
@@ -34,39 +35,42 @@ void mapColision(bool *direita, bool *esquerda, bool *baixo, bool *cima)
     }
 }
 
-
+ 
 void checkInput(ALLEGRO_KEYBOARD_STATE keystate, bool* pulando, bool* caindo)
 {
     //Movimentacao X
-    bool direita    = true;
-    bool esquerda   = true;
-    bool baixo      = true;
-    bool cima       = true;
+    bool direita = true;
+    bool esquerda = true;
+    bool baixo = true;
+    bool cima = true;
+    int ultpos = 0;
     // ANTES SE MOVIMENTAR
 
-    mapColision(&direita, &esquerda, &baixo, &cima);
+    mapColision(&direita, &esquerda, &baixo, &cima, &ultpos);
 
     if (al_key_down(&keystate, ALLEGRO_KEY_RIGHT) && (direita)) {
         player.posx += 5;
     }
 
-    if (al_key_down(&keystate, ALLEGRO_KEY_LEFT)  && (esquerda)) {
+    if (al_key_down(&keystate, ALLEGRO_KEY_LEFT) && (esquerda)) {
         player.posx += -5;
     }
 
     //Movimentacao Y
 
-    if ((al_key_down(&keystate, ALLEGRO_KEY_UP)) && !(*caindo)) {
+    if ((al_key_down(&keystate, ALLEGRO_KEY_UP)) && !(*caindo) && (cima))
+    {
         player.posy += 5;
         *pulando = true;
     }
-    if ((!(al_key_down(&keystate, ALLEGRO_KEY_UP)) || (player.posy>=100))
+    if ((!(al_key_down(&keystate, ALLEGRO_KEY_UP)) || (ultpos + player.posy == 170))
         && (*pulando)){
         *pulando = false;
         *caindo = true;
     }
 
-    if (*caindo)
+    if ((*caindo) && (baixo))
+    //if (*caindo)
     {
         player.posy -= 5;
     }
