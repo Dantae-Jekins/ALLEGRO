@@ -36,6 +36,10 @@ struct jogador
   int oxygen;
   int posx;
   int posy;
+  int fimy;
+
+  bool pulando;
+  bool caindo;
 } player;
 
 // funções
