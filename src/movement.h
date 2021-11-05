@@ -1,31 +1,29 @@
-void mapColision(bool *direita, bool *esquerda, bool *baixo, bool *cima, int *ultpos, bool *colisao)
+void mapColision(bool* direita, bool* esquerda, bool* baixo, bool* cima)
 {
-    for( int i = 0; i < mapSize; i++)
+    for (int i = 0; i < mapSize; i++)
     {
         if (map[i] != 1)
         {
             int px0 = tileSiz * (i % mapColu);
             int py0 = tileSiz * (i / mapColu);
-            
-            for (int px1=px0; px1 < (px0+tileSiz); px1++)    
+
+            for (int px1 = px0; px1 < (px0 + tileSiz); px1++)
             {
-                for (int py1=py0; py1 < (py0+tileSiz); py1++) 
-                {   
-                    if ((px1 > player.posx) && (px1 < player.posx + ply_x) && (py1 == player.posy-1))
+                for (int py1 = py0; py1 < (py0 + tileSiz); py1++)
+                {
+                    if ((px1 > player.posx) && (px1 < player.posx + ply_x) && (py1 == player.posy - 1))
                     {
                         *cima = false;
-                    }   
-                    if ((py1 > player.posy) && (py1 < player.posy + ply_y) && (px1 == player.posx+ply_x+1))
+                    }
+                    if ((py1 > player.posy) && (py1 < player.posy + ply_y) && (px1 == player.posx + ply_x + 1))
                     {
                         *direita = false;
                     }
-                    if ((px1 > player.posx) && (px1 < player.posx + ply_x) && (py1 == player.posy+ply_y+1))
+                    if ((px1 > player.posx) && (px1 < player.posx + ply_x) && (py1 == player.posy + ply_y + 1))
                     {
                         *baixo = false;
-                        ultpos = player.posy; //tentando pular de plataforma
-                        *colisao = true;
-                    }   
-                    if ((py1 > player.posy) && (py1 < player.posy + ply_y) && (px1 == player.posx-1))
+                    }
+                    if ((py1 > player.posy) && (py1 < player.posy + ply_y) && (px1 == player.posx - 1))
                     {
                         *esquerda = false;
                     }
@@ -35,7 +33,7 @@ void mapColision(bool *direita, bool *esquerda, bool *baixo, bool *cima, int *ul
     }
 }
 
- 
+
 void checkInput(ALLEGRO_KEYBOARD_STATE keystate, bool* pulando, bool* caindo)
 {
     //Movimentacao X
@@ -43,13 +41,9 @@ void checkInput(ALLEGRO_KEYBOARD_STATE keystate, bool* pulando, bool* caindo)
     bool esquerda = true;
     bool baixo = true;
     bool cima = true;
-    int ultpos = 0;
-    int vely = 5;
-    int acely = 5;
-    bool colisao = false;
     // ANTES SE MOVIMENTAR
 
-    mapColision(&direita, &esquerda, &baixo, &cima, &ultpos, &colisao);
+    mapColision(&direita, &esquerda, &baixo, &cima);
 
     if (al_key_down(&keystate, ALLEGRO_KEY_RIGHT) && (direita)) {
         player.posx += 5;
@@ -66,25 +60,21 @@ void checkInput(ALLEGRO_KEYBOARD_STATE keystate, bool* pulando, bool* caindo)
         player.posy += 5;
         *pulando = true;
     }
-    if ((!(al_key_down(&keystate, ALLEGRO_KEY_UP)) || (ultpos + player.posy == 170))
-        && (*pulando)){
+    if ((!(al_key_down(&keystate, ALLEGRO_KEY_UP)) || (player.posy == 170))
+        && (*pulando)) {
         *pulando = false;
         *caindo = true;
     }
 
     if ((*caindo) && (cima))
-    //if (*caindo)
     {
-        player.posy -= vely;
+        player.posy -= 5;
 
         if (player.posy <= 5)
         {
             player.posy = 0;
+            *caindo = false;
         }
     }
-    if ((player.posy <= 0) || (colisao))
-    {
-        *caindo = false;
-    }
-
 }
+
