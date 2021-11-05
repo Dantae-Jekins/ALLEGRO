@@ -11,6 +11,8 @@ void setupPlayer(void)
 {
   player.estado = 1;
   player.oxygen = 100;
+  player.posx   = initx;
+  player.posy   = inity;
 }
 
 bool setup(void)

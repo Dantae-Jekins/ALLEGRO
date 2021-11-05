@@ -54,27 +54,37 @@ void checkInput(ALLEGRO_KEYBOARD_STATE keystate, bool* pulando, bool* caindo)
     }
 
     //Movimentacao Y
-
-    if ((al_key_down(&keystate, ALLEGRO_KEY_UP)) && !(*caindo) && (baixo))
+    
+    if (cima && al_key_down(&keystate, ALLEGRO_KEY_UP) && !(*caindo))
     {
-        player.posy += 5;
+       // se pode ir para cima, apertou para cima, e não está caindo
         *pulando = true;
-    }
-    if ((!(al_key_down(&keystate, ALLEGRO_KEY_UP)) || (player.posy == 170))
-        && (*pulando)) {
-        *pulando = false;
-        *caindo = true;
-    }
+       
+        if(!baixo)
+            player.fimy = player.posy - 200;
 
-    if ((*caindo) && (cima))
-    {
         player.posy -= 5;
-
-        if (player.posy <= 5)
-        {
-            player.posy = 0;
-            *caindo = false;
-        }
     }
+
+    if (
+    (!cima && *pulando) || // se bateu a cabeça pulando ou
+    (baixo && !(*pulando)) || // se pode cair e não está pulando ou
+    (!al_key_down(&keystate, ALLEGRO_KEY_UP) || (player.posy == player.fimy)))
+    // se parou de pular ou se alcançou o ponto máximo
+    {
+        *pulando = false;
+        *caindo  = true;
+    }      
+
+    if (*caindo) // se está caindo
+    {
+       if (!baixo) // e bateu em baixo
+            *caindo = false;
+
+        else   
+            player.posy += 5;
+    }
+
+   
 }
 
