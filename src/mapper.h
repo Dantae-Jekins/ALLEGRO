@@ -69,9 +69,9 @@ int load_map (int nivel)
         {
             atributo = 0;
             box[contagem].existe = true;
-            box[contagem].posy = jatoi(aux_ch, &aux); 
-            contagem++;
+            box[contagem].posy = jatoi(aux_ch, &aux);  
             printf ("%d\n", box[contagem].posy);
+            contagem++;
         }
 
         else if (ch > 47 && ch < 58)

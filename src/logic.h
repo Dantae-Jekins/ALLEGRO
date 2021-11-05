@@ -32,3 +32,15 @@ char *strcrop(unsigned int i, unsigned int j, char *vec1, char *vec2)
   vec2[j] = '\0'; // coloca ponto de parada
   return vec2;
 }
+
+// copia i caracteres de vec2 para vec1
+void strmov(unsigned int i, char *vec1, char *vec2)
+{
+  int j = 0;
+  while( j <= i )
+  {
+    vec1[j] = vec2[j];
+    j++;
+  } 
+  
+}

@@ -16,7 +16,7 @@ void render_txt (int posx0, int posy0, int posx1, int posy1, char *texto, ALLEGR
       al_draw_multiline_text(
         fonte, BRANCO,
         posx0+20, posy0+20,
-        posx1-10, 15,
+        posx1 - posx0 - 40, 20,
         ALLEGRO_ALIGN_LEFT,
         texto        
       );
@@ -40,6 +40,7 @@ bool render_txtbox (int ID, ALLEGRO_FONT *fonte)
     
     case 1:
     {
+      printf("%p %p\n", fonte, txtbox[ID].text);
       render_txt(
         comment_x0, comment_y0,
         comment_x1, comment_y1,

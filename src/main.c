@@ -49,22 +49,10 @@ int main(void)
     // Inicialização do jogo
     bool rodando = true;
     int timezin = 0;
-    //EXPERIMENTAL v !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-    int ID1 = genBox();
-    box[ID1].posx = 200;
-    box[ID1].posy = 280;
-    box[ID1].type = 1;
-
-    int ID2 = genBox();
-    box[ID2].posx = 400;
-    box[ID2].posy = 320;
-    box[ID2].type = 2;
-
-    //EXPERIMENTAL ^ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     printf("\n\nSETUP COMPLETO\n");
+    chat_stream(display, 0, 0);
     al_start_timer(timer);
-
+    //chat_stream(display, 0, 0);
     while (rodando)
     {
       // evento
@@ -88,7 +76,7 @@ int main(void)
       {
         checkInput(keystate);
         
-        if (timezin == 30)
+        if (timezin == 60)
         {
           player.oxygen -= 1;
           timezin = 0;
