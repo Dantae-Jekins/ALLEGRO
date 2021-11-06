@@ -52,7 +52,7 @@ int main(void)
     int timezin = 0;
     printf("\n\nSETUP COMPLETO\n");
     al_start_timer(timer);
-    chat_stream(display, 0, 0);
+    //chat_stream(display, 0, 0);
     while (rodando)
     {
       // evento
