@@ -1,3 +1,65 @@
+// colisão com mapa
+void check_if_inside_map(int x, int y, int px, int py, bool *value)
+{
+	if ((x >= px) && (x <= px+tileSiz) && (y >= py) && (y <= py+tileSiz))
+		*value = false;
+}
+
+void check_map_collision(int id, bool *direita, bool *esquerda, bool *baixo, bool *cima)
+{
+	if (mapa.map[id] == 0)
+	{
+		// ponto (x,y) do mapa
+		int px = tileSiz * ( id % mapa.col );
+		int py = tileSiz * ( id / mapa.col );
+		
+		if
+		(
+			(difference_module(px, player.posx) <= tileSiz) &&
+			(difference_module(py, player.posy) <= tileSiz)
+		)
+		{
+			int x, y;
+			y = player.posy-1; // checa em cima
+			for (x = player.posx+1; x <= (player.posx + ply_x-1); x++)
+			{
+				check_if_inside_map(x, y, px, py, cima);
+				if (!(*cima))
+				{
+					break;
+				}
+			}
+
+			y = player.posy + ply_y+1; // checa em baixo
+			for (x = player.posx+1; x <= (player.posx + ply_x-1); x++)
+			{
+				check_if_inside_map(x, y, px, py, baixo);
+				if (!(*baixo))
+					break;
+			}
+
+			x = player.posx-1; // checa a esquerda
+			for (y = player.posy+1; y <= player.posy + ply_y-1; y++)
+			{
+
+				check_if_inside_map(x, y, px, py,esquerda);
+				if (!(*esquerda))
+					break;
+			}
+
+			x = player.posx + ply_x+1; // checa a direita
+			for (y = player.posy+1; y <= player.posy + ply_y-1; y++)
+			{
+
+				check_if_inside_map(x, y, px, py, direita);
+				if (!(*direita))
+					break;
+			}
+		}
+	}
+}
+
+// colisão com caixas
 bool collide_with_box(int id)
 {
 	// analisa colis�es
@@ -24,7 +86,8 @@ bool collide_with_box(int id)
 
 bool check_if_inside_box(int x, int y, int id, int tamx, int tamy)
 {
-	if(
+	if
+	(
 		(x >= box[id].posx) &&
 		(x <= box[id].posx + tamx) &&
 		(y >= box[id].posy) &&

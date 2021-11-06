@@ -37,13 +37,14 @@ void mapColision(bool* direita, bool* esquerda, bool* baixo, bool* cima)
 void checkInput(ALLEGRO_KEYBOARD_STATE keystate)
 {
     //Movimentacao X
-    bool direita = true;
-    bool esquerda = true;
-    bool baixo = true;
-    bool cima = true;
+    bool direita    = true; 
+    bool esquerda   = true;
+    bool baixo      = true;
+    bool cima       = true;
+    
     // ANTES SE MOVIMENTAR
-
-    mapColision(&direita, &esquerda, &baixo, &cima);
+    for(int id = 0; id < mapa.tam; id++)
+        check_map_collision(id, &direita, &esquerda, &baixo, &cima);
 
     if (al_key_down(&keystate, ALLEGRO_KEY_RIGHT) && (direita)) {
         player.posx += 5;

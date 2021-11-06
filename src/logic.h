@@ -53,6 +53,6 @@ int difference_module(int i, int j)
     return j;
   }
 
-  i =- j;
+  i -= j;
   return i;
 }
