@@ -93,7 +93,7 @@ bool render_player()
   {
   case 1: // vivo
   {
-    al_draw_bitmap(bitmap[0], player.posx, player.posy, 0);
+    al_draw_bitmap(bitmap[2], player.posx, player.posy, 0);
     /* code */
   }
 
@@ -132,20 +132,21 @@ bool render_boxes(bool colide)
       {
         tamx = typ1x;
         tamy = typ1y;
-        cor = al_map_rgb(50, 50, 200);
+        al_draw_bitmap(bitmap[3], box[id].posx, box[id].posy, 0);
       }
       else if (box[id].type == 2)
       {
         tamx = typ2x;
         tamy = typ2y;
-        cor = al_map_rgb(200, 50, 50);
+        al_draw_bitmap(bitmap[4], box[id].posx, box[id].posy, 0);
       }
-      al_draw_filled_rectangle(
+
+      /*al_draw_filled_rectangle(
           box[id].posx,
           box[id].posy,
           box[id].posx + tamx,
           box[id].posy + tamy,
-          cor);
+          cor);*/
 
       // verifica colisões com a caixa
       if (colide)

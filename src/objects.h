@@ -33,6 +33,7 @@ struct caixa
   int posx;
   int posy;
   int type;
+  ALLEGRO_BITMAP *bitmap;
 } box[caixas];
 
 //jogador

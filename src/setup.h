@@ -1,6 +1,8 @@
 void setupBitmaps(void)
 {
-  bitmap[0] = al_load_bitmap("../imagens/ast0.png");
+  bitmap[2] = al_load_bitmap("../imagens/ast0.png");
+  bitmap[3] = al_load_bitmap("../imagens/oxy0.png");
+  bitmap[4] = al_load_bitmap("../imagens/spk0.png");
 }
 
 void setupBoxes(void)
