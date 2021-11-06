@@ -47,7 +47,7 @@ int genBox()
 {
   // prepara uma estrutura "box" de posições, tamanhos definidos
   // e que deve ser renderizada por outra função.
-  
+
   printf("\nBUSCANDO BLOCO LIVRE");
   for (size_t i = 0; i < caixas; i++)
   {

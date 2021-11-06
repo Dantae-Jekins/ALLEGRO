@@ -63,23 +63,23 @@ void check_map_collision(int id, bool *direita, bool *esquerda, bool *baixo, boo
 bool collide_with_box(int id)
 {
 	// analisa colis�es
-	if (box[id].type == 2) // obst�culo
-	{
-		player.posx = mapa.inix;
-		player.posy = mapa.iniy;
-		player.oxygen -= 1000;
-		return true;
-	}
-	else if (box[id].type == 1) // cilindro
+	if (box[id].type == 1) // cilindro
 	{
 		player.oxygen += 1000;
 		box[id].existe = false;
 		return true;
 	}
-	else if (box[id].type == 3) // meio cilindro
+	else if (box[id].type == 2) // meio cilindro
 	{
 		player.oxygen += 400;
 		box[id].existe = false;
+		return true;
+	}
+	else if (box[id].type == 3) // obstáculo
+	{
+		player.posx = mapa.inix;
+		player.posy = mapa.iniy;
+		player.oxygen -= 1000;
 		return true;
 	}
 	else if (box[id].type == 4) // gás
