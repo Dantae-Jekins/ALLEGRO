@@ -1,8 +1,24 @@
+void scale_bitmap(int id, int tamx, int tamy, char * file)
+{
+  ALLEGRO_BITMAP *aux = al_load_bitmap(file);
+  bitmap[id] = al_create_bitmap(tamx, tamy);
+  al_set_target_bitmap(bitmap[id]);
+  al_clear_to_color(al_map_rgba(0,0,0,0));
+  al_draw_scaled_bitmap
+  (
+    aux, 0, 0,
+    al_get_bitmap_width(aux),
+    al_get_bitmap_height(aux),
+    0, 0, tamx, tamy, 0
+  );
+  al_destroy_bitmap(aux);
+}
+
 void setupBitmaps(void)
 {
-  bitmap[2] = al_load_bitmap("../imagens/ast0.png");
-  bitmap[3] = al_load_bitmap("../imagens/oxy0.png");
-  bitmap[4] = al_load_bitmap("../imagens/spk0.png");
+  scale_bitmap(00, ply_x, ply_y, "../imagens/ast0.png");
+  scale_bitmap(10, ply_x, ply_y, "../imagens/spk0.png");
+  scale_bitmap(11, ply_x, ply_y, "../imagens/oxy0.png");
 }
 
 void setupBoxes(void)

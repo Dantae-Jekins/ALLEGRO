@@ -93,7 +93,7 @@ bool render_player()
   {
   case 1: // vivo
   {
-    al_draw_bitmap(bitmap[2], player.posx, player.posy, 0);
+  al_draw_bitmap(bitmap[0], player.posx, player.posy, 0);
     /* code */
   }
 
@@ -132,13 +132,13 @@ bool render_boxes(bool colide)
       {
         tamx = typ1x;
         tamy = typ1y;
-        al_draw_bitmap(bitmap[3], box[id].posx, box[id].posy, 0);
+        al_draw_bitmap(bitmap[10], box[id].posx, box[id].posy, 0);
       }
       else if (box[id].type == 2)
       {
         tamx = typ2x;
         tamy = typ2y;
-        al_draw_bitmap(bitmap[4], box[id].posx, box[id].posy, 0);
+        al_draw_bitmap(bitmap[11], box[id].posx, box[id].posy, 0);
       }
 
       /*al_draw_filled_rectangle(

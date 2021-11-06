@@ -114,6 +114,8 @@ int main(void)
 
   // Destruição das estruturas ALLEGRO
 
+  for(int i = 0; i < bitmap_count; i++)
+    al_destroy_bitmap(bitmap[i]);
   al_destroy_event_queue(queue);
   al_destroy_display(display);
   al_destroy_timer(timer);
