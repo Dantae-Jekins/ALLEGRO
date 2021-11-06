@@ -12,7 +12,7 @@ void setupPlayer(void)
   player.posx = mapa.inix;
   player.posy = mapa.iniy;
   player.estado = 1;
-  player.oxygen = 100;
+  player.oxygen = 2000;
 }
 
 bool setup(void)

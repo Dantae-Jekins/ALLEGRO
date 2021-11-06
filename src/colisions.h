@@ -67,18 +67,18 @@ bool collide_with_box(int id)
 	{
 		player.posx = mapa.inix;
 		player.posy = mapa.iniy;
-		player.oxygen -= 200;
+		player.oxygen -= 1000;
 		return true;
 	}
 	else if (box[id].type == 1) // cilindro
 	{
-		player.oxygen += 200;
+		player.oxygen += 1000;
 		box[id].existe = false;
 		return true;
 	}
 	else if (box[id].type == 3) // meio cilindro
 	{
-		player.oxygen += 100;
+		player.oxygen += 400;
 		box[id].existe = false;
 		return true;
 	}

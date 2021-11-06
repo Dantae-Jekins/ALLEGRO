@@ -1,7 +1,7 @@
 // variáveis gerais
 #define height 720
 #define width 1080
-#define tileSiz 60
+#define tileSiz 50
 #define fps 60.0
 
 // constantes de posições do chat
@@ -12,16 +12,16 @@ const int comment_x1 = width-(width/10+120);
 const int comment_y1 = height-60;
 
 // constantes de tamanho das box
-#define typ1x 40
-#define typ1y 80
+#define typ1x 25
+#define typ1y 50
 
-#define typ2x 50
-#define typ2y 50
+#define typ2x 20
+#define typ2y 40
 
 #define typ3x 30
 #define typ3y 80
 
-#define typ4x 300
+#define typ4x 250
 #define typ4y 150
 
 #define speed 5
