@@ -91,7 +91,7 @@ bool check_if_inside_box(int x, int y, int id, int tamx, int tamy)
 		(x >= box[id].posx) &&
 		(x <= box[id].posx + tamx) &&
 		(y >= box[id].posy) &&
-		(x <= box[id].posy + tamy)
+		(y <= box[id].posy + tamy)
 		)
 	{
 		return collide_with_box(id);
