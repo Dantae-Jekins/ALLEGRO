@@ -14,8 +14,16 @@ const int comment_y1 = height-60;
 // constantes de tamanho das box
 #define typ1x 40
 #define typ1y 80
+
 #define typ2x 50
 #define typ2y 50
+
+#define typ3x 30
+#define typ3y 80
+
+#define typ4x 300
+#define typ4y 150
+
 #define speed 5
 
 // variáveis de tamanho do jogador

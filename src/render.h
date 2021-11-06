@@ -161,6 +161,18 @@ bool render_boxes (bool colide, bool primitives)
           tamy = typ2y;
           cor = al_map_rgb(200, 50, 50);
         }
+        else if (box[id].type == 3)
+        {
+          tamx = typ3x;
+          tamy = typ3y;
+          cor = al_map_rgb(75,75, 175);
+        }
+        else if (box[id].type == 4)
+        {
+          tamx = typ4x;
+          tamy = typ4y;
+          cor = al_map_rgba(150, 100, 150, 100);
+        }
         al_draw_filled_rectangle(
             box[id].posx,
             box[id].posy,
