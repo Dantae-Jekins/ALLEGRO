@@ -142,7 +142,6 @@ void chat_stream(ALLEGRO_DISPLAY *display, bool run, int code)
 					break;
 				}
 				txtbox[id].text = strcrop(i, 0, comment, aux);
-
 				render_paused_chat(id, backup, BOLD);
 				
 				//espera input
