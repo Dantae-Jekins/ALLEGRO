@@ -1,39 +1,3 @@
-void mapColision(bool* direita, bool* esquerda, bool* baixo, bool* cima)
-{
-    for (int i = 0; i < mapa.tam; i++)
-    {
-        if (mapa.map[i] != 1)
-        {
-            int px0 = tileSiz * (i % mapa.col);
-            int py0 = tileSiz * (i / mapa.col);
-
-            for (int px1 = px0; px1 < (px0 + tileSiz); px1++)
-            {
-                for (int py1 = py0; py1 < (py0 + tileSiz); py1++)
-                {
-                    if ((px1 > player.posx) && (px1 < player.posx + ply_x) && (py1 == player.posy - 1))
-                    {
-                        *cima = false;
-                    }
-                    if ((py1 > player.posy) && (py1 < player.posy + ply_y) && (px1 == player.posx + ply_x + 1))
-                    {
-                        *direita = false;
-                    }
-                    if ((px1 > player.posx) && (px1 < player.posx + ply_x) && (py1 == player.posy + ply_y + 1))
-                    {
-                        *baixo = false;
-                    }
-                    if ((py1 > player.posy) && (py1 < player.posy + ply_y) && (px1 == player.posx - 1))
-                    {
-                        *esquerda = false;
-                    }
-                }
-            }
-        }
-    }
-}
-
-
 void checkInput(ALLEGRO_KEYBOARD_STATE keystate)
 {
     //Movimentacao X
@@ -85,7 +49,6 @@ void checkInput(ALLEGRO_KEYBOARD_STATE keystate)
         else   
             player.posy += 5;
     }
-
    
 }
 

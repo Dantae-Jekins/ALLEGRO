@@ -162,6 +162,21 @@ void chat_stream(ALLEGRO_DISPLAY *display, bool run, int code)
 	}
 }
 
+bool decrement_oxygen()
+{
+	if (player.oxygen > 1000)
+		player.oxygen = 1000;
+	
+	else if (player.oxygen < 0)
+	{
+		player.oxygen = 0;
+		return false;
+	}
+
+	player.oxygen -= 5;
+	return true;
+}
+
 bool termino()
 {
     bool done = false;
@@ -169,19 +184,12 @@ bool termino()
     int imageHeight = 0;
     
     ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
-    ALLEGRO_BITMAP* image = al_load_bitmap("../imagens/perdeu.bmp"); 
-    imagewidth = al_get_bitmap_width(image);
-    imageHeight = al_get_bitmap_height(image);
-
     al_register_event_source(event_queue, al_get_keyboard_event_source());
     while (!done)
     {       
         
         al_clear_to_color(al_map_rgb(0, 0, 0));
-        al_draw_bitmap(
-            image, width / 2 - imagewidth / 2, 
-            height / 2 - imageHeight / 2, 0);
-
+        al_draw_bitmap(bitmap[18], 0, 0, 0);
         al_flip_display();
         
 
@@ -200,7 +208,42 @@ bool termino()
 
     }
 
-    al_destroy_bitmap(image);
+    al_destroy_event_queue(event_queue); 
+   
+    return false;
+}
+
+bool vitoria()
+{
+    bool done = false;
+    int imagewidth = 0;
+    int imageHeight = 0;
+    
+    ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
+    al_register_event_source(event_queue, al_get_keyboard_event_source());
+    while (!done)
+    {       
+        
+        al_clear_to_color(al_map_rgb(0, 0, 0));
+        al_draw_bitmap(bitmap[19], 0, 0, 0);
+        al_flip_display();
+        
+
+        ALLEGRO_EVENT ev;
+        al_wait_for_event(event_queue, &ev);
+
+        if (ev.type == ALLEGRO_EVENT_KEY_DOWN)
+        {
+            switch (ev.keyboard.keycode)
+            {
+            case ALLEGRO_KEY_ENTER:
+                done = true;
+                break;
+            }
+        }
+
+    }
+
     al_destroy_event_queue(event_queue); 
    
     return false;

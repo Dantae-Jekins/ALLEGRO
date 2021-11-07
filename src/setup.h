@@ -17,8 +17,10 @@ void scale_bitmap(int id, int tamx, int tamy, char * file)
 void setupBitmaps(void)
 {
   scale_bitmap(0, ply_x, ply_y, "../imagens/ast0.png");
-  scale_bitmap(10, ply_x, ply_y, "../imagens/oxy0.png");
-  scale_bitmap(11, ply_x, ply_y, "../imagens/spk0.png");
+  scale_bitmap(10, typ1x, typ1y, "../imagens/oxy0.png");
+  scale_bitmap(11, typ3x, typ3y, "../imagens/spk0.png");
+  scale_bitmap(18, width, height, "../imagens/perdeu.png");
+  scale_bitmap(19, width, height, "../imagens/ganhou.jpeg");
 }
 
 void setupBoxes(void)
@@ -35,7 +37,7 @@ void setupPlayer(void)
   player.posx = mapa.inix;
   player.posy = mapa.iniy;
   player.estado = 1;
-  player.oxygen = 2000;
+  player.oxygen = 1000;
 }
 
 bool setup(void)
@@ -47,7 +49,7 @@ bool setup(void)
   printf("\nsettando estruturas\n");
   setupBoxes();
    
-  printf("\nsettando allegro");
+  printf("\nsettando allegro\n");
   bool checkup = true;
   if (!al_init())
   {

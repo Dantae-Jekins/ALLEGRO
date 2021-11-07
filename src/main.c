@@ -75,21 +75,22 @@ int main(void)
       if (evento.type == ALLEGRO_EVENT_TIMER)
       {
         checkInput(keystate);
-        
-        if (timezin == 60)
+        if (timezin == 30)
         {
-          player.oxygen -= 1;
+          if (!decrement_oxygen())
+          {
+            rodando = termino();
+            player.estado = 0;
+          }
           timezin = 0;
-          printf("\33[2K oxygen: %d\n", player.oxygen);
-          printf("\33[2K posx:   %d\n", player.posx);
-          printf("\33[2K posy:   %d\n", player.posy);
-          printf("\33[3A");
+          printf("\33[2K estado:    %d\n",player.estado);
+          printf("\33[2K oxygen: %.4d\n", player.oxygen);
+          printf("\33[2K posx:   %.4d\n", player.posx);
+          printf("\33[2K posy:   %.4d\n", player.posy);
+          printf("\33[4A");
         } timezin++;
-        
-        if (player.oxygen <= 0)
-        {
-          rodando = termino();
-        }
+        if (player.estado == 3)
+          rodando = vitoria();  
       }
     }
 

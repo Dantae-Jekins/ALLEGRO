@@ -13,12 +13,18 @@ void check_map_collision(int id, bool *direita, bool *esquerda, bool *baixo, boo
 		int px = tileSiz * ( id % mapa.col );
 		int py = tileSiz * ( id / mapa.col );
 		
+		int difx = px - player.posx;
+		int dify = py - player.posy;
 		if
 		(
-			(difference_module(px, player.posx) <= tileSiz) &&
-			(difference_module(py, player.posy) <= tileSiz)
+			((difx <= tileSiz) || (difx >= -tileSiz)) &&
+			((dify <= tileSiz) || (dify >= -tileSiz))
 		)
 		{
+			/* colisão por intervalo
+				// pensando.
+				*/
+			// colisão por coordenada (ineficiente)
 			int x, y;
 			y = player.posy-1; // checa em cima
 			for (x = player.posx+1; x <= (player.posx + ply_x-1); x++)
@@ -60,41 +66,52 @@ void check_map_collision(int id, bool *direita, bool *esquerda, bool *baixo, boo
 }
 
 // colisão com caixas
-bool collide_with_box(int id)
+void collide_with_box(int id)
 {
 	// analisa colis�es
-	if (box[id].type == 1) // cilindro
+	if (box[id].type == 0) // peça
 	{
-		player.oxygen += 1000;
 		box[id].existe = false;
-		return true;
+		player.estado += 1;	
+		return ;
 	}
-	else if (box[id].type == 2) // meio cilindro
+	else if (box[id].type == 1) // cilindro
 	{
 		player.oxygen += 400;
 		box[id].existe = false;
-		return true;
+		return ;
+	}
+	else if (box[id].type == 2) // meio cilindro
+	{
+		player.oxygen += 200;
+		box[id].existe = false;
+		return ;
 	}
 	else if (box[id].type == 3) // obstáculo
 	{
 		player.posx = mapa.inix;
 		player.posy = mapa.iniy;
-		player.oxygen -= 1000;
-		return true;
+		player.oxygen -= 400;
+		return ;
 	}
 	else if (box[id].type == 4) // gás
 	{
-		player.oxygen -= 1;
-		return false;
+		player.oxygen -= 5;
+		return ;
+	}
+	else if (box[id].type == 9) //nave
+	{
+		if(player.estado == 2)
+			player.estado +=1;
 	}
 	else 
 	{
 		printf("Tipo de caixa errado");
 		box[id].existe = false;
-		return true;
+		return ;
 	}
 }
-
+/*
 bool check_if_inside_box(int x, int y, int id, int tamx, int tamy)
 {
 	if
@@ -109,18 +126,24 @@ bool check_if_inside_box(int x, int y, int id, int tamx, int tamy)
 	}
 
 	return false;
-}
+} */
 
 void check_box_collision(int id, int tamx, int tamy)
 {
-	//checa se a caixa está perto
-	// retira o módulo da distância
-	// se está dentro dá área (NÃO CIRCULAR!) de 150 pixels
+	int difx = player.posx - box[id].posx;
+	int dify = player.posy - box[id].posy;
+
+	// checa se a caixa está encostada
+	// precisão por interval (eficiente)
 	if(
-		(difference_module(box[id].posx, player.posx) < 150) &&
-		(difference_module(box[id].posy, player.posy) < 150)
+		(difx >=-ply_x)&&
+		(difx <= tamx) &&
+		(dify >=-ply_y)&&
+		(dify <= tamy)
 		)
 	{
+		collide_with_box(id);
+		/* colisão por coordenada (ineficiente) 
 		bool colidiu = false;
 		int x, y;
 
@@ -158,5 +181,6 @@ void check_box_collision(int id, int tamx, int tamy)
 			if (colidiu)
 				break;
 		}
+		*/
 	}
 }

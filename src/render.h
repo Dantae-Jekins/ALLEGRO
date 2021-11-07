@@ -100,15 +100,18 @@ bool render_player()
   switch (player.estado)
   {
   case 1: // vivo
-  {
-  al_draw_bitmap(bitmap[0], player.posx, player.posy, 0);
-    /* code */
-  }
+    al_draw_bitmap(bitmap[0], player.posx, player.posy, 0);
+    break;
 
-  break;
-
-  case 0:
-    printf("\nrender() player.estado = 0 n�o implementado");
+  case 2:
+    al_draw_bitmap(bitmap[0], player.posx, player.posy, 0);
+    al_draw_filled_rectangle(
+      player.posx+10,
+      player.posy-10,
+      player.posx+ply_x-10,
+      player.posy, 
+      al_map_rgba(50, 0, 50, 125)
+      );
     break;
 
   default:
@@ -136,12 +139,11 @@ bool render_boxes (bool colide, bool primitives)
       int tamy;
       ALLEGRO_COLOR cor;
       cor.a = 0;
-      if (box[id].type == 0) //nada
+      if (box[id].type == 0) // peça
       {
-        printf("men.?");
-        tamx = 5;
-        tamy = 5;
-        cor = al_map_rgb(0, 0, 0);
+        tamx = typ0x;
+        tamy = typ0y;
+        cor = al_map_rgba(100, 10, 100, 125);
       }
       else if (box[id].type == 1) // oxigênio
       {
@@ -166,6 +168,12 @@ bool render_boxes (bool colide, bool primitives)
         tamx = typ4x;
         tamy = typ4y;
         cor = al_map_rgba(150, 100, 150, 100);
+      }
+      else if (box[id].type == 9) // nave
+      {
+        tamx = typ9x;
+        tamy = typ9y;
+        cor = al_map_rgba(150, 150, 50, 100);
       }
       if ((cor.a != 0) && primitives)
       {
