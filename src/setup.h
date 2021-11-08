@@ -1,16 +1,14 @@
-void scale_bitmap(int id, int tamx, int tamy, char * file)
+void scale_bitmap(int id, int tamx, int tamy, char *file)
 {
   ALLEGRO_BITMAP *aux = al_load_bitmap(file);
   bitmap[id] = al_create_bitmap(tamx, tamy);
   al_set_target_bitmap(bitmap[id]);
-  al_clear_to_color(al_map_rgba(0,0,0,0));
-  al_draw_scaled_bitmap
-  (
-    aux, 0, 0,
-    al_get_bitmap_width(aux),
-    al_get_bitmap_height(aux),
-    0, 0, tamx, tamy, 0
-  );
+  al_clear_to_color(al_map_rgba(0, 0, 0, 0));
+  al_draw_scaled_bitmap(
+      aux, 0, 0,
+      al_get_bitmap_width(aux),
+      al_get_bitmap_height(aux),
+      0, 0, tamx, tamy, 0);
   al_destroy_bitmap(aux);
 }
 
@@ -19,6 +17,20 @@ void setupBitmaps(void)
   scale_bitmap(00, ply_x, ply_y, "../imagens/ast0.png");
   scale_bitmap(10, ply_x, ply_y, "../imagens/spk0.png");
   scale_bitmap(11, ply_x, ply_y, "../imagens/oxy0.png");
+  scale_bitmap(12, ply_x, ply_y, "../imagens/rct0.png");
+  scale_bitmap(13, ply_x, ply_y, "../imagens/roc0.png");
+  scale_bitmap(14, ply_x, ply_y, "../imagens/tre0.png");
+  scale_bitmap(15, ply_x, ply_y, "../imagens/bsh0.png");
+  scale_bitmap(16, ply_x, ply_y, "../imagens/mon0.png");
+  scale_bitmap(17, ply_x, ply_y, "../imagens/anm0.png");
+  scale_bitmap(18, ply_x, ply_y, "../imagens/anm1.png");
+  scale_bitmap(19, ply_x, ply_y, "../imagens/anm2.png");
+  scale_bitmap(20, ply_x, ply_y, "../imagens/anm2.png");
+  scale_bitmap(21, ply_x, ply_y, "../imagens/til0");
+  scale_bitmap(22, ply_x, ply_y, "../imagens/til1");
+  scale_bitmap(23, ply_x, ply_y, "../imagens/til2");
+  scale_bitmap(24, ply_x, ply_y, "../imagens/til3");
+  scale_bitmap(25, ply_x, ply_y, "../imagens/til4");
 }
 
 void setupBoxes(void)

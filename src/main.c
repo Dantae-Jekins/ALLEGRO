@@ -61,6 +61,21 @@ int main(void)
   box[ID2].posy = 320;
   box[ID2].type = 2;
 
+  int ID3 = genBox();
+  box[ID3].posx = 100;
+  box[ID3].posy = 130;
+  box[ID3].type = 3;
+
+  int ID4 = genBox();
+  box[ID4].posx = 300;
+  box[ID4].posy = 230;
+  box[ID4].type = 4;
+
+  int ID5 = genBox();
+  box[ID5].posx = 170;
+  box[ID5].posy = 400;
+  box[ID5].type = 5;
+
   //EXPERIMENTAL ^ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   printf("\n\nSETUP COMPLETO\n");
   al_start_timer(timer);
@@ -114,7 +129,7 @@ int main(void)
 
   // Destruição das estruturas ALLEGRO
 
-  for(int i = 0; i < bitmap_count; i++)
+  for (int i = 0; i < bitmap_count; i++)
     al_destroy_bitmap(bitmap[i]);
   al_destroy_event_queue(queue);
   al_destroy_display(display);

@@ -93,7 +93,7 @@ bool render_player()
   {
   case 1: // vivo
   {
-  al_draw_bitmap(bitmap[0], player.posx, player.posy, 0);
+    al_draw_bitmap(bitmap[0], player.posx, player.posy, 0);
     /* code */
   }
 
@@ -139,6 +139,28 @@ bool render_boxes(bool colide)
         tamx = typ2x;
         tamy = typ2y;
         al_draw_bitmap(bitmap[11], box[id].posx, box[id].posy, 0);
+      }
+
+      else if (box[id].type == 3) // Foguete
+      {
+        tamx = typ1x;
+        tamy = typ1y;
+        al_draw_bitmap(bitmap[12], box[id].posx, box[id].posy, 0);
+      }
+
+      else if (box[id].type == 4) // Rocha
+      {
+        tamx = typ2x;
+        tamy = typ2y;
+        //colisao = true;
+        al_draw_bitmap(bitmap[13], box[id].posx, box[id].posy, 0);
+      }
+
+      else if (box[id].type == 5) // Árvore
+      {
+        tamx = typ2x;
+        tamy = typ1y;
+        al_draw_bitmap(bitmap[14], box[id].posx, box[id].posy, 0);
       }
 
       /*al_draw_filled_rectangle(
