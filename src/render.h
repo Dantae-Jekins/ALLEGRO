@@ -70,7 +70,7 @@ bool render_map()
     if (map[i] == 0)
       cor = al_map_rgb(30, 10, 30);
     else if (map[i] == 1)
-      cor = al_map_rgb(120, 30, 100);
+      al_draw_bitmap(bitmap[20], px, py, 0);
     else
     {
       printf("render() map[%d] contem tipo nao registrado", i);
@@ -141,26 +141,11 @@ bool render_boxes(bool colide)
         al_draw_bitmap(bitmap[11], box[id].posx, box[id].posy, 0);
       }
 
-      else if (box[id].type == 3) // Foguete
+      else if (box[id].type == 9)
       {
-        tamx = typ1x;
-        tamy = typ1y;
-        al_draw_bitmap(bitmap[12], box[id].posx, box[id].posy, 0);
-      }
-
-      else if (box[id].type == 4) // Rocha
-      {
-        tamx = typ2x;
-        tamy = typ2y;
-        //colisao = true;
-        al_draw_bitmap(bitmap[13], box[id].posx, box[id].posy, 0);
-      }
-
-      else if (box[id].type == 5) // Árvore
-      {
-        tamx = typ2x;
-        tamy = typ1y;
-        al_draw_bitmap(bitmap[14], box[id].posx, box[id].posy, 0);
+        tamx = typ9x;
+        tamy = typ9y;
+        al_draw_bitmap(bitmap[9], box[id].posx, box[id].posy, 0);
       }
 
       /*al_draw_filled_rectangle(

@@ -12,12 +12,12 @@ void scale_bitmap(int id, int tamx, int tamy, char *file)
   al_destroy_bitmap(aux);
 }
 
-void setupBitmaps(void)
+void setupBitmaps(void) // 0 - 9 player     10 - 19 - Interagiveis    20 - 25 Tiles
 {
-  scale_bitmap(00, ply_x, ply_y, "../imagens/ast0.png");
+  scale_bitmap(0, ply_x, ply_y, "../imagens/ast0.png");
+  scale_bitmap(9, ply_x, ply_y, "../imagens/rct0.png");
   scale_bitmap(10, ply_x, ply_y, "../imagens/spk0.png");
   scale_bitmap(11, ply_x, ply_y, "../imagens/oxy0.png");
-  scale_bitmap(12, ply_x, ply_y, "../imagens/rct0.png");
   scale_bitmap(13, ply_x, ply_y, "../imagens/roc0.png");
   scale_bitmap(14, ply_x, ply_y, "../imagens/tre0.png");
   scale_bitmap(15, ply_x, ply_y, "../imagens/bsh0.png");
@@ -26,7 +26,7 @@ void setupBitmaps(void)
   scale_bitmap(18, ply_x, ply_y, "../imagens/anm1.png");
   scale_bitmap(19, ply_x, ply_y, "../imagens/anm2.png");
   scale_bitmap(20, ply_x, ply_y, "../imagens/anm2.png");
-  scale_bitmap(21, ply_x, ply_y, "../imagens/til0");
+  scale_bitmap(21, tileSiz, tileSiz, "../imagens/til0");
   scale_bitmap(22, ply_x, ply_y, "../imagens/til1");
   scale_bitmap(23, ply_x, ply_y, "../imagens/til2");
   scale_bitmap(24, ply_x, ply_y, "../imagens/til3");
