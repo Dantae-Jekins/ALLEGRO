@@ -1,35 +1,48 @@
 // TEXTOS
 void render_txt(int posx0, int posy0, int posx1, int posy1, char *texto, ALLEGRO_FONT *fonte)
 {
-      al_draw_filled_rectangle(
-        posx0, posy0,
-        posx1, posy1,
-        CIANLITE
-      );
-      
-      al_draw_filled_rectangle(
-        posx0+15, posy0+15,
-        posx1-10, posy1-10,
-        AZULBOLD  
-      );
-      printf("\n { ");
-      printf("%d %d %d %d \n", posx0, posx1, posy0, posy1);
-      printf("%s \n", texto);
-      al_draw_multiline_text(
-        fonte, BRANCO,
-        (float) (posx0+20), 
-        (float) (posy0+20),
-        (float) (posx1 - posx0), 
-        (float) 0,
-        0, texto        
-      );
-      printf("\n }\n");
+  al_draw_filled_rectangle(
+    posx0, posy0,
+    posx1, posy1,
+    CIANLITE
+  );
+  
+  al_draw_filled_rectangle(
+    posx0+15, posy0+15,
+    posx1-10, posy1-10,
+    AZULBOLD  
+  );
+  //printf("\n { ");
+  //printf("%d %d %d %d \n", posx0, posx1, posy0, posy1);
+  //printf("%s \n", texto);
+
+  //!!!
+  int como_assim;
+  int pq_isso_funciona; 
+  char **que = (char**)malloc(sizeof(char**)*1);
+  *que = malloc(sizeof(char*)*1);    //?????????????????????
+  for (int i = 0; texto[i] != '\0'; i++)
+  {
+    **que = '?';
+  }// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  // PQ Q ISSO RESOLVE O MEU PROBLEMA??
+  // ACHEI DO NADA E N POSSO DAR FREE
+
+
+
+  al_draw_multiline_text(
+    fonte, BRANCO,
+    (posx0+20), 
+    (posy0+20),
+    (posx1 - posx0-40), 
+    20, 0, texto        
+  );
+  //printf("\n }\n");      
 }
 
-bool render_txtbox(int ID, ALLEGRO_FONT *fonte)
+bool render_txtbox(int ID)
 {
   bool set = true;
-
   switch (txtbox[ID].type)
   {
     case 0: // log de teste 
@@ -37,7 +50,7 @@ bool render_txtbox(int ID, ALLEGRO_FONT *fonte)
       render_txt(
         width/2-120, height/2-60,
         width/2+120, height/2+60,
-        "Teste", fonte
+        "Teste", FONTES[0]
       );
       break;
     }
@@ -47,7 +60,8 @@ bool render_txtbox(int ID, ALLEGRO_FONT *fonte)
       render_txt(
         comment_x0, comment_y0,
         comment_x1, comment_y1,
-        txtbox[ID].text, fonte);
+        txtbox[ID].text, FONTES[0]
+      );
 
     break;
   }
@@ -174,6 +188,12 @@ bool render_boxes (bool colide, bool primitives)
         tamx = typ9x;
         tamy = typ9y;
         cor = al_map_rgba(150, 150, 50, 100);
+      }
+      else if (box[id].type >= 10)
+      {
+        tamx = 30;
+        tamy = 30;
+        al_draw_bitmap(bitmap[9],box[id].posx, box[id].posy, 0);
       }
       if ((cor.a != 0) && primitives)
       {

@@ -49,3 +49,7 @@ const int comment_y1 = height - 60;
 #define bitmap_count 20
 ALLEGRO_BITMAP *bitmap[bitmap_count]; // Vetor de ponteiros para bitmaps, cada elemento desse vetor é um ponteiro
                           // Não da pra saber o tamanho do bitmap, por isso cria um ponteiro
+#define font_count 2
+ALLEGRO_FONT *FONTES[font_count];
+
+ALLEGRO_DISPLAY *display;

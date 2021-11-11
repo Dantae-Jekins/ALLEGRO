@@ -17,10 +17,25 @@ void scale_bitmap(int id, int tamx, int tamy, char * file)
 void setupBitmaps(void)
 {
   scale_bitmap(0, ply_x, ply_y, "../imagens/ast0.png");
+  scale_bitmap(9, 30, 30, "../imagens/event.png");
   scale_bitmap(10, typ1x, typ1y, "../imagens/oxy0.png");
   scale_bitmap(11, typ3x, typ3y, "../imagens/spk0.png");
   scale_bitmap(18, width, height, "../imagens/perdeu.png");
   scale_bitmap(19, width, height, "../imagens/ganhou.jpeg");
+}
+
+void setupFonts(void)
+{
+  FONTES[0] = al_load_ttf_font
+  (
+    "../fonts/roboto/Roboto-Regular.ttf",
+    18, 0
+  );
+  FONTES[1] = al_load_ttf_font
+  (
+    "../fonts/roboto/Roboto-Bold.ttf",
+    22, 0
+  );
 }
 
 void setupBoxes(void)
@@ -84,6 +99,7 @@ bool setup(void)
   setupBoxes();
   setupPlayer();
   setupBitmaps();
+  setupFonts();
   mapa.code = 0;
   mapa.map = malloc(sizeof(int)*1);
   load_map(0);

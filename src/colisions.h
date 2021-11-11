@@ -104,6 +104,11 @@ void collide_with_box(int id)
 		if(player.estado == 2)
 			player.estado +=1;
 	}
+	else if (box[id].type >= 10)
+	{
+		chat_stream(0, box[id].type - 10);
+		box[id].existe = false;
+	}
 	else 
 	{
 		printf("Tipo de caixa errado");
