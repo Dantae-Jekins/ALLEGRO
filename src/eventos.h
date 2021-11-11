@@ -1,10 +1,10 @@
 
 
-bool render_paused_chat(size_t id, ALLEGRO_BITMAP *background)
+bool render_paused_chat(size_t id, int character, ALLEGRO_BITMAP *background)
 {
 	al_clear_to_color(al_map_rgb(0,0,0));
 	al_draw_bitmap(background,0,0,0);
-	bool paused = render_txtbox(id);
+	bool paused = render_txtbox(id, character);
 	al_flip_display();
 	return paused;
 }
@@ -142,7 +142,7 @@ void chat_stream(bool run, int code)
 						break;
 					}
 					txtbox[id].text = strcrop(i, 0, comment, aux);
-					render_paused_chat(id, backup);
+					render_paused_chat(id, image[pg], backup);
 					pg ++;
 				}
 				

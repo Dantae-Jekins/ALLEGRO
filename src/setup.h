@@ -17,6 +17,8 @@ void scale_bitmap(int id, int tamx, int tamy, char * file)
 void setupBitmaps(void)
 {
   scale_bitmap(0, ply_x, ply_y, "../imagens/ast0.png");
+  scale_bitmap(1, 80, 80, "../imagens/ast_prof.png");
+  scale_bitmap(2, 80, 80, "../imagens/holo_prof.png");
   scale_bitmap(9, 30, 30, "../imagens/event.png");
   scale_bitmap(10, typ1x, typ1y, "../imagens/oxy0.png");
   scale_bitmap(11, typ3x, typ3y, "../imagens/spk0.png");
