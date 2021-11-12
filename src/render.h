@@ -1,29 +1,26 @@
 // TEXTOS
 void render_txt(int posx0, int posy0, int posx1, int posy1, char *texto, ALLEGRO_FONT *fonte)
 {
-      al_draw_filled_rectangle(
-        posx0, posy0,
-        posx1, posy1,
-        CIANLITE
-      );
-      
-      al_draw_filled_rectangle(
-        posx0+15, posy0+15,
-        posx1-10, posy1-10,
-        AZULBOLD  
-      );
-      printf("\n { ");
-      printf("%d %d %d %d \n", posx0, posx1, posy0, posy1);
-      printf("%s \n", texto);
-      al_draw_multiline_text(
-        fonte, BRANCO,
-        (float) (posx0+20), 
-        (float) (posy0+20),
-        (float) (posx1 - posx0), 
-        (float) 0,
-        0, texto        
-      );
-      printf("\n }\n");
+  al_draw_filled_rectangle(
+      posx0, posy0,
+      posx1, posy1,
+      CIANLITE);
+
+  al_draw_filled_rectangle(
+      posx0 + 15, posy0 + 15,
+      posx1 - 10, posy1 - 10,
+      AZULBOLD);
+  printf("\n { ");
+  printf("%d %d %d %d \n", posx0, posx1, posy0, posy1);
+  printf("%s \n", texto);
+  al_draw_multiline_text(
+      fonte, BRANCO,
+      (float)(posx0 + 20),
+      (float)(posy0 + 20),
+      (float)(posx1 - posx0),
+      (float)0,
+      0, texto);
+  printf("\n }\n");
 }
 
 bool render_txtbox(int ID, ALLEGRO_FONT *fonte)
@@ -32,19 +29,18 @@ bool render_txtbox(int ID, ALLEGRO_FONT *fonte)
 
   switch (txtbox[ID].type)
   {
-    case 0: // log de teste 
-    {
-      render_txt(
-        width/2-120, height/2-60,
-        width/2+120, height/2+60,
-        "Teste", fonte
-      );
-      break;
-    }
-    
-    case 1:
-    {
-      render_txt(
+  case 0: // log de teste
+  {
+    render_txt(
+        width / 2 - 120, height / 2 - 60,
+        width / 2 + 120, height / 2 + 60,
+        "Teste", fonte);
+    break;
+  }
+
+  case 1:
+  {
+    render_txt(
         comment_x0, comment_y0,
         comment_x1, comment_y1,
         txtbox[ID].text, fonte);
@@ -106,12 +102,11 @@ bool render_player()
   case 2:
     al_draw_bitmap(bitmap[0], player.posx, player.posy, 0);
     al_draw_filled_rectangle(
-      player.posx+10,
-      player.posy-10,
-      player.posx+ply_x-10,
-      player.posy, 
-      al_map_rgba(50, 0, 50, 125)
-      );
+        player.posx + 10,
+        player.posy - 10,
+        player.posx + ply_x - 10,
+        player.posy,
+        al_map_rgba(50, 0, 50, 125));
     break;
 
   default:
@@ -124,7 +119,7 @@ bool render_player()
 }
 
 // CAIXAS
-bool render_boxes (bool colide, bool primitives)
+bool render_boxes(bool colide, bool primitives)
 {
   ALLEGRO_COLOR cor;
   cor.a = 0;
@@ -155,7 +150,7 @@ bool render_boxes (bool colide, bool primitives)
       {
         tamx = typ2x;
         tamy = typ2y;
-        cor = al_map_rgba(75,75, 175,255);
+        cor = al_map_rgba(75, 75, 175, 255);
       }
       else if (box[id].type == 3) // obstáculo
       {
@@ -169,6 +164,14 @@ bool render_boxes (bool colide, bool primitives)
         tamy = typ4y;
         cor = al_map_rgba(150, 100, 150, 100);
       }
+      // EXPERIMENTAL
+      else if (box[id].type == 5) // lava
+      {
+        tamx = typ5x;
+        tamy = typ5y;
+        al_draw_bitmap(bitmap[14], box[id].posx, box[id].posy, 0);
+      }
+
       else if (box[id].type == 9) // nave
       {
         tamx = typ9x;
@@ -178,18 +181,16 @@ bool render_boxes (bool colide, bool primitives)
       if ((cor.a != 0) && primitives)
       {
         al_draw_filled_rectangle(
-          box[id].posx,
-          box[id].posy,
-          box[id].posx+tamx,
-          box[id].posy+tamy,
-          cor);
+            box[id].posx,
+            box[id].posy,
+            box[id].posx + tamx,
+            box[id].posy + tamy,
+            cor);
       }
       // verifica colisões com a caixa
       if (colide)
-        check_box_collision(id, tamx, tamy); 
-      
+        check_box_collision(id, tamx, tamy);
     }
-    
   }
   return set;
 }

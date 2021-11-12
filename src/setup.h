@@ -1,16 +1,14 @@
-void scale_bitmap(int id, int tamx, int tamy, char * file)
+void scale_bitmap(int id, int tamx, int tamy, char *file)
 {
   ALLEGRO_BITMAP *aux = al_load_bitmap(file);
   bitmap[id] = al_create_bitmap(tamx, tamy);
   al_set_target_bitmap(bitmap[id]);
-  al_clear_to_color(al_map_rgba(0,0,0,0));
-  al_draw_scaled_bitmap
-  (
-    aux, 0, 0,
-    al_get_bitmap_width(aux),
-    al_get_bitmap_height(aux),
-    0, 0, tamx, tamy, 0
-  );
+  al_clear_to_color(al_map_rgba(0, 0, 0, 0));
+  al_draw_scaled_bitmap(
+      aux, 0, 0,
+      al_get_bitmap_width(aux),
+      al_get_bitmap_height(aux),
+      0, 0, tamx, tamy, 0);
   al_destroy_bitmap(aux);
 }
 
@@ -19,6 +17,7 @@ void setupBitmaps(void)
   scale_bitmap(0, ply_x, ply_y, "../imagens/ast0.png");
   scale_bitmap(10, typ1x, typ1y, "../imagens/oxy0.png");
   scale_bitmap(11, typ3x, typ3y, "../imagens/spk0.png");
+  scale_bitmap(14, ply_x, ply_y, "../imagens/lav0.png");
   scale_bitmap(18, width, height, "../imagens/perdeu.png");
   scale_bitmap(19, width, height, "../imagens/ganhou.jpeg");
 }
@@ -48,7 +47,7 @@ bool setup(void)
   // Inicializa as estruturas
   printf("\nsettando estruturas\n");
   setupBoxes();
-   
+
   printf("\nsettando allegro\n");
   bool checkup = true;
   if (!al_init())
@@ -85,9 +84,9 @@ bool setup(void)
   setupPlayer();
   setupBitmaps();
   mapa.code = 0;
-  mapa.map = malloc(sizeof(int)*1);
+  mapa.map = malloc(sizeof(int) * 1);
   load_map(0);
-  setupPlayer(); 
+  setupPlayer();
   return checkup;
   // permite que a função analise vários de
   // uma vez, sem parar no primeiro.

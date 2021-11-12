@@ -27,6 +27,9 @@ const int comment_y1 = height - 60;
 #define typ4x 250
 #define typ4y 150
 
+#define typ5x 45
+#define typ5y 45
+
 #define typ9x 150
 #define typ9y 75
 
@@ -48,4 +51,4 @@ const int comment_y1 = height - 60;
 
 #define bitmap_count 20
 ALLEGRO_BITMAP *bitmap[bitmap_count]; // Vetor de ponteiros para bitmaps, cada elemento desse vetor é um ponteiro
-                          // Não da pra saber o tamanho do bitmap, por isso cria um ponteiro
+                                      // Não da pra saber o tamanho do bitmap, por isso cria um ponteiro
