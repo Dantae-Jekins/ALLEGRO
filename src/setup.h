@@ -55,6 +55,8 @@ void setupPlayer(void)
 {
   player.posx = mapa.inix;
   player.posy = mapa.iniy;
+  player.sentido = true;
+  player.anim = 0;
   player.estado = 1;
   player.oxygen = 1000;
 }
@@ -104,7 +106,7 @@ bool setup(void)
   setupPlayer();
   setupBitmaps();
   setupFonts();
-  mapa.code = 0;
+  mapa.code = 1;
   mapa.map = malloc(sizeof(int)*1);
   load_map(0);
   setupPlayer(); 

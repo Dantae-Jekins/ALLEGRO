@@ -20,7 +20,7 @@ struct textos
 } txtbox[txt_boxes];
 
 //interagiveis
-#define caixas 10
+#define caixas 15
 struct caixa
 {
   bool existe;
@@ -39,9 +39,8 @@ struct jogador
   int fimy;
   int velx;
   int vely;
-
-  bool pulando;
-  bool caindo;
+  int anim;
+  bool sentido;
 } player;
 
 // funções

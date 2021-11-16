@@ -11,8 +11,10 @@ void checkInput(ALLEGRO_KEYBOARD_STATE keystate)
         check_map_collision(id, &direita, &esquerda, &baixo, &cima);
 
     // Vê as velocidades
+    // player.anim = 0;
     if (baixo)
     { 
+        // player.anim = 1;
         if ( player.vely <= 10)
             player.vely += gravidade;
     }
@@ -37,7 +39,7 @@ void checkInput(ALLEGRO_KEYBOARD_STATE keystate)
             player.velx =  6; 
         else if(baixo)
             player.vely = 2;
-
+        player.sentido = true;
     }
     if (al_key_down(&keystate, ALLEGRO_KEY_LEFT)) 
     {
@@ -45,6 +47,7 @@ void checkInput(ALLEGRO_KEYBOARD_STATE keystate)
             player.velx = -6; 
         else if(baixo)
             player.vely = 2;
+        player.sentido = false;
     }
     //Movimentacao Y    
 

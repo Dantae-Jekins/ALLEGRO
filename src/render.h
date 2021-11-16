@@ -119,14 +119,16 @@ bool render_player()
   ALLEGRO_COLOR cor;
   bool set = true;
 
+  if(player.sentido)
+    al_draw_bitmap(bitmap[player.anim], width / 2, height / 2, 0);
+  else
+    al_draw_bitmap(bitmap[player.anim], width / 2, height / 2, ALLEGRO_FLIP_HORIZONTAL);
   switch (player.estado)
   {
   case 1: // vivo
-    al_draw_bitmap(bitmap[0], width / 2, height / 2, 0);
     break;
 
-  case 2:
-    al_draw_bitmap(bitmap[0], width / 2, height / 2, 0);
+  case 2: // segurando peça
     cor = al_map_rgb(255, 255, 255);
     al_draw_filled_rectangle(
         width / 2 + 10,
