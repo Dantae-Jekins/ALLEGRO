@@ -37,6 +37,8 @@ struct jogador
   int posx;
   int posy;
   int fimy;
+  int velx;
+  int vely;
 
   bool pulando;
   bool caindo;

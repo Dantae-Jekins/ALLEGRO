@@ -1,8 +1,13 @@
 // colisão com mapa
-void check_if_inside_map(int x, int y, int px, int py, bool *value)
+bool check_if_inside_map(int x, int y, int px, int py, bool *value)
 {
 	if ((x >= px) && (x <= px+tileSiz) && (y >= py) && (y <= py+tileSiz))
 		*value = false;
+
+	if ((x >= px+1) && (x <= px+tileSiz-1) && (y >= py+1) && (y <= py+tileSiz-1))
+		return true;
+	
+	return false;
 }
 
 void check_map_collision(int id, bool *direita, bool *esquerda, bool *baixo, bool *cima)
@@ -27,9 +32,10 @@ void check_map_collision(int id, bool *direita, bool *esquerda, bool *baixo, boo
 			// colisão por coordenada (ineficiente)
 			int x, y;
 			y = player.posy-1; // checa em cima
-			for (x = player.posx+1; x <= (player.posx + ply_x-1); x++)
+			for (x = player.posx+6; x <= (player.posx + ply_x-6); x++)
 			{
-				check_if_inside_map(x, y, px, py, cima);
+				if (check_if_inside_map(x, y, px, py, cima))
+					player.posy += 3;
 				if (!(*cima))
 				{
 					break;
@@ -37,9 +43,10 @@ void check_map_collision(int id, bool *direita, bool *esquerda, bool *baixo, boo
 			}
 
 			y = player.posy + ply_y+1; // checa em baixo
-			for (x = player.posx+1; x <= (player.posx + ply_x-1); x++)
+			for (x = player.posx+6; x <= (player.posx + ply_x-6); x++)
 			{
-				check_if_inside_map(x, y, px, py, baixo);
+				if (check_if_inside_map(x, y, px, py, baixo))
+					player.posy -= 3;
 				if (!(*baixo))
 					break;
 			}
@@ -48,7 +55,8 @@ void check_map_collision(int id, bool *direita, bool *esquerda, bool *baixo, boo
 			for (y = player.posy+1; y <= player.posy + ply_y-1; y++)
 			{
 
-				check_if_inside_map(x, y, px, py,esquerda);
+				if (check_if_inside_map(x, y, px, py,esquerda))
+					player.posx += 3;
 				if (!(*esquerda))
 					break;
 			}
@@ -57,7 +65,8 @@ void check_map_collision(int id, bool *direita, bool *esquerda, bool *baixo, boo
 			for (y = player.posy+1; y <= player.posy + ply_y-1; y++)
 			{
 
-				check_if_inside_map(x, y, px, py, direita);
+				if(check_if_inside_map(x, y, px, py, direita))
+					player.posx -= 3;
 				if (!(*direita))
 					break;
 			}

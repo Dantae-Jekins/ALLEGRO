@@ -2,6 +2,7 @@
 #define height 720
 #define width 1080
 #define tileSiz 50
+#define gravidade 2
 #define fps 60.0
 
 // constantes de posições do chat
@@ -33,8 +34,8 @@ const int comment_y1 = height - 60;
 #define speed 5
 
 // variáveis de tamanho do jogador
-#define ply_x 30
-#define ply_y 45
+#define ply_x 25
+#define ply_y 40
 
 #define AZULBOLD al_map_rgb(80, 80, 160)
 #define AZULLITE al_map_rgba(80, 80, 160, 80)
