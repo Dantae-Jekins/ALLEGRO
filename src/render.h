@@ -2,42 +2,37 @@
 void render_txt(int posx0, int posy0, int posx1, int posy1, char *texto, ALLEGRO_FONT *fonte)
 {
   al_draw_filled_rectangle(
-    posx0, posy0,
-    posx1, posy1,
-    CIANLITE
-  );
-  
+      posx0, posy0,
+      posx1, posy1,
+      CIANLITE);
+
   al_draw_filled_rectangle(
-    posx0+15, posy0+15,
-    posx1-10, posy1-10,
-    AZULBOLD  
-  );
+      posx0 + 15, posy0 + 15,
+      posx1 - 10, posy1 - 10,
+      AZULBOLD);
   //printf("\n { ");
   //printf("%d %d %d %d \n", posx0, posx1, posy0, posy1);
   //printf("%s \n", texto);
 
   //!!!
   int como_assim;
-  int pq_isso_funciona; 
-  char **que = (char**)malloc(sizeof(char**)*1);
-  *que = malloc(sizeof(char*)*1);    //?????????????????????
+  int pq_isso_funciona;
+  char **que = (char **)malloc(sizeof(char **) * 1);
+  *que = malloc(sizeof(char *) * 1); //?????????????????????
   for (int i = 0; texto[i] != '\0'; i++)
   {
     **que = '?';
-  }// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  } // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   // PQ Q ISSO RESOLVE O MEU PROBLEMA??
   // ACHEI DO NADA E N POSSO DAR FREE
 
-
-
   al_draw_multiline_text(
-    fonte, BRANCO,
-    (posx0+20), 
-    (posy0+20),
-    (posx1 - posx0-40), 
-    20, 0, texto        
-  );
-  //printf("\n }\n");      
+      fonte, BRANCO,
+      (posx0 + 20),
+      (posy0 + 20),
+      (posx1 - posx0 - 40),
+      20, 0, texto);
+  //printf("\n }\n");
 }
 
 bool render_txtbox(int ID)
@@ -45,23 +40,21 @@ bool render_txtbox(int ID)
   bool set = true;
   switch (txtbox[ID].type)
   {
-    case 0: // log de teste 
-    {
-      render_txt(
-        width/2-120, height/2-60,
-        width/2+120, height/2+60,
-        "Teste", FONTES[0]
-      );
-      break;
-    }
-    
-    case 1:
-    {
-      render_txt(
+  case 0: // log de teste
+  {
+    render_txt(
+        width / 2 - 120, height / 2 - 60,
+        width / 2 + 120, height / 2 + 60,
+        "Teste", FONTES[0]);
+    break;
+  }
+
+  case 1:
+  {
+    render_txt(
         comment_x0, comment_y0,
         comment_x1, comment_y1,
-        txtbox[ID].text, FONTES[0]
-      );
+        txtbox[ID].text, FONTES[0]);
 
     break;
   }
@@ -79,20 +72,18 @@ void draw_tile(int px, int py, int bm, ALLEGRO_COLOR cor)
 {
   if (cor.a == 0)
     al_draw_bitmap(
-      bitmap[bm],
-      px + width/2 - player.posx,
-      py + height/2 - player.posy,
-      0
-    );
+        bitmap[bm],
+        px + width / 2 - player.posx,
+        py + height / 2 - player.posy,
+        0);
 
   else
   {
-    int posx = px + width/2 - player.posx;
-    int posy = py + height/2 - player.posy;
+    int posx = px + width / 2 - player.posx;
+    int posy = py + height / 2 - player.posy;
     al_draw_filled_rectangle(
-      posx, posy, posx+tileSiz, posy+tileSiz,
-      cor
-    );
+        posx, posy, posx + tileSiz, posy + tileSiz,
+        cor);
   }
 }
 
@@ -100,7 +91,7 @@ bool render_map()
 {
   //mapa
 
-  al_draw_bitmap(bitmap[29],0,0,0);
+  al_draw_bitmap(bitmap[29], 0, 0, 0);
   ALLEGRO_COLOR cor;
   cor.a = 0;
   bool set = true;
@@ -114,7 +105,7 @@ bool render_map()
     if (mapa.map[i] == 0)
       draw_tile(px, py, 20, cor);
 
-    else if(mapa.map[i] == 2)
+    else if (mapa.map[i] == 2)
       draw_tile(px, py, 12, cor);
   }
 
@@ -131,18 +122,17 @@ bool render_player()
   switch (player.estado)
   {
   case 1: // vivo
-    al_draw_bitmap(bitmap[0], width/2, height/2, 0);
+    al_draw_bitmap(bitmap[0], width / 2, height / 2, 0);
     break;
 
   case 2:
-    al_draw_bitmap(bitmap[0], width/2, height/2, 0);
+    al_draw_bitmap(bitmap[0], width / 2, height / 2, 0);
     al_draw_filled_rectangle(
-      player.posx+10,
-      player.posy-10,
-      player.posx+ply_x-10,
-      player.posy, 
-      al_map_rgba(50, 0, 50, 125)
-      );
+        width / 2 + 10,
+        height / 2 - 20,
+        width / 2 + 20,
+        height / 2,
+        cor);
     break;
 
   default:
@@ -154,31 +144,28 @@ bool render_player()
   return set;
 }
 
-
 bool draw_box(int bm, int posx, int posy, ALLEGRO_COLOR cor, int tamx, int tamy)
 {
   // vê aonde desenha
   // deve desenhar ao redor do jogador.
   if (cor.a == 0)
     al_draw_bitmap(
-      bitmap[bm],
-      posx + width/2 - player.posx,
-      posy + height/2 - player.posy,
-      0
-    );
+        bitmap[bm],
+        posx + width / 2 - player.posx,
+        posy + height / 2 - player.posy,
+        0);
 
   else
     al_draw_filled_rectangle(
-      posx + width/2 - player.posx,
-      posy + height/2 - player.posy,
-      posx + width/2 - player.posx + tamx,
-      posy + height/2 - player.posy + tamy,
-      cor
-    );
+        posx + width / 2 - player.posx,
+        posy + height / 2 - player.posy,
+        posx + width / 2 - player.posx + tamx,
+        posy + height / 2 - player.posy + tamy,
+        cor);
 }
 
 // CAIXAS
-bool render_boxes (bool colide, bool primitives)
+bool render_boxes(bool colide, bool primitives)
 {
   ALLEGRO_COLOR cor;
   cor.a = 0;
@@ -209,7 +196,7 @@ bool render_boxes (bool colide, bool primitives)
       {
         tamx = typ2x;
         tamy = typ2y;
-        cor = al_map_rgba(75,75, 175,255);
+        cor = al_map_rgba(75, 75, 175, 255);
         draw_box(10, box[id].posx, box[id].posy, cor, tamx, tamy);
       }
       else if (box[id].type == 3) // obstáculo
@@ -236,14 +223,12 @@ bool render_boxes (bool colide, bool primitives)
       {
         tamx = 30;
         tamy = 30;
-        draw_box(9, box[id].posx, box[id].posy, cor, tamx,tamy);
+        draw_box(9, box[id].posx, box[id].posy, cor, tamx, tamy);
       }
       // verifica colisões com a caixa
       if (colide)
-        check_box_collision(id, tamx, tamy); 
-      
+        check_box_collision(id, tamx, tamy);
     }
-    
   }
   return set;
 }
