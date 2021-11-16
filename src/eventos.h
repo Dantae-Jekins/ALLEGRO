@@ -165,7 +165,7 @@ bool decrement_oxygen()
 		return false;
 	}
 
-	player.oxygen -= 5;
+	player.oxygen -= 10;
 	return true;
 }
 

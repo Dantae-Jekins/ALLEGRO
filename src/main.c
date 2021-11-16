@@ -97,7 +97,7 @@ int main(void)
 
   // Destruição das estruturas ALLEGRO
 
-  for(int i = 0; i < bitmap_count; i++)
+  for (int i = 0; i < bitmap_count; i++)
     al_destroy_bitmap(bitmap[i]);
 
   for(int i = 0; i < font_count; i++)

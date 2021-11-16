@@ -1,27 +1,31 @@
-void scale_bitmap(int id, int tamx, int tamy, char * file)
+void scale_bitmap(int id, int tamx, int tamy, char *file)
 {
   ALLEGRO_BITMAP *aux = al_load_bitmap(file);
   bitmap[id] = al_create_bitmap(tamx, tamy);
   al_set_target_bitmap(bitmap[id]);
-  al_clear_to_color(al_map_rgba(0,0,0,0));
-  al_draw_scaled_bitmap
-  (
-    aux, 0, 0,
-    al_get_bitmap_width(aux),
-    al_get_bitmap_height(aux),
-    0, 0, tamx, tamy, 0
-  );
+  al_clear_to_color(al_map_rgba(0, 0, 0, 0));
+  al_draw_scaled_bitmap(
+      aux, 0, 0,
+      al_get_bitmap_width(aux),
+      al_get_bitmap_height(aux),
+      0, 0, tamx, tamy, 0);
   al_destroy_bitmap(aux);
 }
 
-void setupBitmaps(void)
+void setupBitmaps(void) // 0 - 9 player     10 - 19 - Interagiveis    20 - 25 Tiles
 {
   scale_bitmap(0, ply_x, ply_y, "../imagens/ast0.png");
-  scale_bitmap(9, 30, 30, "../imagens/event.png");
-  scale_bitmap(10, typ1x, typ1y, "../imagens/oxy0.png");
-  scale_bitmap(11, typ3x, typ3y, "../imagens/spk0.png");
+  scale_bitmap(8, typ9x, typ9y, "../imagens/rct0.png");
+  scale_bitmap(9, 40, 40, "../imagens/event.png");
+  scale_bitmap(11, typ1x, typ1y, "../imagens/oxy0.png");
+  scale_bitmap(12, typ2x, typ2y, "../imagens/oxy0.png");
+  scale_bitmap(13, typ3x, typ3y, "../imagens/spk0.png");
+  scale_bitmap(15, typ5x, typ5y, "../imagens/lav0.png");
+  scale_bitmap(16, 120, 80, "../imagens/roc0.png");
   scale_bitmap(18, width, height, "../imagens/perdeu.png");
   scale_bitmap(19, width, height, "../imagens/ganhou.jpeg");
+  scale_bitmap(20, tileSiz, tileSiz, "../imagens/til0.png");
+  scale_bitmap(29, width, height, "../imagens/bac0.png");
 }
 
 void setupFonts(void)

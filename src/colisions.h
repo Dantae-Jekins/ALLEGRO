@@ -100,12 +100,12 @@ void collide_with_box(int id)
 	{
 		player.posx = mapa.inix;
 		player.posy = mapa.iniy;
-		player.oxygen -= 400;
+		player.oxygen -= 300;
 		return ;
 	}
 	else if (box[id].type == 4) // gás
 	{
-		player.oxygen -= 5;
+		player.oxygen -= 2;
 		return ;
 	}
 	else if (box[id].type == 9) //nave
@@ -144,8 +144,8 @@ bool check_if_inside_box(int x, int y, int id, int tamx, int tamy)
 
 void check_box_collision(int id, int tamx, int tamy)
 {
-	int difx = player.posx - box[id].posx;
-	int dify = player.posy - box[id].posy;
+	int difx = player.posx - box[id].posx-2;
+	int dify = player.posy - box[id].posy-2;
 
 	// checa se a caixa está encostada
 	// precisão por interval (eficiente)
