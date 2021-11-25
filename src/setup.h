@@ -15,6 +15,9 @@ void scale_bitmap(int id, int tamx, int tamy, char *file)
 void setupBitmaps(void) // 0 - 9 player     10 - 19 - Interagiveis    20 - 25 Tiles
 {
   scale_bitmap(0, ply_x, ply_y, "../imagens/ast0.png");
+  scale_bitmap(1, ply_x, ply_y, "../imagens/ast1.png");
+  scale_bitmap(2, ply_x, ply_y, "../imagens/ast0.png");
+  scale_bitmap(3, ply_x, ply_y, "../imagens/ast2.png");
   scale_bitmap(8, typ9x, typ9y, "../imagens/rct0.png");
   scale_bitmap(9, 40, 40, "../imagens/event.png");
   scale_bitmap(11, typ1x, typ1y, "../imagens/oxy0.png");

@@ -132,22 +132,14 @@ bool render_map()
 }
 
 // JOGADOR
-bool render_player()
+bool render_player(int timer)
 {
   //personagem
   ALLEGRO_COLOR cor;
   bool set = true;
 
-  if(player.sentido)
-    al_draw_bitmap(bitmap[player.anim], width / 2, height / 2, 0);
-  else
-    al_draw_bitmap(bitmap[player.anim], width / 2, height / 2, ALLEGRO_FLIP_HORIZONTAL);
-  switch (player.estado)
+  if (player.estado == 2)
   {
-  case 1: // vivo
-    break;
-
-  case 2: // segurando peça
     cor = al_map_rgb(255, 255, 255);
     al_draw_filled_rectangle(
         width / 2 + 10,
@@ -155,14 +147,35 @@ bool render_player()
         width / 2 + 20,
         height / 2,
         cor);
-    break;
-
-  default:
-    printf("\nrender() player.estado em valores n�o aceit�veis");
-    set = false;
-    break;
   }
+  switch (player.anim)
+  {
+  case 0: // parado
+    if(player.sentido)
+      al_draw_bitmap(bitmap[0], width / 2, height / 2, 0);
+    else
+      al_draw_bitmap(bitmap[0], width / 2, height / 2, ALLEGRO_FLIP_HORIZONTAL);
+    break;
+  
+  default: // correndo
+    
+    if(player.sentido)
+      al_draw_bitmap(bitmap[player.anim-1], width / 2, height / 2, 0);
+    else
+      al_draw_bitmap(bitmap[player.anim-1], width / 2, height / 2, ALLEGRO_FLIP_HORIZONTAL);
 
+    if(timer%10 == 0)
+    {
+      player.anim += 1;
+
+      if(player.anim > 4)
+      {
+        player.anim = 1;
+      }
+    }      
+    break;      
+  }
+  
   return set;
 }
 

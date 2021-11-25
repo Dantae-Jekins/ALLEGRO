@@ -109,7 +109,7 @@ void chat_stream(bool run, int code)
 			al_set_target_bitmap(backup);
 			al_clear_to_color(al_map_rgb(0, 0, 0));
 			render_map();
-			render_player();
+			render_player(0);
 			render_boxes(false, true); 		
 			al_set_target_backbuffer(display);	
 		}
@@ -158,14 +158,14 @@ bool decrement_oxygen()
 {
 	if (player.oxygen > 1000)
 		player.oxygen = 1000;
+
+	player.oxygen -= 10;
 	
-	else if (player.oxygen < 0)
+	if (player.oxygen < 0)
 	{
 		player.oxygen = 0;
 		return false;
 	}
-
-	player.oxygen -= 10;
 	return true;
 }
 
