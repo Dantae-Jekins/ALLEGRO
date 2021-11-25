@@ -68,6 +68,7 @@ int main(void)
       checkout = render_map();
       checkout = render_player();
       checkout = render_boxes(true, true);
+      checkout = render_oxigenio();
       if (!checkout)
         rodando = 0;
       al_flip_display();
