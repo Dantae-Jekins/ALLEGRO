@@ -12,7 +12,7 @@ int load_map (int nivel)
   mapa.col = 0;
   mapa.tam = 0;
 
-	if (nivel == 0)
+	if (mapa.code == 0)
 		strcpy(nome_arquivo, "../fases/fase1"); //fase 0
 	else
 		strcpy(nome_arquivo, "../fases/fase2");	//fase 1

@@ -1,8 +1,13 @@
 // colisão com mapa
-void check_if_inside_map(int x, int y, int px, int py, bool *value)
+bool check_if_inside_map(int x, int y, int px, int py, bool *value)
 {
 	if ((x >= px) && (x <= px + tileSiz) && (y >= py) && (y <= py + tileSiz))
 		*value = false;
+
+	if ((x >= px+1) && (x <= px+tileSiz-1) && (y >= py+1) && (y <= py+tileSiz-1))
+		return true;
+	
+	return false;
 }
 
 void check_map_collision(int id, bool *direita, bool *esquerda, bool *baixo, bool *cima)
@@ -24,20 +29,22 @@ void check_map_collision(int id, bool *direita, bool *esquerda, bool *baixo, boo
 				*/
 			// colisão por coordenada (ineficiente)
 			int x, y;
-			y = player.posy - 1; // checa em cima
-			for (x = player.posx + 1; x <= (player.posx + ply_x - 1); x++)
+			y = player.posy-1; // checa em cima
+			for (x = player.posx+6; x <= (player.posx + ply_x-6); x++)
 			{
-				check_if_inside_map(x, y, px, py, cima);
+				if (check_if_inside_map(x, y, px, py, cima))
+					player.posy += 3;
 				if (!(*cima))
 				{
 					break;
 				}
 			}
 
-			y = player.posy + ply_y + 1; // checa em baixo
-			for (x = player.posx + 1; x <= (player.posx + ply_x - 1); x++)
+			y = player.posy + ply_y+1; // checa em baixo
+			for (x = player.posx+6; x <= (player.posx + ply_x-6); x++)
 			{
-				check_if_inside_map(x, y, px, py, baixo);
+				if (check_if_inside_map(x, y, px, py, baixo))
+					player.posy -= 3;
 				if (!(*baixo))
 					break;
 			}
@@ -46,7 +53,8 @@ void check_map_collision(int id, bool *direita, bool *esquerda, bool *baixo, boo
 			for (y = player.posy + 1; y <= player.posy + ply_y - 1; y++)
 			{
 
-				check_if_inside_map(x, y, px, py, esquerda);
+				if (check_if_inside_map(x, y, px, py,esquerda))
+					player.posx += 3;
 				if (!(*esquerda))
 					break;
 			}
@@ -55,7 +63,8 @@ void check_map_collision(int id, bool *direita, bool *esquerda, bool *baixo, boo
 			for (y = player.posy + 1; y <= player.posy + ply_y - 1; y++)
 			{
 
-				check_if_inside_map(x, y, px, py, direita);
+				if(check_if_inside_map(x, y, px, py, direita))
+					player.posx -= 3;
 				if (!(*direita))
 					break;
 			}
@@ -89,13 +98,13 @@ void collide_with_box(int id)
 	{
 		player.posx = mapa.inix;
 		player.posy = mapa.iniy;
-		player.oxygen -= 400;
-		return;
+		player.oxygen -= 300;
+		return ;
 	}
 	else if (box[id].type == 4) // gás
 	{
-		player.oxygen -= 5;
-		return;
+		player.oxygen -= 2;
+		return ;
 	}
 
 	// EXPERIMENTAL!!!!
@@ -110,7 +119,12 @@ void collide_with_box(int id)
 		if (player.estado == 2)
 			player.estado += 1;
 	}
-	else
+	else if (box[id].type >= 10)
+	{
+		chat_stream(0, box[id].type - 10);
+		box[id].existe = false;
+	}
+	else 
 	{
 		printf("Tipo de caixa errado");
 		box[id].existe = false;
@@ -136,8 +150,8 @@ bool check_if_inside_box(int x, int y, int id, int tamx, int tamy)
 
 void check_box_collision(int id, int tamx, int tamy)
 {
-	int difx = player.posx - box[id].posx;
-	int dify = player.posy - box[id].posy;
+	int difx = player.posx - box[id].posx-2;
+	int dify = player.posy - box[id].posy-2;
 
 	// checa se a caixa está encostada
 	// precisão por interval (eficiente)

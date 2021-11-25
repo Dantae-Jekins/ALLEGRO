@@ -1,5 +1,5 @@
 //ALLEGRO
-#include <allegro5/allegro.h>
+#include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_primitives.h>
@@ -32,7 +32,7 @@ int main(void)
     }
 
     // Inicialização das estruturas ALLEGRO
-    ALLEGRO_DISPLAY* display = al_create_display(width, height);
+    display = al_create_display(width, height);
     ALLEGRO_TIMER* timer = al_create_timer(1.0 / fps);
     ALLEGRO_EVENT_QUEUE* queue = al_create_event_queue();
 
@@ -52,7 +52,8 @@ int main(void)
     int timezin = 0;
     printf("\n\nSETUP COMPLETO\n");
     al_start_timer(timer);
-    //chat_stream(display, 0, 0);
+    chat_stream(0, 0);
+
     while (rodando)
     {
       // evento
@@ -96,8 +97,12 @@ int main(void)
 
   // Destruição das estruturas ALLEGRO
 
-  for(int i = 0; i < bitmap_count; i++)
+  for (int i = 0; i < bitmap_count; i++)
     al_destroy_bitmap(bitmap[i]);
+
+  for(int i = 0; i < font_count; i++)
+    al_destroy_font(FONTES[i]);
+  
   al_destroy_event_queue(queue);
   al_destroy_display(display);
   al_destroy_timer(timer);

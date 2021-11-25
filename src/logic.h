@@ -18,6 +18,7 @@ int jatoi (char *vec, int *x)
 char *strcrop(unsigned int i, unsigned int j, char *vec1, char *vec2)
 { 
   int size = 4;
+  vec2 = (char*)realloc(vec2, sizeof(char)*size);
   while(vec1[i]!=';')
   {
     vec2[j++] = vec1[i++];
