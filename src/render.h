@@ -96,9 +96,28 @@ void draw_tile(int px, int py, int bm, ALLEGRO_COLOR cor)
   }
 }
 
+//OXIGENIO
+bool render_oxigenio()
+{
+  bool set = true;
+
+  al_draw_filled_rectangle(
+      40, width / 2 - (50),
+      70, width / 2 + (150),
+      al_map_rgb(30, 30, 30)
+  );
+  al_draw_filled_rectangle(
+      45, width / 2 + 145 - (player.oxygen/5.25), //PLAYER.OXIGEN
+      65, width / 2 + (145),
+      al_map_rgb(50, 40, 250)
+  );   
+
+  return set;
+}
+
+//MAPA
 bool render_map()
 {
-  //mapa
 
   ALLEGRO_COLOR cor;
   bool set = true;
