@@ -109,7 +109,7 @@ bool setup(void)
   setupPlayer();
   setupBitmaps();
   setupFonts();
-  mapa.code = 1;
+  mapa.code = 0;
   mapa.map = malloc(sizeof(int)*1);
   load_map(0);
   setupPlayer(); 
