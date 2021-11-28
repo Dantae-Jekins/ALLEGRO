@@ -35,6 +35,12 @@ void render_txt(int posx0, int posy0, int posx1, int posy1, char *texto, ALLEGRO
   //printf("\n }\n");
 }
 
+void render_seta(int posx, int posy, ALLEGRO_COLOR cor)
+{
+  al_draw_filled_triangle(posx, posy+20, posx+40, posy, posx+40, posy+40, cor);
+  al_draw_filled_rectangle(posx+40, posy+10, posx+80, posy+30, cor);
+}
+
 bool render_txtbox(int ID)
 {
   bool set = true;

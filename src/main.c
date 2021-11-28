@@ -48,12 +48,11 @@ int main(void)
     al_register_event_source(queue, al_get_keyboard_event_source());
 
     // Inicialização do jogo
-    bool rodando = true;
     int timezin = 0;
     printf("\n\nSETUP COMPLETO\n");
     al_start_timer(timer);
-    chat_stream(0, 0);
 
+    bool rodando = menu();
     while (rodando)
     {
       // evento
