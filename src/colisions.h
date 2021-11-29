@@ -1,3 +1,6 @@
+#ifndef COLLISIONS
+#define COLLISIONS
+
 // colisão com mapa
 bool check_if_inside_map(int x, int y, int px, int py, bool *value)
 {
@@ -203,3 +206,4 @@ void check_box_collision(int id, int tamx, int tamy)
 		*/
 	}
 }
+#endif

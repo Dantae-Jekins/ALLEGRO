@@ -1,3 +1,6 @@
+#ifndef MAPPER
+#define MAPPER
+
 int load_map (int nivel) 
 {	
   int aux           = 0;
@@ -160,3 +163,5 @@ int load_map (int nivel)
 	fclose(fase);
   return 0;
 }
+
+#endif

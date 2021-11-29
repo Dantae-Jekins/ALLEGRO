@@ -1,3 +1,6 @@
+#ifndef SETUP
+#define SETUP
+
 void scale_bitmap(int id, int tamx, int tamy, char *file)
 {
   ALLEGRO_BITMAP *aux = al_load_bitmap(file);
@@ -15,6 +18,9 @@ void scale_bitmap(int id, int tamx, int tamy, char *file)
 void setupBitmaps(void) // 0 - 9 player     10 - 19 - Interagiveis    20 - 25 Tiles
 {
   scale_bitmap(0, ply_x, ply_y, "../imagens/ast0.png");
+  scale_bitmap(1, ply_x, ply_y, "../imagens/ast1.png");
+  scale_bitmap(2, ply_x, ply_y, "../imagens/ast0.png");
+  scale_bitmap(3, ply_x, ply_y, "../imagens/ast2.png");
   scale_bitmap(8, typ9x, typ9y, "../imagens/rct0.png");
   scale_bitmap(9, 40, 40, "../imagens/event.png");
   scale_bitmap(11, typ1x, typ1y, "../imagens/oxy0.png");
@@ -25,6 +31,7 @@ void setupBitmaps(void) // 0 - 9 player     10 - 19 - Interagiveis    20 - 25 Ti
   scale_bitmap(18, width, height, "../imagens/perdeu.png");
   scale_bitmap(19, width, height, "../imagens/ganhou.jpeg");
   scale_bitmap(20, tileSiz, tileSiz, "../imagens/til0.png");
+  scale_bitmap(28, width, height, "../imagens/menu.png");
   scale_bitmap(29, width, height, "../imagens/bac0.png");
 }
 
@@ -106,7 +113,7 @@ bool setup(void)
   setupPlayer();
   setupBitmaps();
   setupFonts();
-  mapa.code = 1;
+  mapa.code = 0;
   mapa.map = malloc(sizeof(int)*1);
   load_map(0);
   setupPlayer();
@@ -114,3 +121,5 @@ bool setup(void)
   // permite que a função analise vários de
   // uma vez, sem parar no primeiro.
 }
+
+#endif

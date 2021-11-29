@@ -1,3 +1,6 @@
+#ifndef VARIABLES
+#define VARIABLES
+
 // variáveis gerais
 #define height 720
 #define width 1080
@@ -57,3 +60,5 @@ ALLEGRO_BITMAP *bitmap[bitmap_count]; // Vetor de ponteiros para bitmaps, cada e
 ALLEGRO_FONT *FONTES[font_count];
 
 ALLEGRO_DISPLAY *display;
+
+#endif
