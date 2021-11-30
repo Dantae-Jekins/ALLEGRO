@@ -1,3 +1,6 @@
+#ifndef LOGIC
+#define LOGIC
+
 // Transforma um vetor de caracteres em inteiro
 int jatoi (char *vec, int *x)
 {
@@ -57,3 +60,5 @@ int difference_module(int i, int j)
   i -= j;
   return i;
 }
+
+#endif

@@ -1,7 +1,10 @@
+#ifndef COLLISIONS
+#define COLLISIONS
+
 // colisão com mapa
 bool check_if_inside_map(int x, int y, int px, int py, bool *value)
 {
-	if ((x >= px) && (x <= px+tileSiz) && (y >= py) && (y <= py+tileSiz))
+	if ((x >= px) && (x <= px + tileSiz) && (y >= py) && (y <= py + tileSiz))
 		*value = false;
 
 	if ((x >= px+1) && (x <= px+tileSiz-1) && (y >= py+1) && (y <= py+tileSiz-1))
@@ -15,16 +18,14 @@ void check_map_collision(int id, bool *direita, bool *esquerda, bool *baixo, boo
 	if (mapa.map[id] == 0)
 	{
 		// ponto (x,y) do mapa
-		int px = tileSiz * ( id % mapa.col );
-		int py = tileSiz * ( id / mapa.col );
-		
+		int px = tileSiz * (id % mapa.col);
+		int py = tileSiz * (id / mapa.col);
+
 		int difx = px - player.posx;
 		int dify = py - player.posy;
-		if
-		(
-			((difx <= tileSiz) || (difx >= -tileSiz)) &&
-			((dify <= tileSiz) || (dify >= -tileSiz))
-		)
+		if (
+				((difx <= tileSiz) || (difx >= -tileSiz)) &&
+				((dify <= tileSiz) || (dify >= -tileSiz)))
 		{
 			/* colisão por intervalo
 				// pensando.
@@ -51,8 +52,8 @@ void check_map_collision(int id, bool *direita, bool *esquerda, bool *baixo, boo
 					break;
 			}
 
-			x = player.posx-1; // checa a esquerda
-			for (y = player.posy+1; y <= player.posy + ply_y-1; y++)
+			x = player.posx - 1; // checa a esquerda
+			for (y = player.posy + 1; y <= player.posy + ply_y - 1; y++)
 			{
 
 				if (check_if_inside_map(x, y, px, py,esquerda))
@@ -61,8 +62,8 @@ void check_map_collision(int id, bool *direita, bool *esquerda, bool *baixo, boo
 					break;
 			}
 
-			x = player.posx + ply_x+1; // checa a direita
-			for (y = player.posy+1; y <= player.posy + ply_y-1; y++)
+			x = player.posx + ply_x + 1; // checa a direita
+			for (y = player.posy + 1; y <= player.posy + ply_y - 1; y++)
 			{
 
 				if(check_if_inside_map(x, y, px, py, direita))
@@ -81,20 +82,20 @@ void collide_with_box(int id)
 	if (box[id].type == 0) // peça
 	{
 		box[id].existe = false;
-		player.estado += 1;	
-		return ;
+		player.estado += 1;
+		return;
 	}
 	else if (box[id].type == 1) // cilindro
 	{
 		player.oxygen += 400;
 		box[id].existe = false;
-		return ;
+		return;
 	}
 	else if (box[id].type == 2) // meio cilindro
 	{
 		player.oxygen += 200;
 		box[id].existe = false;
-		return ;
+		return;
 	}
 	else if (box[id].type == 3) // obstáculo
 	{
@@ -108,10 +109,18 @@ void collide_with_box(int id)
 		player.oxygen -= 2;
 		return ;
 	}
+
+	// EXPERIMENTAL!!!!
+	else if (box[id].type == 5) // lava
+	{
+		player.oxygen -= 10;
+		return;
+	}
+
 	else if (box[id].type == 9) //nave
 	{
-		if(player.estado == 2)
-			player.estado +=1;
+		if (player.estado == 2)
+			player.estado += 1;
 	}
 	else if (box[id].type >= 10)
 	{
@@ -122,7 +131,7 @@ void collide_with_box(int id)
 	{
 		printf("Tipo de caixa errado");
 		box[id].existe = false;
-		return ;
+		return;
 	}
 }
 /*
@@ -149,12 +158,11 @@ void check_box_collision(int id, int tamx, int tamy)
 
 	// checa se a caixa está encostada
 	// precisão por interval (eficiente)
-	if(
-		(difx >=-ply_x)&&
-		(difx <= tamx) &&
-		(dify >=-ply_y)&&
-		(dify <= tamy)
-		)
+	if (
+			(difx >= -ply_x) &&
+			(difx <= tamx) &&
+			(dify >= -ply_y) &&
+			(dify <= tamy))
 	{
 		collide_with_box(id);
 		/* colisão por coordenada (ineficiente) 
@@ -198,3 +206,4 @@ void check_box_collision(int id, int tamx, int tamy)
 		*/
 	}
 }
+#endif

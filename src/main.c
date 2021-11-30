@@ -10,6 +10,8 @@
 #include <stdlib.h>
 
 //LOCAL FILES
+#include "functions.h"
+
 #include "logic.h"      // FNS GERAIS
 #include "variaveis.h"  // VARS GLOBAIS
 #include "objects.h"    // STRUCTS  
@@ -17,7 +19,7 @@
 #include "setup.h"      // SETUP
 #include "colisions.h"  // COLISÕES
 #include "render.h"     // RENDERIZAÇÃO
-#include "eventos.h"     // CHATS
+#include "eventos.h"    // CHATS
 #include "movement.h"   // MOVIMENTAÇÃO
 
 int main(void)
@@ -48,26 +50,26 @@ int main(void)
     al_register_event_source(queue, al_get_keyboard_event_source());
 
     // Inicialização do jogo
-    bool rodando = true;
     int timezin = 0;
     printf("\n\nSETUP COMPLETO\n");
     al_start_timer(timer);
-    chat_stream(0, 0);
 
+    bool rodando = menu();
     while (rodando)
     {
       // evento
       ALLEGRO_EVENT evento;
       ALLEGRO_KEYBOARD_STATE keystate;
-      al_get_keyboard_state(&keystate);
+      al_get_keyboard_state(&keystate); 
       al_wait_for_event(queue, &evento);
-      
+    
       // renderiza
       al_clear_to_color(al_map_rgb(0, 0, 0)); 
       bool checkout = true;
       checkout = render_map();
-      checkout = render_player();
+      checkout = render_player(timezin);
       checkout = render_boxes(true, true);
+      checkout = render_oxigenio();
       if (!checkout)
         rodando = 0;
       al_flip_display();
@@ -76,7 +78,7 @@ int main(void)
       if (evento.type == ALLEGRO_EVENT_TIMER)
       {
         checkInput(keystate);
-        if (timezin == 30)
+        if (timezin == 20)
         {
           if (!decrement_oxygen())
           {
@@ -86,9 +88,10 @@ int main(void)
           timezin = 0;
           printf("\33[2K estado:    %d\n",player.estado);
           printf("\33[2K oxygen: %.4d\n", player.oxygen);
+          printf("\33[2K anim:   %.4d\n", player.anim);
           printf("\33[2K posx:   %.4d\n", player.posx);
           printf("\33[2K posy:   %.4d\n", player.posy);
-          printf("\33[4A");
+          printf("\33[5A");
         } timezin++;
         if (player.estado == 3)
           rodando = vitoria();  
@@ -109,3 +112,7 @@ int main(void)
   al_uninstall_keyboard();
   printf("\n");
 }
+
+#define x 65
+#define y 94
+#define z 10

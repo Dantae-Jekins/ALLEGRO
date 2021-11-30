@@ -1,3 +1,6 @@
+#ifndef OBJECTS
+#define OBJECTS
+
 //Mapa
 
 struct mapp
@@ -85,3 +88,5 @@ int genChat()
   printf("\nN�O EXISTEM BLOCOS DE TEXTO DISPON�VEIS");
   return -1;
 }
+
+#endif

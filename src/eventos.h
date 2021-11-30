@@ -1,4 +1,5 @@
-
+#ifndef EVENTOS
+#define EVENTOS
 
 bool render_paused_chat(size_t id, ALLEGRO_BITMAP *background)
 {
@@ -110,7 +111,7 @@ void chat_stream(bool run, int code)
 			al_set_target_bitmap(backup);
 			al_clear_to_color(al_map_rgb(0, 0, 0));
 			render_map();
-			render_player();
+			render_player(0);
 			render_boxes(false, true); 		
 			al_set_target_backbuffer(display);	
 		}
@@ -135,8 +136,8 @@ void chat_stream(bool run, int code)
 			{	
 				al_wait_for_event(queue, &evento);
 				if (evento.type == ALLEGRO_EVENT_KEY_DOWN)
-				{
 					i = 0;
+				{
 					if (!count_Words(pg, &i, comment))
 					{
 						paused = false;
@@ -155,18 +156,115 @@ void chat_stream(bool run, int code)
 	}
 }
 
+bool menu()
+{
+
+	int pager = 0;
+	bool retorno;
+	// desenha os comentários em um bitmap alternativo
+	ALLEGRO_BITMAP *backup = al_create_bitmap(width, height);
+	{
+		al_set_target_bitmap(backup);
+		al_clear_to_color(al_map_rgba(0,0,0,0));
+
+		al_draw_bitmap(bitmap[28],0,0,0);
+		al_draw_filled_ellipse(0, height, 420, height,al_map_rgba(200,150,50,100));
+		
+		render_txt(120, height-380, 240, height-320, "Iniciar", FONTES[1]);
+		render_txt(120, height-300, 240, height-240, "Opções",  FONTES[1]);
+		render_txt(120, height-220, 240, height-160, "Sair",    FONTES[1]);
+		al_set_target_backbuffer(display);
+	}
+
+
+	// desenha o menu;
+	ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue();
+	ALLEGRO_TIMER *timer = al_create_timer(0.2);
+	al_register_event_source(queue, al_get_timer_event_source(timer));
+	al_register_event_source(queue, al_get_keyboard_event_source());
+	ALLEGRO_EVENT evento;	
+	while(true)	
+	{
+		al_start_timer(timer);
+		al_wait_for_event(queue, &evento);
+		if (evento.type == ALLEGRO_EVENT_TIMER)
+		{
+			al_stop_timer(timer);
+			al_clear_to_color(al_map_rgb(40,40,40));
+			al_draw_bitmap(backup,0, 0, 0);	
+
+			// desenha a seta
+			if(pager == 0)
+				render_seta(260, height-370, al_map_rgb(50, 50, 255));	
+			
+			else if (pager == 1)
+				render_seta(260, height-290, al_map_rgb(50, 50, 255));			
+			
+			else
+				render_seta(260, height-210, al_map_rgb(50, 50, 255));	
+			
+			al_flip_display();	
+
+			// espera um comando
+			al_flush_event_queue(queue);
+			al_wait_for_event(queue, &evento);	
+	
+			if(pager == 0)
+			{
+				if( evento.keyboard.keycode == ALLEGRO_KEY_UP)
+					pager = 2;
+				else if ( evento.keyboard.keycode == ALLEGRO_KEY_DOWN)
+					pager = 1;
+				
+				else if ( evento.keyboard.keycode == ALLEGRO_KEY_ENTER)
+				{
+					retorno = true;
+					break;
+				}
+			}
+			
+			else if (pager == 1)
+			{
+				if( evento.keyboard.keycode == ALLEGRO_KEY_UP)
+					pager = 0;
+				else if ( evento.keyboard.keycode == ALLEGRO_KEY_DOWN)
+					pager = 2;
+			}
+			
+			else
+			{
+				if( evento.keyboard.keycode == ALLEGRO_KEY_UP)
+					pager = 1;
+				else if ( evento.keyboard.keycode == ALLEGRO_KEY_DOWN)
+					pager = 0;
+
+				else if ( evento.keyboard.keycode == ALLEGRO_KEY_ENTER)
+				{
+					retorno = false;
+					break;
+				}
+			} 
+		}
+	}
+
+	al_destroy_bitmap(backup);
+	al_destroy_event_queue(queue);
+	return retorno;
+}
+
+
 bool decrement_oxygen()
 {
 	if (player.oxygen > 1000)
 		player.oxygen = 1000;
+
+	player.oxygen -= 10;
 	
-	else if (player.oxygen < 0)
+	if (player.oxygen < 0)
 	{
 		player.oxygen = 0;
 		return false;
 	}
-
-	player.oxygen -= 10;
 	return true;
 }
 
@@ -237,3 +335,4 @@ bool vitoria()
    
     return false;
 }
+#endif
