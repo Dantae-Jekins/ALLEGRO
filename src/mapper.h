@@ -21,11 +21,12 @@ int carregarMatrix(int nivel)
   int i = 0, ch = 0;
   char nome_arquivo[25];
   if (nivel == 0)
-    strcpy(nome_arquivo, "../fases/fase1"); //fase 0
+    strcpy_s(&nome_arquivo, nome_arquivo, "../fases/fase1"); //fase 0
   else
-    strcpy(nome_arquivo, "../fases/fase2"); //fase 1
+    strcpy_s(&nome_arquivo, nome_arquivo, "../fases/fase2"); //fase 1
 
-  FILE *fase = fopen(nome_arquivo, "r"); //Abre o arquivo
+  FILE* fase;
+  fopen_s(&nome_arquivo, nome_arquivo, "r"); //Abre o arquivo
 
   /////teste de leitura/////
   if (fase == NULL)
