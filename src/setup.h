@@ -36,7 +36,7 @@ void setupBitmaps(void) // 0 - 9 player     10 - 19 - Interagiveis    20 - 25 Ti
   scale_bitmap(16, 120, 80, "../imagens/roc0.png");
   
   scale_bitmap(18, width, height, "../imagens/perdeu.png");
-  scale_bitmap(19, width, height, "../imagens/ganhou.jpeg");
+  scale_bitmap(19, width, height, "../imagens/ganhou.png");
   
   scale_bitmap(20, tileSiz, tileSiz, "../imagens/til0.png");
   scale_bitmap(21, tileSiz, tileSiz, "../imagens/til1.png");

@@ -38,7 +38,8 @@ void checkInput(ALLEGRO_KEYBOARD_STATE keystate)
     if (player.anim == 0)
     {
         player.anim = 1;
-    }   
+    }  
+
     player.velx = 0;
     if (al_key_down(&keystate, ALLEGRO_KEY_RIGHT))
     {

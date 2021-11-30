@@ -124,13 +124,10 @@ int main(void)
   for(int i = 0; i < font_count; i++)
     al_destroy_font(FONTES[i]);
   
+  free(mapa.map);
   al_destroy_event_queue(queue);
   al_destroy_display(display);
   al_destroy_timer(timer);
   al_uninstall_keyboard();
   printf("\n");
 }
-
-#define x 65
-#define y 94
-#define z 10

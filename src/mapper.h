@@ -152,7 +152,7 @@ int load_map (int nivel)
 
       else if (ch == '#')
       {
-        mapa.map = realloc(mapa.map, sizeof(int)*mapa.tam);
+        mapa.map = realloc(mapa.map, sizeof(int)*mapa.tam); // ?
         printf("tam: %d\n", mapa.tam);
         printf("col: %d\n", mapa.col);
         mapa.map = realloc(mapa.map, sizeof(int)*mapa.tam);
