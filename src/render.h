@@ -1,41 +1,141 @@
-bool render_and_collide()
+// TEXTOS
+void render_txt(int posx0, int posy0, int posx1, int posy1, char *texto, ALLEGRO_FONT *fonte)
 {
+  al_draw_filled_rectangle(
+      posx0, posy0,
+      posx1, posy1,
+      CIANLITE);
+
+  al_draw_filled_rectangle(
+      posx0 + 15, posy0 + 15,
+      posx1 - 10, posy1 - 10,
+      AZULBOLD);
+  //printf("\n { ");
+  //printf("%d %d %d %d \n", posx0, posx1, posy0, posy1);
+  //printf("%s \n", texto);
+
+  //!!!
+  int como_assim;
+  int pq_isso_funciona;
+  char **que = (char **)malloc(sizeof(char **) * 1);
+  *que = malloc(sizeof(char *) * 1); //?????????????????????
+  for (int i = 0; texto[i] != '\0'; i++)
+  {
+    **que = '?';
+  } // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  // PQ Q ISSO RESOLVE O MEU PROBLEMA??
+  // ACHEI DO NADA E N POSSO DAR FREE
+
+  al_draw_multiline_text(
+      fonte, BRANCO,
+      (posx0 + 20),
+      (posy0 + 20),
+      (posx1 - posx0 - 40),
+      20, 0, texto);
+  //printf("\n }\n");
+}
+
+bool render_txtbox(int ID)
+{
+  bool set = true;
+  switch (txtbox[ID].type)
+  {
+  case 0: // log de teste
+  {
+    render_txt(
+        width / 2 - 120, height / 2 - 60,
+        width / 2 + 120, height / 2 + 60,
+        "Teste", FONTES[0]);
+    break;
+  }
+
+  case 1:
+  {
+    render_txt(
+        comment_x0, comment_y0,
+        comment_x1, comment_y1,
+        txtbox[ID].text, FONTES[0]);
+
+    break;
+  }
+
+  default:
+  {
+    break;
+  }
+  }
+  return set;
+}
+
+// MAPA
+void draw_tile(int px, int py, int bm, ALLEGRO_COLOR cor)
+{
+  if (cor.a == 0)
+    al_draw_bitmap(
+        bitmap[bm],
+        px + width / 2 - player.posx,
+        py + height / 2 - player.posy,
+        0);
+
+  else
+  {
+    int posx = px + width / 2 - player.posx;
+    int posy = py + height / 2 - player.posy;
+    al_draw_filled_rectangle(
+        posx, posy, posx + tileSiz, posy + tileSiz,
+        cor);
+  }
+}
+
+bool render_map()
+{
+  //mapa
+
+  al_draw_bitmap(bitmap[29], 0, 0, 0);
   ALLEGRO_COLOR cor;
+  cor.a = 0;
   bool set = true;
   int px;
   int py;
-  //mapa
-  for (int i = 0; i < mapSize; i++)
-  {
-    px = tileSiz * (i % mapColu);
-    py = tileSiz * (i / mapColu);
 
-    if (map[i] == 0)
-      cor = al_map_rgb(30, 10, 30);
-    else if (map[i] == 1)
-      cor = al_map_rgb(120, 30, 100);
-    else
-    {
-      printf("render() map[%d] contem tipo nao registrado", i);
-      set = false;
-    }
-    al_draw_filled_rectangle(px, py, px + tileSiz, py + tileSiz, cor);
+  for (int i = 0; i < mapa.tam; i++)
+  {
+    px = tileSiz * (i % mapa.col);
+    py = tileSiz * (i / mapa.col);
+    if (mapa.map[i] == 0)
+      draw_tile(px, py, 20, cor);
+
+    else if (mapa.map[i] == 2)
+      draw_tile(px, py, 16, cor);
   }
 
+  return set;
+}
+
+// JOGADOR
+bool render_player()
+{
   //personagem
-  px = player.posx;
-  py = player.posy;
+  ALLEGRO_COLOR cor;
+  bool set = true;
+
+  if(player.sentido)
+    al_draw_bitmap(bitmap[player.anim], width / 2, height / 2, 0);
+  else
+    al_draw_bitmap(bitmap[player.anim], width / 2, height / 2, ALLEGRO_FLIP_HORIZONTAL);
   switch (player.estado)
   {
   case 1: // vivo
-    cor = al_map_rgb(60, 60, 140);
-    int tamx = ply_x;
-    int tamy = ply_y;
-    al_draw_filled_rectangle(px, py, px + tamx, py + tamy, cor);
     break;
 
-  case 0:
-    printf("\nrender() player.estado = 0 n�o implementado");
+  case 2: // segurando peça
+    cor = al_map_rgb(255, 255, 255);
+    al_draw_filled_rectangle(
+        width / 2 + 10,
+        height / 2 - 20,
+        width / 2 + 20,
+        height / 2,
+        cor);
     break;
 
   default:
@@ -44,6 +144,36 @@ bool render_and_collide()
     break;
   }
 
+  return set;
+}
+
+bool draw_box(int bm, int posx, int posy, ALLEGRO_COLOR cor, int tamx, int tamy)
+{
+  // vê aonde desenha
+  // deve desenhar ao redor do jogador.
+  if (cor.a == 0)
+    al_draw_bitmap(
+        bitmap[bm],
+        posx + width / 2 - player.posx,
+        posy + height / 2 - player.posy,
+        0);
+
+  else
+    al_draw_filled_rectangle(
+        posx + width / 2 - player.posx,
+        posy + height / 2 - player.posy,
+        posx + width / 2 - player.posx + tamx,
+        posy + height / 2 - player.posy + tamy,
+        cor);
+}
+
+// CAIXAS
+bool render_boxes(bool colide, bool primitives)
+{
+  ALLEGRO_COLOR cor;
+  cor.a = 0;
+  bool set = true;
+
   //caixas
   for (int id = 0; id < caixas; id++)
   {
@@ -51,69 +181,58 @@ bool render_and_collide()
     {
       int tamx;
       int tamy;
-      bool colisao = false;
       ALLEGRO_COLOR cor;
-      if (box[id].type == 0)
+      cor.a = 0;
+      if (box[id].type == 0) // peça
       {
-        printf("men.?");
-        tamx = 5;
-        tamy = 5;
-        cor = al_map_rgb(0, 0, 0);
+        tamx = typ0x;
+        tamy = typ0y;
+        cor = al_map_rgb(255, 255, 255);
+        draw_box(11, box[id].posx, box[id].posy, cor, tamx, tamy);
       }
-      else if (box[id].type == 1)
+      else if (box[id].type == 1) // oxigênio
       {
         tamx = typ1x;
-        tamy = typ1y;
-        cor = al_map_rgb(50, 50, 200);
+        tamy = typ1y; 
+        draw_box(11, box[id].posx, box[id].posy, cor, tamx, tamy);
       }
-      else if (box[id].type == 2)
+      else if (box[id].type == 2) // meio oxy
       {
         tamx = typ2x;
         tamy = typ2y;
-        cor = al_map_rgb(200, 50, 50);
+        //cor = al_map_rgba(75, 75, 175, 255);
+        draw_box(11, box[id].posx, box[id].posy, cor, tamx, tamy);
       }
-      al_draw_filled_rectangle(
-          box[id].posx,
-          box[id].posy,
-          box[id].posx+tamx,
-          box[id].posy+tamy,
-          cor);
-          
-      // verifica colisões com a caixa
-     
-      for (int x = 0; x <= ply_x; x++)
+      else if (box[id].type == 3) // obstáculo
       {
-        for (int y = 0; y <= ply_y; y++)
-        {
-
-          int cdx = player.posx + x;
-          int cdy = player.posy + y; 
-          if ((cdx >= box[id].posx) && (cdx <= (box[id].posx + tamx)) 
-            && (cdy >= box[id].posy) && (cdy <= (box[id].posy + tamy)))
-          {
-            // analisa colis�es
-            if (box[id].type == 2) // obst�culo
-            {
-              player.posx = initx;
-              player.posy = inity;
-              player.oxygen -= 40;
-              colisao = true;
-              break;
-            }
-            else if (box[id].type == 1) // cilindro
-            {
-              player.oxygen += 40;
-              box[id].existe = false;
-              colisao = true;
-              break;
-            }
-          }
-        }
-        if (colisao)
-          break;
+        tamx = typ3x;
+        tamy = typ3y;
+        draw_box(13, box[id].posx, box[id].posy, cor, tamx, tamy);
       }
+      else if (box[id].type == 4) // gás
+      {
+        tamx = typ4x;
+        tamy = typ4y;
+        cor = al_map_rgba(150, 100, 150, 100);
+        draw_box(13, box[id].posx, box[id].posy, cor, tamx, tamy);
+      }
+      else if (box[id].type == 9) // nave
+      {
+        tamx = typ9x;
+        tamy = typ9y;
+        //cor = al_map_rgba(150, 150, 50, 100);
+        draw_box(8, box[id].posx, box[id].posy, cor, tamx, tamy);
+      }
+      else if (box[id].type >= 10)
+      {
+        tamx = 30;
+        tamy = 30;
+        draw_box(9, box[id].posx, box[id].posy, cor, tamx, tamy);
+      }
+      // verifica colisões com a caixa
+      if (colide)
+        check_box_collision(id, tamx, tamy);
     }
   }
-
   return set;
 }
