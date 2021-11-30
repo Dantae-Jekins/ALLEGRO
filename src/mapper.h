@@ -8,7 +8,6 @@ int load_map (int nivel)
   char ch;
   char aux_ch[4];
   char nome_arquivo[25];
-<<<<<<< HEAD
   if (nivel == 0)
     strcpy_s(&nome_arquivo, nome_arquivo, "../fases/fase1"); //fase 0
   else
