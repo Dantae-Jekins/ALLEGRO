@@ -13,9 +13,9 @@ int load_map (int nivel)
   char nome_arquivo[25];
   printf("aaa \n\n"); 
   if (nivel == 0)
-    strcpy(nome_arquivo, "../fases/fase1"); //fase 0
+    strcpy(nome_arquivo, "../fases/fase0"); //fase 0
   else
-    strcpy(nome_arquivo, "../fases/fase2"); //fase 1
+    strcpy(nome_arquivo, "../fases/fase1"); //fase 1
 
   FILE *fase = fopen(nome_arquivo, "r");
 
@@ -156,7 +156,6 @@ int load_map (int nivel)
     } 
 
   }
-
 	fclose(fase);
   return 0;
 }

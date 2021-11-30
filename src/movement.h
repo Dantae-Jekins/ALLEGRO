@@ -44,8 +44,6 @@ void checkInput(ALLEGRO_KEYBOARD_STATE keystate)
     {
         if(direita) 
             player.velx =  6; 
-        else if(baixo)
-            player.vely = 2;
         player.sentido = true;
 
     }
@@ -53,8 +51,6 @@ void checkInput(ALLEGRO_KEYBOARD_STATE keystate)
     {
         if(esquerda)
             player.velx = -6; 
-        else if(baixo)
-            player.vely = 2;
         player.sentido = false;
         
     }

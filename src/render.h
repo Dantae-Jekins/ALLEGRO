@@ -118,8 +118,7 @@ bool render_oxigenio()
 //MAPA
 bool render_map()
 {
-
-  al_draw_bitmap(bitmap[29], 0, 0, 0);
+  al_draw_bitmap(bitmap[back], 0, 0, 0);
   ALLEGRO_COLOR cor;
   cor.a = 0;
   bool set = true;
@@ -131,7 +130,7 @@ bool render_map()
     px = tileSiz * (i % mapa.col);
     py = tileSiz * (i / mapa.col);
     if (mapa.map[i] == 0)
-      draw_tile(px, py, 20, cor);
+      draw_tile(px, py, tile, cor);
 
     else if (mapa.map[i] == 2)
       draw_tile(px, py, 16, cor);
@@ -248,7 +247,7 @@ bool render_boxes(bool colide, bool primitives)
       {
         tamx = typ3x;
         tamy = typ3y;
-        draw_box(13, box[id].posx, box[id].posy, cor, tamx, tamy);
+        draw_box(obst, box[id].posx, box[id].posy, cor, tamx, tamy);
       }
       else if (box[id].type == 4) // gás
       {

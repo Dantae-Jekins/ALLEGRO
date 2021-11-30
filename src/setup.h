@@ -21,19 +21,35 @@ void setupBitmaps(void) // 0 - 9 player     10 - 19 - Interagiveis    20 - 25 Ti
   scale_bitmap(1, ply_x, ply_y, "../imagens/ast1.png");
   scale_bitmap(2, ply_x, ply_y, "../imagens/ast0.png");
   scale_bitmap(3, ply_x, ply_y, "../imagens/ast2.png");
+  
   scale_bitmap(8, typ9x, typ9y, "../imagens/rct0.png");
   scale_bitmap(9, 40, 40, "../imagens/event.png");
+  
   scale_bitmap(11, typ1x, typ1y, "../imagens/oxy0.png");
   scale_bitmap(12, typ2x, typ2y, "../imagens/oxy0.png");
+  
   scale_bitmap(13, typ3x, typ3y, "../imagens/spk0.png");
-  scale_bitmap(15, typ5x, typ5y, "../imagens/lav0.png");
+  scale_bitmap(14, typ3x, typ3y, "../imagens/spk1.png");
+  
   scale_bitmap(16, 120, 80, "../imagens/roc0.png");
+  
   scale_bitmap(18, width, height, "../imagens/perdeu.png");
   scale_bitmap(19, width, height, "../imagens/ganhou.jpeg");
+  
   scale_bitmap(20, tileSiz, tileSiz, "../imagens/til0.png");
-  scale_bitmap(28, width, height, "../imagens/menu.png");
-  scale_bitmap(29, width, height, "../imagens/bac0.png");
+  scale_bitmap(21, tileSiz, tileSiz, "../imagens/til1.png");
+  
+  scale_bitmap(27, width, height, "../imagens/menu.png");
+  
+  scale_bitmap(28, width, height, "../imagens/bac0.png");
+  scale_bitmap(29, width, height, "../imagens/bac1.jpeg");
+
+  obst = 13;
+  back = 28;
+  tile = 20;
+
 }
+
 
 void setupFonts(void)
 {
@@ -114,15 +130,20 @@ bool setup(void)
   printf("boxes settadas\n");
   setupPlayer();
   printf("player settado\n");
+  
+  mapa.code = 0;
+  mapa.col = 0;
+  mapa.tam = 0;
+  mapa.inix = 0;
+  mapa.iniy = 0;
+  
   setupBitmaps();
   printf("bitmaps settados\n");
   setupFonts();
   printf("fontes settadas\n");
 
-  mapa.code = 0;
   mapa.map = malloc(sizeof(int)*1);
   load_map(0);
-  printf("mapa settado\n");
   
   setupPlayer();
   return checkup;

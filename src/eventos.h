@@ -119,9 +119,11 @@ void chat_stream(bool run, int code)
 		//printf("bitmap settado\n");
 		// inicia nova seção de eventos
 		ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue(); 	
+		ALLEGRO_TIMER *timer = al_create_timer(0.2);
+		al_register_event_source(queue, al_get_timer_event_source(timer));
 		al_register_event_source(queue, al_get_keyboard_event_source());
 		ALLEGRO_EVENT evento;
-
+		al_start_timer(timer);
 		bool paused = true;
 		{
 			char *aux = malloc(sizeof(char)*4);				
@@ -136,19 +138,25 @@ void chat_stream(bool run, int code)
 			while (paused)
 			{	
 				al_wait_for_event(queue, &evento);
-				if (evento.type == ALLEGRO_EVENT_KEY_DOWN)
-					i = 0;
+				al_start_timer(timer);
+				if(evento.type == ALLEGRO_EVENT_TIMER)
 				{
-					if (!count_Words(pg, &i, comment))
+					al_stop_timer(timer);
+					al_flush_event_queue(queue);
+					al_wait_for_event(queue, &evento);
+					if (evento.type == ALLEGRO_EVENT_KEY_DOWN)
 					{
-						paused = false;
-						break;
+						i = 0;
+						if (!count_Words(pg, &i, comment))
+						{
+							paused = false;
+							break;
+						}
+						txtbox[id].text = strcrop(i, 0, comment, aux);
+						render_paused_chat(id, backup);
+						pg ++;
 					}
-					txtbox[id].text = strcrop(i, 0, comment, aux);
-					render_paused_chat(id, backup);
-					pg ++;
-				}
-				
+				}	
 			}
 			txtbox[id].existe = false;
 		}
@@ -168,7 +176,7 @@ bool menu()
 		al_set_target_bitmap(backup);
 		al_clear_to_color(al_map_rgba(0,0,0,0));
 
-		al_draw_bitmap(bitmap[28],0,0,0);
+		al_draw_bitmap(bitmap[27],0,0,0);
 		al_draw_filled_ellipse(0, height, 420, height,al_map_rgba(200,150,50,100));
 		
 		render_txt(120, height-380, 240, height-320, "Iniciar", FONTES[1]);

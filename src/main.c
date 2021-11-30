@@ -1,4 +1,3 @@
-#define _CRT_SECURE_NO_DEPRECATE
 //ALLEGRO
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
@@ -98,7 +97,27 @@ int main(void)
           printf("\33[5A");
         } timezin++;
         if (player.estado == 3)
-          rodando = vitoria();  
+          if(mapa.code == 0)
+          {
+            printf("\n\n\n\n");
+            setupBoxes();
+            free(mapa.map);
+            mapa.map = malloc(sizeof(int)*1); 
+            mapa.code = 1;
+            mapa.col = 0;
+            mapa.tam = 0;
+            mapa.inix = 0;
+            mapa.iniy = 0;
+
+            load_map(mapa.code);
+            setupPlayer();
+            
+            back ++;
+            tile ++;
+            obst ++;
+          }
+          else
+            rodando = vitoria();  
       }
     }
 
