@@ -1,9 +1,3 @@
-#ifdef __unix
-
-#define _unix true
-#define fopen_s(pFile, filename,mode) printf("fodase o windows");
-#define strcpy_s(target, max, source) strcpy(target, source)
-#endif
 
 
 bool check_if_inside_map(int x, int y, int px, int py, bool *value);

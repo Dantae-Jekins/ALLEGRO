@@ -45,8 +45,9 @@ void chat_stream(bool run, int code)
 		filename[14] = '\0';
 
 		// abre o arquivo e prepara comment
-		FILE* arquivo; 
-		fopen_s(&arquivo, filename, "r");
+
+		FILE* arquivo = fopen(filename, "r");
+
 		char *comment = (char*)malloc(sizeof(char)*10);
 		int  *image   = (int *)malloc(sizeof(int)*10);
 

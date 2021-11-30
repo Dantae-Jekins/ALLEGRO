@@ -13,30 +13,18 @@ int load_map (int nivel)
   char nome_arquivo[25];
   printf("aaa \n\n"); 
   if (nivel == 0)
-    strcpy_s(nome_arquivo, 25,"../fases/fase1"); //fase 0
+    strcpy(nome_arquivo, "../fases/fase1"); //fase 0
   else
-    strcpy_s(nome_arquivo, 25, "../fases/fase2"); //fase 1
+    strcpy(nome_arquivo, "../fases/fase2"); //fase 1
 
-  FILE* fase;
-  fopen_s(&fase, nome_arquivo, "r"); //Abre o arquivo
+  FILE *fase = fopen(nome_arquivo, "r");
 
-  printf("aaa \n\n"); 
-  FILE *fase;
-
-  if(_unix)
-    fase = fopen(nome_arquivo, "r");
-  else
-    fopen_s(&fase, nome_arquivo, "r"); //Abre o arquivo
- 
-
-  printf("aaa \n\n"); 
   /////teste de leitura/////
   if (fase == NULL)
   {
     printf("Não abriu o %s", nome_arquivo);
     return 1;
   }
-  printf("aaa \n\n"); 
 	while (((ch = getc(fase)) != EOF))
 	{
     if (classe == 0)
@@ -168,9 +156,8 @@ int load_map (int nivel)
     } 
 
   }
-  printf("aaa \n\n"); 
+
 	fclose(fase);
-  printf("aaa \n\n"); 
   return 0;
 }
 

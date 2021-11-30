@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_DEPRECATE
 //ALLEGRO
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
@@ -5,6 +6,9 @@
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_image.h>
 
+#ifdef _WIN32
+#define _CRT_SECURE_NO_DEPRECATE
+#endif
 //STANDART LIBRARIES
 #include <stdio.h>
 #include <stdlib.h>
