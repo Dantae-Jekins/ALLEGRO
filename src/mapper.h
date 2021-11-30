@@ -17,7 +17,7 @@ int load_map (int nivel)
     strcpy_s(&nome_arquivo, nome_arquivo, "../fases/fase2"); //fase 1
 
   FILE* fase;
-  fopen_s(&nome_arquivo, nome_arquivo, "r"); //Abre o arquivo
+  fopen_s(&fase, nome_arquivo, "r"); //Abre o arquivo
 
   /////teste de leitura/////
   if (fase == NULL)
