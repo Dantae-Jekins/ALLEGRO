@@ -1,3 +1,6 @@
+#ifndef RENDER
+#define RENDER
+
 // TEXTOS
 void render_txt(int posx0, int posy0, int posx1, int posy1, char *texto, ALLEGRO_FONT *fonte)
 {
@@ -33,6 +36,12 @@ void render_txt(int posx0, int posy0, int posx1, int posy1, char *texto, ALLEGRO
       (posx1 - posx0 - 40),
       20, 0, texto);
   //printf("\n }\n");
+}
+
+void render_seta(int posx, int posy, ALLEGRO_COLOR cor)
+{
+  al_draw_filled_triangle(posx, posy+20, posx+40, posy, posx+40, posy+40, cor);
+  al_draw_filled_rectangle(posx+40, posy+10, posx+80, posy+30, cor);
 }
 
 bool render_txtbox(int ID)
@@ -87,23 +96,40 @@ void draw_tile(int px, int py, int bm, ALLEGRO_COLOR cor)
   }
 }
 
+//OXIGENIO
+bool render_oxigenio()
+{
+  bool set = true;
+
+  al_draw_filled_rectangle(
+      40, width / 2 - (50),
+      70, width / 2 + (150),
+      al_map_rgb(30, 30, 30)
+  );
+  al_draw_filled_rectangle(
+      45, width / 2 + 145 - (player.oxygen/5.25), //PLAYER.OXIGEN
+      65, width / 2 + (145),
+      al_map_rgb(50, 40, 250)
+  );   
+
+  return set;
+}
+
+//MAPA
 bool render_map()
 {
-  //mapa
-
-  al_draw_bitmap(bitmap[29], 0, 0, 0);
+  al_draw_bitmap(bitmap[back], 0, 0, 0);
   ALLEGRO_COLOR cor;
   cor.a = 0;
   bool set = true;
   int px;
   int py;
-
   for (int i = 0; i < mapa.tam; i++)
   {
     px = tileSiz * (i % mapa.col);
     py = tileSiz * (i / mapa.col);
     if (mapa.map[i] == 0)
-      draw_tile(px, py, 20, cor);
+      draw_tile(px, py, tile, cor);
 
     else if (mapa.map[i] == 2)
       draw_tile(px, py, 16, cor);
@@ -113,22 +139,14 @@ bool render_map()
 }
 
 // JOGADOR
-bool render_player()
+bool render_player(int timer)
 {
   //personagem
   ALLEGRO_COLOR cor;
   bool set = true;
 
-  if(player.sentido)
-    al_draw_bitmap(bitmap[player.anim], width / 2, height / 2, 0);
-  else
-    al_draw_bitmap(bitmap[player.anim], width / 2, height / 2, ALLEGRO_FLIP_HORIZONTAL);
-  switch (player.estado)
+  if (player.estado == 2)
   {
-  case 1: // vivo
-    break;
-
-  case 2: // segurando peça
     cor = al_map_rgb(255, 255, 255);
     al_draw_filled_rectangle(
         width / 2 + 10,
@@ -136,14 +154,35 @@ bool render_player()
         width / 2 + 20,
         height / 2,
         cor);
-    break;
-
-  default:
-    printf("\nrender() player.estado em valores n�o aceit�veis");
-    set = false;
-    break;
   }
+  switch (player.anim)
+  {
+  case 0: // parado
+    if(player.sentido)
+      al_draw_bitmap(bitmap[0], width / 2, height / 2, 0);
+    else
+      al_draw_bitmap(bitmap[0], width / 2, height / 2, ALLEGRO_FLIP_HORIZONTAL);
+    break;
+  
+  default: // correndo
+    
+    if(player.sentido)
+      al_draw_bitmap(bitmap[player.anim-1], width / 2, height / 2, 0);
+    else
+      al_draw_bitmap(bitmap[player.anim-1], width / 2, height / 2, ALLEGRO_FLIP_HORIZONTAL);
 
+    if(timer%10 == 0)
+    {
+      player.anim += 1;
+
+      if(player.anim > 4)
+      {
+        player.anim = 1;
+      }
+    }      
+    break;      
+  }
+  
   return set;
 }
 
@@ -207,7 +246,7 @@ bool render_boxes(bool colide, bool primitives)
       {
         tamx = typ3x;
         tamy = typ3y;
-        draw_box(13, box[id].posx, box[id].posy, cor, tamx, tamy);
+        draw_box(obst, box[id].posx, box[id].posy, cor, tamx, tamy);
       }
       else if (box[id].type == 4) // gás
       {
@@ -216,6 +255,14 @@ bool render_boxes(bool colide, bool primitives)
         cor = al_map_rgba(150, 100, 150, 100);
         draw_box(13, box[id].posx, box[id].posy, cor, tamx, tamy);
       }
+      // EXPERIMENTAL
+      else if (box[id].type == 5) // lava
+      {
+        tamx = typ5x;
+        tamy = typ5y;
+        al_draw_bitmap(bitmap[14], box[id].posx, box[id].posy, 0);
+      }
+
       else if (box[id].type == 9) // nave
       {
         tamx = typ9x;
@@ -236,3 +283,5 @@ bool render_boxes(bool colide, bool primitives)
   }
   return set;
 }
+
+#endif

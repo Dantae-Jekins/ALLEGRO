@@ -1,3 +1,6 @@
+#ifndef VARIABLES
+#define VARIABLES
+
 // variáveis gerais
 #define height 720
 #define width 1080
@@ -50,6 +53,11 @@ const int comment_y1 = height - 60;
 
 // Bitmap
 
+bool seta;
+int tile;
+int back;
+int obst;
+
 #define bitmap_count 30
 ALLEGRO_BITMAP *bitmap[bitmap_count]; // Vetor de ponteiros para bitmaps, cada elemento desse vetor é um ponteiro
                           // Não da pra saber o tamanho do bitmap, por isso cria um ponteiro
@@ -57,3 +65,5 @@ ALLEGRO_BITMAP *bitmap[bitmap_count]; // Vetor de ponteiros para bitmaps, cada e
 ALLEGRO_FONT *FONTES[font_count];
 
 ALLEGRO_DISPLAY *display;
+
+#endif

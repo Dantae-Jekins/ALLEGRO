@@ -1,3 +1,6 @@
+#ifndef MOVEMENT
+#define MOVEMENT
+
 void checkInput(ALLEGRO_KEYBOARD_STATE keystate)
 {
     //Movimentacao X
@@ -32,22 +35,28 @@ void checkInput(ALLEGRO_KEYBOARD_STATE keystate)
             player.vely = -22;
     }
 
+    if (player.anim == 0)
+    {
+        player.anim = 1;
+    }   
     player.velx = 0;
     if (al_key_down(&keystate, ALLEGRO_KEY_RIGHT))
     {
         if(direita) 
             player.velx =  6; 
-        else if(baixo)
-            player.vely = 2;
         player.sentido = true;
+
     }
-    if (al_key_down(&keystate, ALLEGRO_KEY_LEFT)) 
+    else if (al_key_down(&keystate, ALLEGRO_KEY_LEFT)) 
     {
         if(esquerda)
             player.velx = -6; 
-        else if(baixo)
-            player.vely = 2;
         player.sentido = false;
+        
+    }
+    else     
+    {
+        player.anim = 0;
     }
     //Movimentacao Y    
 
@@ -58,3 +67,4 @@ void checkInput(ALLEGRO_KEYBOARD_STATE keystate)
     player.posy += player.vely; 
 }
 
+#endif

@@ -1,31 +1,35 @@
+#ifndef MAPPER
+#define MAPPER
+
 int load_map (int nivel) 
 {	
   int aux           = 0;
   int classe        = 0;
   int contagem      = 0;
   int atributo      = 0;
-
+ 
+  mapa.code = nivel;
+  mapa.col = 0;
+  mapa.tam = 0;
+  mapa.inix = 0;
+  mapa.iniy = 0;
+  
   char ch;
   char aux_ch[4];
   char nome_arquivo[25];
+  if (nivel == 0)
+    strcpy(nome_arquivo, "../fases/fase0"); //fase 0
+  else
+    strcpy(nome_arquivo, "../fases/fase1"); //fase 1
 
-  mapa.col = 0;
-  mapa.tam = 0;
+  FILE *fase = fopen(nome_arquivo, "r");
 
-	if (mapa.code == 0)
-		strcpy(nome_arquivo, "../fases/fase1"); //fase 0
-	else
-		strcpy(nome_arquivo, "../fases/fase2");	//fase 1
-
-	FILE *fase = fopen(nome_arquivo,"r");
-  /////TESTE DE LEITURA/////
-	if(fase == NULL)
-	{
-		printf("Não abriu o %s", nome_arquivo);
-		return 1;
-	}
-
-  
+  /////teste de leitura/////
+  if (fase == NULL)
+  {
+    printf("Não abriu o %s", nome_arquivo);
+    return 1;
+  }
 	while (((ch = getc(fase)) != EOF))
 	{
     if (classe == 0)
@@ -160,3 +164,5 @@ int load_map (int nivel)
 	fclose(fase);
   return 0;
 }
+
+#endif
