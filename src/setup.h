@@ -109,13 +109,21 @@ bool setup(void)
     printf("\nal_init_image_addon n�o inicializado");
     checkup = false;
   }
+  printf("allegro settado\n");
   setupBoxes();
+  printf("boxes settadas\n");
   setupPlayer();
+  printf("player settado\n");
   setupBitmaps();
+  printf("bitmaps settados\n");
   setupFonts();
+  printf("fontes settadas\n");
+
   mapa.code = 0;
   mapa.map = malloc(sizeof(int)*1);
   load_map(0);
+  printf("mapa settado\n");
+  
   setupPlayer();
   return checkup;
   // permite que a função analise vários de
