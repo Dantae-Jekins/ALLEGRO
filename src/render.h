@@ -44,23 +44,75 @@ void render_seta(int posx, int posy, ALLEGRO_COLOR cor)
   al_draw_filled_rectangle(posx+40, posy+10, posx+80, posy+30, cor);
 }
 
-bool render_txtbox(int ID)
+void draw_profile(int i)
+{
+  al_draw_filled_rectangle(
+    comment_x0 - 90, 
+    comment_y0 - 45,
+    comment_x0,
+    comment_y0 + 45,
+    AZULLITE
+  );
+  al_draw_filled_rectangle(
+    comment_x0,
+    comment_y0 - 45,
+    comment_x0 + 180,
+    comment_y0,
+    AZULLITE
+  );
+  char nome[10];
+
+  switch (i)
+  {
+  case 0: // michael
+    strmov(7, nome, "Michael");
+    nome[7] = '\0';
+    break;
+
+  case 1: // holograma
+    strmov(8, nome, "Holograma");
+    nome[8] = '\0';
+    break;
+  
+  default:
+    break;
+  }
+
+  al_draw_text(
+    FONTES[1], BRANCO,
+    comment_x0 + 10,
+    comment_y0 - 40,
+    ALLEGRO_ALIGN_LEFT,
+    nome
+  );
+  
+  al_draw_bitmap(
+    bitmap[i+4], 
+    comment_x0-85,
+    comment_y0-40,
+    0
+  );
+}
+
+bool render_txtbox(int ID, int character)
 {
   bool set = true;
   switch (txtbox[ID].type)
   {
-  case 0: // log de teste
-  {
-    render_txt(
-        width / 2 - 120, height / 2 - 60,
-        width / 2 + 120, height / 2 + 60,
-        "Teste", FONTES[0]);
-    break;
-  }
-
-  case 1:
-  {
-    render_txt(
+    case 0: // log de teste 
+    {
+      render_txt(
+        width/2-120, height/2-60,
+        width/2+120, height/2+60,
+        "Teste", FONTES[0]
+      );
+      break;
+    }
+    
+    case 1:
+    {
+      draw_profile(character);
+      render_txt(
         comment_x0, comment_y0,
         comment_x1, comment_y1,
         txtbox[ID].text, FONTES[0]);

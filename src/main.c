@@ -104,7 +104,7 @@ int main(void)
             setupBoxes();
             free(mapa.map);
             mapa.map = malloc(sizeof(int)*1); 
-            load_map(mapa.code);
+            load_map(1);
             setupPlayer();
             
             back ++;

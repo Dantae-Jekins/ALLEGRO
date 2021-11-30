@@ -8,7 +8,7 @@ void collide_with_box(int id);
 
 void check_box_collision(int id, int tamx, int tamy);
 
-bool render_paused_chat(size_t id, ALLEGRO_BITMAP *background);
+bool render_paused_chat(size_t id, int character, ALLEGRO_BITMAP *background);
 
 bool count_Words(size_t page, size_t *i, char *str );
 
@@ -38,7 +38,7 @@ void render_txt(int posx0, int posy0, int posx1, int posy1, char *texto, ALLEGRO
 
 void render_seta(int posx, int posy, ALLEGRO_COLOR cor);
 
-bool render_txtbox(int ID);
+bool render_txtbox(int ID, int character);
 
 void draw_tile(int px, int py, int bm, ALLEGRO_COLOR cor);
 

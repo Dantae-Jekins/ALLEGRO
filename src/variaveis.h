@@ -10,10 +10,10 @@
 
 // constantes de posições do chat
 // útil para pre-processamento
-const int comment_x0 = width / 10 + 120;
-const int comment_y0 = height - 180;
-const int comment_x1 = width - (width / 10 + 120);
-const int comment_y1 = height - 60;
+#define comment_x0 (width / 10 + 120)
+#define comment_y0 (height - 180)
+#define comment_x1 (width - (width / 10 + 120))
+#define comment_y1 (height - 60)
 
 // constantes de tamanho das box
 #define typ0x 20

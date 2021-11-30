@@ -21,6 +21,8 @@ void setupBitmaps(void) // 0 - 9 player     10 - 19 - Interagiveis    20 - 25 Ti
   scale_bitmap(1, ply_x, ply_y, "../imagens/ast1.png");
   scale_bitmap(2, ply_x, ply_y, "../imagens/ast0.png");
   scale_bitmap(3, ply_x, ply_y, "../imagens/ast2.png");
+  scale_bitmap(4, 80, 80, "../imagens/ast_prof.png");
+  scale_bitmap(5, 80, 80, "../imagens/holo_prof.png");
   
   scale_bitmap(8, typ9x, typ9y, "../imagens/rct0.png");
   scale_bitmap(9, 40, 40, "../imagens/event.png");

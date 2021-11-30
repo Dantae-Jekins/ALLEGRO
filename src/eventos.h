@@ -1,11 +1,11 @@
 #ifndef EVENTOS
 #define EVENTOS
 
-bool render_paused_chat(size_t id, ALLEGRO_BITMAP *background)
+bool render_paused_chat(size_t id, int character, ALLEGRO_BITMAP *background)
 {
 	al_clear_to_color(al_map_rgb(0,0,0));
 	al_draw_bitmap(background,0,0,0);
-	bool paused = render_txtbox(id);
+	bool paused = render_txtbox(id, character);
 	al_flip_display();
 	return paused;
 }
@@ -118,6 +118,8 @@ void chat_stream(bool run, int code)
 		}
 		//printf("bitmap settado\n");
 		// inicia nova seção de eventos
+		al_draw_bitmap(backup, 0, 0, 0);
+		al_flip_display();
 		ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue(); 	
 		ALLEGRO_TIMER *timer = al_create_timer(0.2);
 		al_register_event_source(queue, al_get_timer_event_source(timer));
@@ -152,11 +154,13 @@ void chat_stream(bool run, int code)
 							paused = false;
 							break;
 						}
+					
 						txtbox[id].text = strcrop(i, 0, comment, aux);
-						render_paused_chat(id, backup);
+						render_paused_chat(id, image[pg], backup);
 						pg ++;
 					}
-				}	
+				}
+				
 			}
 			txtbox[id].existe = false;
 		}
