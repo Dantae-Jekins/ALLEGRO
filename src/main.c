@@ -97,6 +97,7 @@ int main(void)
           printf("\33[2K posy:   %.4d\n", player.posy);
           printf("\33[5A");
         } timezin++;
+
         if (player.estado == 3)
           if(mapa.code == 0)
           {

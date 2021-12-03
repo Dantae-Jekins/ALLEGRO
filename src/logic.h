@@ -1,6 +1,10 @@
 #ifndef LOGIC
 #define LOGIC
 
+
+#include "j_tools/j_arrays.h"
+#include "j_tools/j_strings.h"
+
 // Transforma um vetor de caracteres em inteiro
 int jatoi (char *vec, int *x)
 {

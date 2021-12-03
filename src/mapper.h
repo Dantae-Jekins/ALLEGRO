@@ -1,46 +1,61 @@
 #ifndef MAPPER
 #define MAPPER
 
-int load_map (int nivel) 
-{	
-  int aux           = 0;
-  int classe        = 0;
-  int contagem      = 0;
-  int atributo      = 0;
- 
+void create_box(int type, int posx, int posy)
+{
+  int id = genBox();
+  if (id != -1)
+  {
+    box[id].type = type;
+    box[id].posx = posx;
+    box[id].posy = posy;
+    box[id].existe = true;
+  }
+}
+int load_map(int nivel)
+{
+  int aux = 0;
+  int classe = 0;
+  
+  //contagem
+  int cnt = 0;
+  
+  //atributo 
+  int atr = 0; 
+
+  //reseta o mapa
   mapa.code = nivel;
-  mapa.col = 0;
-  mapa.tam = 0;
+  mapa.col  = 0;
+  mapa.tam  = 0;
   mapa.inix = 0;
   mapa.iniy = 0;
+
+  // arquivo
+  char *arquivo;
+  arquivo = str_copy("../fases/fase"); // copia a string
+  // e depois aloca mais um espaço nela:
+  arquivo = realloc(arquivo, sizeof(char)*15);
+  //13 caracteres + 1 nulo -> 13 caracteres + 1 nulo + espaço
+
+  // transforma em ASCII copiando código
+  arquivo[13] = mapa.code + 48; // 0 - > '0'
+  // abre o arquivo
+  FILE *fase = fopen(arquivo, "r"); 
   
+  //leitura do arquivo
   char ch;
   char aux_ch[4];
-  char nome_arquivo[25];
-  if (nivel == 0)
-    strcpy(nome_arquivo, "../fases/fase0"); //fase 0
-  else
-    strcpy(nome_arquivo, "../fases/fase1"); //fase 1
-
-  FILE *fase = fopen(nome_arquivo, "r");
-
-  /////teste de leitura/////
-  if (fase == NULL)
+  while (((ch = getc(fase)) != EOF))
   {
-    printf("Não abriu o %s", nome_arquivo);
-    return 1;
-  }
-	while (((ch = getc(fase)) != EOF))
-	{
     if (classe == 0)
     {
-      if(atributo == 0)
-      {       
-        if(ch == 44)            
-        { 
-          atributo++;
-          box[contagem].type = jatoi(aux_ch, &aux);
-          printf ("%d ", box[contagem].type);
+      if (atr == 0)
+      {
+        if (ch == 44)
+        {
+          atr++;
+          box[cnt].type = jatoi(aux_ch, &aux);
+          printf("%d ", box[cnt].type);
         }
 
         else if (ch > 47 && ch < 58)
@@ -50,14 +65,13 @@ int load_map (int nivel)
         }
       }
 
-      else if(atributo == 1)
+      else if (atr == 1)
       {
-        if(ch == 44)
-        { 
-          atributo++;
-          box[contagem].posx = jatoi(aux_ch, &aux);
-          printf ("%d ", box[contagem].posx);
-
+        if (ch == 44)
+        {
+          atr++;
+          box[cnt].posx = jatoi(aux_ch, &aux);
+          printf("%d ", box[cnt].posx);
         }
 
         else if (ch > 47 && ch < 58)
@@ -67,15 +81,15 @@ int load_map (int nivel)
         }
       }
 
-      else if(atributo == 2)
+      else if (atr == 2)
       {
-        if( ch == 59) // ;
+        if (ch == 59) // ;
         {
-            atributo = 0;
-            box[contagem].existe = true;
-            box[contagem].posy = jatoi(aux_ch, &aux);  
-            printf ("%d\n", box[contagem].posy);
-            contagem++;
+          atr = 0;
+          box[cnt].existe = true;
+          box[cnt].posy = jatoi(aux_ch, &aux);
+          printf("%d\n", box[cnt].posy);
+          cnt++;
         }
 
         else if (ch > 47 && ch < 58)
@@ -83,26 +97,26 @@ int load_map (int nivel)
           aux_ch[aux] = ch;
           aux++;
         }
-      }  
-      // terminou atributos
-      if( ch == 35) // #
+      }
+      // terminou atrs
+      if (ch == 35) // #
       {
-        atributo = 0;
-        contagem = 0;
-        classe  += 1;
-        printf ("#\n");
+        atr = 0;
+        cnt = 0;
+        classe += 1;
+        printf("#\n");
       }
     }
-    
+
     else if (classe == 1)
     {
-      if(atributo == 0)
-      {       
-        if(ch == 44)            
-        { 
-          atributo++;
+      if (atr == 0)
+      {
+        if (ch == 44)
+        {
+          atr++;
           mapa.inix = jatoi(aux_ch, &aux);
-          printf ("posx inicial: %d\n", mapa.inix);
+          printf("posx inicial: %d\n", mapa.inix);
         }
         else if (ch > 47 && ch < 58)
         {
@@ -111,17 +125,17 @@ int load_map (int nivel)
         }
       }
 
-      else if(atributo == 1)
+      else if (atr == 1)
       {
-        if(ch == 35)
-        { 
-          atributo = 0;
-          classe  += 1;  
+        if (ch == 35)
+        {
+          atr = 0;
+          classe += 1;
           mapa.iniy = jatoi(aux_ch, &aux);
-          printf ("posy inicial: %d\n#\n", mapa.iniy);
+          printf("posy inicial: %d\n#\n", mapa.iniy);
 
           aux = 10;
-          mapa.map  = realloc(mapa.map,sizeof(int)*aux);
+          mapa.map = realloc(mapa.map, sizeof(int) * aux);
         }
         else if (ch > 47 && ch < 58)
         {
@@ -129,7 +143,6 @@ int load_map (int nivel)
           aux++;
         }
       }
-
     }
 
     else if (classe == 2)
@@ -143,7 +156,7 @@ int load_map (int nivel)
         if (mapa.tam == aux)
         {
           aux += 10;
-          mapa.map = realloc(mapa.map, sizeof(int)*aux);
+          mapa.map = realloc(mapa.map, sizeof(int) * aux);
         }
       }
 
@@ -152,16 +165,14 @@ int load_map (int nivel)
 
       else if (ch == '#')
       {
-        mapa.map = realloc(mapa.map, sizeof(int)*mapa.tam); // ?
+        mapa.map = realloc(mapa.map, sizeof(int) * mapa.tam); // ?
         printf("tam: %d\n", mapa.tam);
         printf("col: %d\n", mapa.col);
-        mapa.map = realloc(mapa.map, sizeof(int)*mapa.tam);
+        mapa.map = realloc(mapa.map, sizeof(int) * mapa.tam);
       }
-      
-    } 
-
+    }
   }
-	fclose(fase);
+  fclose(fase);
   return 0;
 }
 

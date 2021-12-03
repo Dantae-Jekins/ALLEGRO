@@ -78,7 +78,7 @@ void check_map_collision(int id, bool *direita, bool *esquerda, bool *baixo, boo
 // colisão com caixas
 void collide_with_box(int id)
 {
-	// analisa colis�es
+	// analisa colisões
 	if (box[id].type == 0) // peça
 	{
 		box[id].existe = false;
@@ -157,7 +157,7 @@ void check_box_collision(int id, int tamx, int tamy)
 	int dify = player.posy - box[id].posy-2;
 
 	// checa se a caixa está encostada
-	// precisão por interval (eficiente)
+	// precisão por intervalo (eficiente)
 	if (
 			(difx >= -ply_x) &&
 			(difx <= tamx) &&
@@ -165,7 +165,11 @@ void check_box_collision(int id, int tamx, int tamy)
 			(dify <= tamy))
 	{
 		collide_with_box(id);
-		/* colisão por coordenada (ineficiente) 
+
+
+
+		/* 
+		colisão por coordenada (ineficiente) 
 		bool colidiu = false;
 		int x, y;
 
