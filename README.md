@@ -12,3 +12,4 @@ Alguns conceitos foram utilizados amplamente, estes sendo:
 - Leitura de arquivos
 
 Além de conceitos genéricos como Estruturas, ponteiros, alocação de memória e as demais ferramentas de C.
+É importante mencionar que este código não compila na IDE da microsoft (Visual Studio), o compilador principal usado foi o GCC version 11.2.0 (Debian 11.2.0-13)
